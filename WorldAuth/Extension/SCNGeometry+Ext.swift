@@ -1,5 +1,5 @@
 //
-//  Extensions.swift
+//  SCNGeometry.swift
 //  ARSCNViewMeshDemo
 //
 //  Created by OPTiM Corp. on 4/25/21.
