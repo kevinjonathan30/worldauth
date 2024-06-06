@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct PLYVertex {
+struct PLYVertex: Identifiable {
+    var id: UUID = UUID()
     var x: Float
     var y: Float
     var z: Float

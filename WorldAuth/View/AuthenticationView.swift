@@ -20,7 +20,10 @@ struct AuthenticationView: View {
     @State private var showPointCloud = true
     @State private var showMesh = false
     
-    @StateObject var viewModel: AppViewModel = AppViewModel()
+    @State var isTakingPointCloud = false
+    @State var isScreenBlack = false
+    
+    @EnvironmentObject var viewModel: AppViewModel
     
     init() {
         let session = ARSession()
@@ -28,18 +31,24 @@ struct AuthenticationView: View {
         if ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh) {
             configuration.sceneReconstruction = .mesh
         }
-        session.run(configuration)
+        session.run(configuration, options: [.resetTracking,.removeExistingAnchors,.stopTrackedRaycasts])
         self.session = session
         self.scene = SCNScene()
     }
     
     var body: some View {
-        VStack {
-            switch ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh) {
-            case true:
-                arView()
-            case false:
-                Text("Your device doesn't support LiDAR")
+        ZStack(alignment: .bottom) {
+            arSceneView()
+            
+            stutterView()
+            
+            takePointCloudButton()
+        }
+        .navigationTitle("Authentication")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                toolbarTrailingView()
             }
         }
     }
@@ -48,24 +57,6 @@ struct AuthenticationView: View {
 // MARK: ViewBuilder
 
 private extension AuthenticationView {
-    @ViewBuilder
-    private func arView() -> some View {
-        ZStack(alignment: .bottom) {
-            arSceneView()
-            
-            stutterView()
-            
-            takePointCloudButton()
-        }
-        .navigationTitle("WorldAuth")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                toolbarTrailingView()
-            }
-        }
-    }
-    
     @ViewBuilder
     private func arSceneView() -> some View {
         ARSceneView(
@@ -93,7 +84,7 @@ private extension AuthenticationView {
                     .foregroundColor(.red)
                     .font(.title)
                     .frame(width: 80, height: 80)
-                    .background(Color.white)
+                    .background(.white)
                     .clipShape(Circle())
             }
             .padding()
@@ -140,11 +131,11 @@ private extension AuthenticationView {
 
 private extension AuthenticationView {
     private func getStutterViewState() -> Double {
-        return viewModel.isScreenBlack ? 1 : 0
+        return isScreenBlack ? 1 : 0
     }
     
     private func getIconByTakePointCloudState() -> String {
-        return viewModel.isTakingPointCloud ? "stop.circle.fill" : "record.circle.fill"
+        return isTakingPointCloud ? "stop.circle.fill" : "record.circle.fill"
     }
 }
 
@@ -152,17 +143,17 @@ private extension AuthenticationView {
 
 private extension AuthenticationView {
     private func handleTakePointCloudButtonEvent() {
-        if viewModel.isTakingPointCloud {
-            viewModel.isTakingPointCloud = false
-            viewModel.isScreenBlack = true
+        if isTakingPointCloud {
+            isTakingPointCloud = false
+            isScreenBlack = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                viewModel.isScreenBlack = false
+                isScreenBlack = false
             }
             let recordStartSoundID: SystemSoundID = 1118
             AudioServicesPlaySystemSound(recordStartSoundID)
             captureImage()
         } else {
-            viewModel.isTakingPointCloud = true
+            isTakingPointCloud = true
             savePlyFile()
             let recordStartSoundID: SystemSoundID = 1117
             AudioServicesPlaySystemSound(recordStartSoundID)
@@ -196,7 +187,7 @@ private extension AuthenticationView {
     
     private func savePlyFile() {
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-            if !viewModel.isTakingPointCloud {
+            if !isTakingPointCloud {
                 timer.invalidate()
                 guard !viewModel.pointCloudData.isEmpty else { return }
                 let plyString = self.createPlyString(from: viewModel.pointCloudData)

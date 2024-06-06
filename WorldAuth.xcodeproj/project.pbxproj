@@ -19,6 +19,9 @@
 		5DE2AB172C0AE277000C7346 /* ARSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB152C0AE276000C7346 /* ARSceneView.swift */; };
 		5DE2AB182C0AE277000C7346 /* SCNGeometry+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB162C0AE277000C7346 /* SCNGeometry+Ext.swift */; };
 		5DE2AB1B2C0AE302000C7346 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 5DE2AB1A2C0AE302000C7346 /* ZIPFoundation */; };
+		5DEA68712C11765A008CD7A9 /* RegisterListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68702C11765A008CD7A9 /* RegisterListView.swift */; };
+		5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFD7FEE2C102B79009CB20E /* LazyView.swift */; };
+		5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +38,9 @@
 		5DE2AB152C0AE276000C7346 /* ARSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARSceneView.swift; sourceTree = "<group>"; };
 		5DE2AB162C0AE277000C7346 /* SCNGeometry+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SCNGeometry+Ext.swift"; sourceTree = "<group>"; };
 		5DE2AB1C2C0AE329000C7346 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DEA68702C11765A008CD7A9 /* RegisterListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterListView.swift; sourceTree = "<group>"; };
+		5DFD7FEE2C102B79009CB20E /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
+		5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,10 +58,11 @@
 		5D15EE4E2C0D88F600673052 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				5DE2AB152C0AE276000C7346 /* ARSceneView.swift */,
+				5DFD7FF02C102DD7009CB20E /* Common */,
 				5DE2AB092C0AE22B000C7346 /* RegisterView.swift */,
 				5D15EE532C0D9D5700673052 /* ContentView.swift */,
 				5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */,
+				5DEA68702C11765A008CD7A9 /* RegisterListView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -82,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				5DE2AB162C0AE277000C7346 /* SCNGeometry+Ext.swift */,
+				5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -138,6 +146,15 @@
 				5DE2AB0E2C0AE22D000C7346 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5DFD7FF02C102DD7009CB20E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				5DE2AB152C0AE276000C7346 /* ARSceneView.swift */,
+				5DFD7FEE2C102B79009CB20E /* LazyView.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,11 +234,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				5DE2AB0A2C0AE22B000C7346 /* RegisterView.swift in Sources */,
+				5DEA68712C11765A008CD7A9 /* RegisterListView.swift in Sources */,
+				5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */,
 				5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */,
 				5D15EE542C0D9D5700673052 /* ContentView.swift in Sources */,
 				5D15EE5C2C0DA2A900673052 /* PLYVertex.swift in Sources */,
 				5DE2AB172C0AE277000C7346 /* ARSceneView.swift in Sources */,
 				5D15EE4D2C0D88E800673052 /* DateHelper.swift in Sources */,
+				5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */,
 				5DE2AB182C0AE277000C7346 /* SCNGeometry+Ext.swift in Sources */,
 				5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */,
 				5D15EE492C0AEB4D00673052 /* AppViewModel.swift in Sources */,

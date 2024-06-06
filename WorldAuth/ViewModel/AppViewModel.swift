@@ -8,14 +8,13 @@
 import UIKit
 
 class AppViewModel: ObservableObject {
-    @Published var capturedPlyFileURLs: [URL] = []
-    @Published var capturedImageURLs: [URL] = []
+    // Data
+    var capturedPlyFileURLs: [URL] = []
+    var capturedImageURLs: [URL] = []
+    var currentTimestamp: String?
+    var pointCloudData: [(position: SIMD3<Float>, color: UIColor)] = []
     
-    @Published var pointCloudData: [(position: SIMD3<Float>, color: UIColor)] = []
-    @Published var isTakingPointCloud = false
-    @Published var isScreenBlack = false
-    @Published var currentTimestamp: String?
-
+    // Temporary variable
     var showPointCloudTemp = true
     var showMeshTemp = false
 }

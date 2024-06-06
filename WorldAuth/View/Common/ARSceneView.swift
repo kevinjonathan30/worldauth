@@ -34,6 +34,10 @@ extension ARSceneView: UIViewRepresentable {
         }
         uiView.scene = self.scene
     }
+    
+    static func dismantleUIView(_ uiView: ARSCNView, coordinator: Coordinator) {
+        uiView.session.pause()
+    }
 }
 
 extension ARSceneView {
@@ -53,24 +57,6 @@ extension ARSceneView {
             self._lineColor = lineColor
         }
     }
-}
-
-
-func createPointCloudNode(from pointCloud: ARPointCloud, color: Color, pointSize: CGFloat = 0.005) -> SCNNode {
-    let node = SCNNode()
-
-    for index in 0..<pointCloud.__count {
-        let point = pointCloud.points[index]
-        let vector = SCNVector3Make(point.x, point.y, point.z)
-        let sphere = SCNSphere(radius: pointSize)
-        sphere.firstMaterial?.diffuse.contents = color.cgColor
-        sphere.firstMaterial?.lightingModel = .constant
-        let pointNode = SCNNode(geometry: sphere)
-        pointNode.position = vector
-        node.addChildNode(pointNode)
-    }
-
-    return node
 }
 
 extension ARSceneView.Coordinator: ARSessionDelegate {
@@ -122,14 +108,29 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
     }
 }
 
-struct ARSceneView_Previews: PreviewProvider {
-    static var previews: some View {
-        ARSceneView(
-            session: .constant(ARSession()),
-            scene: .constant(SCNScene()),
-            pointColor: .constant(.white),
-            showPointCloud: .constant(true),
-            showMesh: .constant(false)
-        )
+#Preview {
+    ARSceneView(
+        session: .constant(ARSession()),
+        scene: .constant(SCNScene()),
+        pointColor: .constant(.white),
+        showPointCloud: .constant(true),
+        showMesh: .constant(false)
+    )
+}
+
+func createPointCloudNode(from pointCloud: ARPointCloud, color: Color, pointSize: CGFloat = 0.005) -> SCNNode {
+    let node = SCNNode()
+
+    for index in 0..<pointCloud.__count {
+        let point = pointCloud.points[index]
+        let vector = SCNVector3Make(point.x, point.y, point.z)
+        let sphere = SCNSphere(radius: pointSize)
+        sphere.firstMaterial?.diffuse.contents = color.cgColor
+        sphere.firstMaterial?.lightingModel = .constant
+        let pointNode = SCNNode(geometry: sphere)
+        pointNode.position = vector
+        node.addChildNode(pointNode)
     }
+
+    return node
 }

@@ -8,17 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewModel: AppViewModel = AppViewModel()
+    
     var body: some View {
         VStack {
-//            NavigationLink(destination: RegisterView()) {
-//                Text("Register")
-//            }
-//            .padding()
-            
-            NavigationLink(destination: AuthenticationView()) {
-                Text("Authenticate")
+            LazyView(
+                AuthenticationView()
+                    .environmentObject(viewModel)
+            )
+        }
+        .navigationTitle("WorldAuth")
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                NavigationLink(
+                    destination: LazyView(
+                        RegisterView()
+                            .environmentObject(viewModel)
+                    )
+                ) {
+                    Text("Register")
+                }
             }
-            .padding()
         }
     }
 }
