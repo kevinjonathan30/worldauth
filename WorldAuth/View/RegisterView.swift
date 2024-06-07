@@ -182,7 +182,14 @@ private extension RegisterView {
             let image = CIImage(cvPixelBuffer: currentFrame.capturedImage)
             let context = CIContext()
             if let cgImage = context.createCGImage(image, from: image.extent) {
-                let uiImage = UIImage(cgImage: cgImage)
+                var uiImage = UIImage(cgImage: cgImage)
+                
+                // Check if the image orientation is landscape
+                if uiImage.size.width > uiImage.size.height {
+                    // Rotate the image to portrait orientation
+                    uiImage = uiImage.rotate(radians: .pi / 2)!
+                }
+                
                 saveImage(uiImage)
             }
         }

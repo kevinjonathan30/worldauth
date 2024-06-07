@@ -32,6 +32,7 @@ struct FileHelper {
         let filePathURL = directoryURL.appendingPathComponent(atDirectory)
         
         do {
+            guard fileManager.fileExists(atPath: filePathURL.path()) else { return [] }
             let fileURLs = try fileManager.contentsOfDirectory(at: filePathURL, includingPropertiesForKeys: nil)
             return fileURLs
         } catch {
@@ -40,14 +41,30 @@ struct FileHelper {
         }
     }
     
+    static func getImageDataByName(atDirectory: String = "", fileName: String) -> Data? {
+        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+        
+        let directoryURL = documentsDirectory.appendingPathComponent(atDirectory)
+        let fileUrl = directoryURL.appendingPathComponent(fileName)
+        
+        do {
+            let imageData = try Data(contentsOf: fileUrl)
+            return imageData
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
     static func deleteFile(atDirectory: String = "", fileName: String) -> Bool {
         let fileManager = FileManager.default
         
         guard let directoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return false }
         let filePathURL = directoryURL.appendingPathComponent(atDirectory)
+        let fileNameURL = filePathURL.appendingPathComponent(fileName)
         
         do {
-            try fileManager.removeItem(at: filePathURL)
+            try fileManager.removeItem(at: fileNameURL)
             return true
         } catch {
             print(error.localizedDescription)
