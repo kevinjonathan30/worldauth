@@ -2,16 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIRequiredDeviceCapabilities
-
-UIRequiredDeviceCapabilities
-
-UIRequiredDeviceCapabilities
-
-UIRequiredDeviceCapabilities
-
-UIRequiredDeviceCapabilities</key>
-	<string>arkit</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>arkit</string>
+		<string>armv7</string>
+	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>This app uses camera for authentication purpose.</string>
 </dict>

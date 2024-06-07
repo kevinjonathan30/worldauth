@@ -20,6 +20,9 @@
 		5DE2AB182C0AE277000C7346 /* SCNGeometry+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB162C0AE277000C7346 /* SCNGeometry+Ext.swift */; };
 		5DE2AB1B2C0AE302000C7346 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 5DE2AB1A2C0AE302000C7346 /* ZIPFoundation */; };
 		5DEA68712C11765A008CD7A9 /* RegisterListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68702C11765A008CD7A9 /* RegisterListView.swift */; };
+		5DEA68732C117A67008CD7A9 /* PointCloudHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68722C117A67008CD7A9 /* PointCloudHelper.swift */; };
+		5DEA68752C119C70008CD7A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68742C119C70008CD7A9 /* AppDelegate.swift */; };
+		5DEA68772C119F45008CD7A9 /* ARWorldHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68762C119F45008CD7A9 /* ARWorldHelper.swift */; };
 		5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFD7FEE2C102B79009CB20E /* LazyView.swift */; };
 		5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */; };
 /* End PBXBuildFile section */
@@ -39,6 +42,9 @@
 		5DE2AB162C0AE277000C7346 /* SCNGeometry+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SCNGeometry+Ext.swift"; sourceTree = "<group>"; };
 		5DE2AB1C2C0AE329000C7346 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5DEA68702C11765A008CD7A9 /* RegisterListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterListView.swift; sourceTree = "<group>"; };
+		5DEA68722C117A67008CD7A9 /* PointCloudHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudHelper.swift; sourceTree = "<group>"; };
+		5DEA68742C119C70008CD7A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		5DEA68762C119F45008CD7A9 /* ARWorldHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARWorldHelper.swift; sourceTree = "<group>"; };
 		5DFD7FEE2C102B79009CB20E /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +79,7 @@
 				5DE2AB0B2C0AE22D000C7346 /* Assets.xcassets */,
 				5DE2AB1C2C0AE329000C7346 /* Info.plist */,
 				5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */,
+				5DEA68742C119C70008CD7A9 /* AppDelegate.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -97,7 +104,9 @@
 		5D15EE522C0D893500673052 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				5DEA68762C119F45008CD7A9 /* ARWorldHelper.swift */,
 				5D15EE4C2C0D88E800673052 /* DateHelper.swift */,
+				5DEA68722C117A67008CD7A9 /* PointCloudHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -237,6 +246,8 @@
 				5DEA68712C11765A008CD7A9 /* RegisterListView.swift in Sources */,
 				5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */,
 				5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */,
+				5DEA68752C119C70008CD7A9 /* AppDelegate.swift in Sources */,
+				5DEA68772C119F45008CD7A9 /* ARWorldHelper.swift in Sources */,
 				5D15EE542C0D9D5700673052 /* ContentView.swift in Sources */,
 				5D15EE5C2C0DA2A900673052 /* PLYVertex.swift in Sources */,
 				5DE2AB172C0AE277000C7346 /* ARSceneView.swift in Sources */,
@@ -244,6 +255,7 @@
 				5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */,
 				5DE2AB182C0AE277000C7346 /* SCNGeometry+Ext.swift in Sources */,
 				5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */,
+				5DEA68732C117A67008CD7A9 /* PointCloudHelper.swift in Sources */,
 				5D15EE492C0AEB4D00673052 /* AppViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

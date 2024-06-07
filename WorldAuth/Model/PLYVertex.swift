@@ -12,4 +12,7 @@ struct PLYVertex: Identifiable {
     var x: Float
     var y: Float
     var z: Float
+    var red: UInt8
+    var green: UInt8
+    var blue: UInt8
 }

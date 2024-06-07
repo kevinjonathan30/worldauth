@@ -8,7 +8,6 @@
 import ARKit
 import SwiftUI
 import SceneKit
-import AVFoundation
 import ZIPFoundation
 import Combine
 import AudioToolbox
@@ -27,11 +26,7 @@ struct RegisterView: View {
     
     init() {
         let session = ARSession()
-        let configuration = ARWorldTrackingConfiguration()
-        if ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh) {
-            configuration.sceneReconstruction = .mesh
-        }
-        session.run(configuration, options: [.resetTracking,.removeExistingAnchors,.stopTrackedRaycasts])
+        session.run(ARWorldHelper.getARWorldTrackingConfiguration(), options: [.resetTracking,.removeExistingAnchors,.stopTrackedRaycasts])
         self.session = session
         self.scene = SCNScene()
     }
@@ -95,15 +90,6 @@ private extension RegisterView {
     @ViewBuilder
     private func toolbarTrailingView() -> some View {
         Group {
-            Button {
-                shareFiles()
-                let recordStartSoundID: SystemSoundID = 1103
-                AudioServicesPlaySystemSound(recordStartSoundID)
-            } label: {
-                Label("Share", systemImage: "square.and.arrow.up")
-                    .foregroundColor(.white)
-            }
-            
             Menu {
                 Toggle(
                     isOn: $showPointCloud,
@@ -160,47 +146,23 @@ private extension RegisterView {
         }
     }
     
-    private func createPlyString(from points: [(position: SIMD3<Float>, color: UIColor)]) -> String {
-        let header = "ply\n" +
-        "format ascii 1.0\n" +
-        "element vertex \(points.count)\n" +
-        "property float x\n" +
-        "property float y\n" +
-        "property float z\n" +
-        "property uchar red\n" +
-        "property uchar green\n" +
-        "property uchar blue\n" +
-        "end_header\n"
-        
-        var body = ""
-        
-        for point in points {
-            let red = UInt8((point.color.cgColor.components?[0] ?? 0.0) * 255)
-            let green = UInt8((point.color.cgColor.components?[1] ?? 0.0) * 255)
-            let blue = UInt8((point.color.cgColor.components?[2] ?? 0.0) * 255)
-            
-            body += "\(point.position.x) \(point.position.y) \(point.position.z) \(red) \(green) \(blue)\n"
-        }
-        
-        return header + body
-    }
-    
     private func savePlyFile() {
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
             if !isTakingPointCloud {
                 timer.invalidate()
                 guard !viewModel.pointCloudData.isEmpty else { return }
-                let plyString = self.createPlyString(from: viewModel.pointCloudData)
+                let plyString = PointCloudHelper.createPlyString(from: viewModel.pointCloudData)
                 let dateString = viewModel.currentTimestamp ?? DateHelper.getStringFromDate()
                 let fileName = "PointCloud_\(dateString).ply"
                 let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(fileName)
+                let data = Data(plyString.utf8)
                 
                 do {
-                    try plyString.write(to: fileURL, atomically: true, encoding: .utf8)
+                    try data.write(to: fileURL, options: [.atomic, .completeFileProtection])
                     print("PLY file saved at: \(fileURL.path)")
                     self.viewModel.capturedPlyFileURLs.append(fileURL)
                 } catch {
-                    print("Error saving PLY file: \(error)")
+                    print(error.localizedDescription)
                 }
                 viewModel.pointCloudData.removeAll()
             } else {
@@ -218,11 +180,11 @@ private extension RegisterView {
         
         if let data = image.jpegData(compressionQuality: 0.9) {
             do {
-                try data.write(to: fileURL)
+                try data.write(to: fileURL, options: [.atomic, .completeFileProtection])
                 print("Image saved at: \(fileURL.path)")
                 self.viewModel.capturedImageURLs.append(fileURL)
             } catch {
-                print("Error saving image: \(error)")
+                print(error.localizedDescription)
             }
         }
     }
@@ -281,7 +243,7 @@ private extension RegisterView {
             }
             
         } catch {
-            print("Error sharing files: \(error)")
+            print(error.localizedDescription)
         }
     }
 }

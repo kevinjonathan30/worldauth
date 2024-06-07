@@ -8,6 +8,7 @@
 import ARKit
 import SceneKit
 import SwiftUI
+import RealityKit
 
 struct ARSceneView {
     @Binding var session: ARSession
@@ -19,7 +20,11 @@ struct ARSceneView {
 
 extension ARSceneView: UIViewRepresentable {
     func makeUIView(context: Context) -> ARSCNView {
-        ARSCNView(frame: .zero)
+        let arView = ARSCNView(frame: .zero)
+        arView.rendersMotionBlur = false
+        arView.rendersCameraGrain = false
+        arView.automaticallyUpdatesLighting = false
+        return arView
     }
     
     func makeCoordinator() -> Self.Coordinator {

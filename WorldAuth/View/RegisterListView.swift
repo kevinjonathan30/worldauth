@@ -20,11 +20,23 @@ struct RegisterListView: View {
                     ForEach(fileList, id: \.self) { fileURL in
                         Text(fileURL.lastPathComponent)
                     }
+                    .onDelete(perform: delete)
                 }
             }
         }
         .onAppear {
             getFileList()
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                NavigationLink(
+                    destination: LazyView(
+                        RegisterView()
+                    )
+                ) {
+                    Text("Add New")
+                }
+            }
         }
     }
     
@@ -38,8 +50,24 @@ struct RegisterListView: View {
             fileList = fileURLs
         } catch {
             // Handle error
-            print("Error while enumerating files: \(error.localizedDescription)")
+            print(error.localizedDescription)
             return
+        }
+    }
+    
+    func delete(at offsets: IndexSet) {
+        var fileUrl: URL?
+        for index in offsets {
+            fileUrl = fileList[index] // TODO: Add delete file
+        }
+        let fileManager = FileManager.default
+        
+        guard fileManager.fileExists(atPath: fileUrl?.absoluteString ?? "") else { return }
+        
+        do {
+            try fileManager.removeItem(atPath: fileUrl?.absoluteString ?? "")
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }

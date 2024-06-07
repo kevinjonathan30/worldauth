@@ -11,25 +11,24 @@ struct ContentView: View {
     @StateObject var viewModel: AppViewModel = AppViewModel()
     
     var body: some View {
-        VStack {
+        TabView {
             LazyView(
                 AuthenticationView()
                     .environmentObject(viewModel)
             )
-        }
-        .navigationTitle("WorldAuth")
-        .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                NavigationLink(
-                    destination: LazyView(
-                        RegisterView()
-                            .environmentObject(viewModel)
-                    )
-                ) {
-                    Text("Register")
-                }
+            .tabItem {
+                Label("Authentication", systemImage: "key.fill")
+            }
+            
+            LazyView(
+                RegisterListView()
+                    .environmentObject(viewModel)
+            )
+            .tabItem {
+                Label("Locations", systemImage: "mappin.and.ellipse.circle.fill")
             }
         }
+        .navigationTitle("WorldAuth")
     }
 }
 
