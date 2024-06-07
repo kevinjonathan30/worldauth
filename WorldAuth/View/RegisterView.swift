@@ -154,15 +154,9 @@ private extension RegisterView {
                 let plyString = PointCloudHelper.createPlyString(from: viewModel.pointCloudData)
                 let dateString = viewModel.currentTimestamp ?? DateHelper.getStringFromDate()
                 let fileName = "PointCloud_\(dateString).ply"
-                let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(fileName)
-                let data = Data(plyString.utf8)
                 
-                do {
-                    try data.write(to: fileURL, options: [.atomic, .completeFileProtection])
-                    print("PLY file saved at: \(fileURL.path)")
+                if let fileURL = FileHelper.saveFile(data: Data(plyString.utf8), atDirectory: "ply", fileName: fileName) {
                     self.viewModel.capturedPlyFileURLs.append(fileURL)
-                } catch {
-                    print(error.localizedDescription)
                 }
                 viewModel.pointCloudData.removeAll()
             } else {
@@ -176,16 +170,10 @@ private extension RegisterView {
     private func saveImage(_ image: UIImage) {
         let dateString = viewModel.currentTimestamp ?? DateHelper.getStringFromDate()
         let fileName = "Image_\(dateString).jpg"
-        let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(fileName)
         
-        if let data = image.jpegData(compressionQuality: 0.9) {
-            do {
-                try data.write(to: fileURL, options: [.atomic, .completeFileProtection])
-                print("Image saved at: \(fileURL.path)")
-                self.viewModel.capturedImageURLs.append(fileURL)
-            } catch {
-                print(error.localizedDescription)
-            }
+        if let data = image.jpegData(compressionQuality: 0.9),
+           let fileURL = FileHelper.saveFile(data: data, atDirectory: "img", fileName: fileName) {
+            self.viewModel.capturedImageURLs.append(fileURL)
         }
     }
     
@@ -206,6 +194,12 @@ private extension RegisterView {
             return
         }
         
+        // Disable point cloud and mesh state everytime user tries to share, and revert it later
+        viewModel.showPointCloudTemp = showPointCloud
+        showPointCloud = false
+        viewModel.showMeshTemp = showMesh
+        showMesh = false
+        
         let fileManager = FileManager.default
         let dateString = DateHelper.getStringFromDate()
         let zipFileName = "PointCloud_\(dateString).zip"
@@ -220,12 +214,6 @@ private extension RegisterView {
             for imageFileURL in viewModel.capturedImageURLs {
                 try archive.addEntry(with: imageFileURL.lastPathComponent, relativeTo: documentsDirectoryURL)
             }
-            
-            // Disable point cloud and mesh state everytime user tries to share, and revert it later
-            viewModel.showPointCloudTemp = showPointCloud
-            showPointCloud = false
-            viewModel.showMeshTemp = showMesh
-            showMesh = false
             
             DispatchQueue.main.async {
                 let activityViewController = UIActivityViewController(activityItems: [zipFileURL], applicationActivities: nil)

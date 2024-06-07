@@ -105,7 +105,7 @@ private extension AuthenticationView {
         guard !viewModel.pointCloudData.isEmpty else { return }
         let plyString = PointCloudHelper.createPlyString(from: viewModel.pointCloudData)
         
-        fileList = fileList.isEmpty ? getFileList() : fileList
+        fileList = fileList.isEmpty ? FileHelper.getFileList(atDirectory: "ply") : fileList
         guard !fileList.isEmpty else { return }
         
         let similarity = PointCloudHelper.calculateSimilarity(savedPlyFileURL: fileList[0], currentPlyFileString: plyString)
@@ -118,21 +118,6 @@ private extension AuthenticationView {
                 print("Not Similar!")
             }
             viewModel.pointCloudData.removeAll()
-        }
-    }
-    
-    func getFileList() -> [URL] {
-        let fileManager = FileManager.default
-        let documentsDirectoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        
-        do {
-            // Get contents of directory
-            let fileURLs = try fileManager.contentsOfDirectory(at: documentsDirectoryURL, includingPropertiesForKeys: nil)
-            return fileURLs
-        } catch {
-            // Handle error
-            print(error.localizedDescription)
-            return []
         }
     }
 }

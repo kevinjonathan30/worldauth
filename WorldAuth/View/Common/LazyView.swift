@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 // Use this if a lazy load view is needed
 struct LazyView<Content: View>: View {
     let content: () -> Content

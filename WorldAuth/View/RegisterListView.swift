@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RegisterListView: View {
     @State var fileList: [URL] = []
+    @EnvironmentObject var viewModel: AppViewModel
     
     var body: some View {
         VStack {
@@ -25,13 +26,14 @@ struct RegisterListView: View {
             }
         }
         .onAppear {
-            getFileList()
+            fileList = FileHelper.getFileList(atDirectory: "ply")
         }
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 NavigationLink(
                     destination: LazyView(
                         RegisterView()
+                            .environmentObject(viewModel)
                     )
                 ) {
                     Text("Add New")
@@ -39,35 +41,19 @@ struct RegisterListView: View {
             }
         }
     }
-    
-    func getFileList() {
-        let fileManager = FileManager.default
-        let documentsDirectoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        
-        do {
-            // Get contents of directory
-            let fileURLs = try fileManager.contentsOfDirectory(at: documentsDirectoryURL, includingPropertiesForKeys: nil)
-            fileList = fileURLs
-        } catch {
-            // Handle error
-            print(error.localizedDescription)
-            return
-        }
-    }
-    
-    func delete(at offsets: IndexSet) {
+}
+
+// MARK: Handler
+
+private extension RegisterListView {
+    private func delete(at offsets: IndexSet) {
         var fileUrl: URL?
         for index in offsets {
-            fileUrl = fileList[index] // TODO: Add delete file
-        }
-        let fileManager = FileManager.default
-        
-        guard fileManager.fileExists(atPath: fileUrl?.absoluteString ?? "") else { return }
-        
-        do {
-            try fileManager.removeItem(atPath: fileUrl?.absoluteString ?? "")
-        } catch {
-            print(error.localizedDescription)
+            fileUrl = fileList[index]
+            
+            if FileHelper.deleteFile(atDirectory: "ply", fileName: fileUrl?.absoluteString ?? "") {
+                fileList = FileHelper.getFileList(atDirectory: "ply")
+            }
         }
     }
 }
