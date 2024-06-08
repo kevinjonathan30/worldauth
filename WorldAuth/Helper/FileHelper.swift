@@ -42,13 +42,15 @@ struct FileHelper {
     }
     
     static func getImageDataByName(atDirectory: String = "", fileName: String) -> Data? {
-        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+        let fileManager = FileManager.default
         
-        let directoryURL = documentsDirectory.appendingPathComponent(atDirectory)
-        let fileUrl = directoryURL.appendingPathComponent(fileName)
+        guard let directoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+
+        let filePathURL = directoryURL.appendingPathComponent(atDirectory)
+        let fileNameURL = filePathURL.appendingPathComponent(fileName)
         
         do {
-            let imageData = try Data(contentsOf: fileUrl)
+            let imageData = try Data(contentsOf: fileNameURL)
             return imageData
         } catch {
             print(error.localizedDescription)

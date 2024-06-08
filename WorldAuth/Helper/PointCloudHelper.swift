@@ -23,9 +23,9 @@ struct PointCloudHelper {
         var body = ""
         
         for point in points {
-            let red = UInt8((point.color.cgColor.components?[0] ?? 0.0) * 255)
-            let green = UInt8((point.color.cgColor.components?[1] ?? 0.0) * 255)
-            let blue = UInt8((point.color.cgColor.components?[2] ?? 0.0) * 255)
+            let red = UInt8((point.color.cgColor.components?[safe: 0] ?? 0.0) * 255)
+            let green = UInt8((point.color.cgColor.components?[safe: 1] ?? 0.0) * 255)
+            let blue = UInt8((point.color.cgColor.components?[safe: 2] ?? 0.0) * 255)
             
             body += "\(point.position.x) \(point.position.y) \(point.position.z) \(red) \(green) \(blue)\n"
         }
@@ -49,18 +49,18 @@ struct PointCloudHelper {
             
             if components.count > 0 {
                 if isHeaderFinished {
-                    if let x = Float(components[0]),
-                       let y = Float(components[1]),
-                       let z = Float(components[2]),
-                       let red = UInt8(components[3]),
-                       let green = UInt8(components[4]),
-                       let blue = UInt8(components[5])
+                    if let x = Float(components[safe: 0] ?? "0"),
+                       let y = Float(components[safe: 1] ?? "0"),
+                       let z = Float(components[safe: 2] ?? "0"),
+                       let red = UInt8(components[safe: 3] ?? "0"),
+                       let green = UInt8(components[safe: 4] ?? "0"),
+                       let blue = UInt8(components[safe: 5] ?? "0")
                     {
                         let vertex = PLYVertex(x: x, y: y, z: z, red: red, green: green, blue: blue)
                         vertices.append(vertex)
                     }
                 } else {
-                    if components[0] == "end_header" {
+                    if components[safe: 0] ?? "0" == "end_header" {
                         isHeaderFinished = true
                     }
                 }
@@ -82,18 +82,18 @@ struct PointCloudHelper {
             
             if components.count > 0 {
                 if isHeaderFinished {
-                    if let x = Float(components[0]),
-                       let y = Float(components[1]),
-                       let z = Float(components[2]),
-                       let red = UInt8(components[3]),
-                       let green = UInt8(components[4]),
-                       let blue = UInt8(components[5])
+                    if let x = Float(components[safe: 0] ?? "0"),
+                       let y = Float(components[safe: 1] ?? "0"),
+                       let z = Float(components[safe: 2] ?? "0"),
+                       let red = UInt8(components[safe: 3] ?? "0"),
+                       let green = UInt8(components[safe: 4] ?? "0"),
+                       let blue = UInt8(components[safe: 5] ?? "0")
                     {
                         let vertex = PLYVertex(x: x, y: y, z: z, red: red, green: green, blue: blue)
                         vertices.append(vertex)
                     }
                 } else {
-                    if components[0] == "end_header" {
+                    if components[safe: 0] ?? "0" == "end_header" {
                         isHeaderFinished = true
                     }
                 }

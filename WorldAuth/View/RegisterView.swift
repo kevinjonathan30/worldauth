@@ -26,7 +26,7 @@ struct RegisterView: View {
     
     init() {
         let session = ARSession()
-        session.run(ARWorldHelper.getARWorldTrackingConfiguration(), options: [.resetTracking,.removeExistingAnchors,.stopTrackedRaycasts])
+        session.run(ARWorldHelper.getARWorldTrackingConfiguration(), options: ARWorldHelper.getARWorldTrackingOptions())
         self.session = session
         self.scene = SCNScene()
     }
@@ -61,7 +61,6 @@ private extension RegisterView {
             showPointCloud: self.$showPointCloud,
             showMesh: self.$showMesh
         )
-        .edgesIgnoringSafeArea(.bottom)
     }
     
     @ViewBuilder
@@ -174,6 +173,9 @@ private extension RegisterView {
         if let data = image.jpegData(compressionQuality: 0.9),
            let fileURL = FileHelper.saveFile(data: data, atDirectory: "img", fileName: fileName) {
             self.viewModel.capturedImageURLs.append(fileURL)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                NavigationHelper.pop()
+            }
         }
     }
     
@@ -210,7 +212,7 @@ private extension RegisterView {
         let fileManager = FileManager.default
         let dateString = DateHelper.getStringFromDate()
         let zipFileName = "PointCloud_\(dateString).zip"
-        let documentsDirectoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        guard let documentsDirectoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
         let zipFileURL = documentsDirectoryURL.appendingPathComponent(zipFileName)
         
         do {

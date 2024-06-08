@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RegisterListView: View {
-    @State var fileList: [Template] = []
+    @State var fileList: [WorldTemplate] = []
     @EnvironmentObject var viewModel: AppViewModel
     
     var body: some View {
@@ -27,20 +27,18 @@ struct RegisterListView: View {
                 .padding(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
             }
         }
-        .onAppear {
-            fileList = getPlyAndImageList()
-        }
+        .navigationTitle("Locations")
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                NavigationLink(
-                    destination: LazyView(
-                        RegisterView()
-                            .environmentObject(viewModel)
-                    )
-                ) {
+                Button {
+                    NavigationHelper.push(.registerView)
+                } label: {
                     Text("Add New")
                 }
             }
+        }
+        .onAppear {
+            fileList = getPlyAndImageList()
         }
     }
 }
@@ -49,7 +47,7 @@ struct RegisterListView: View {
 
 private extension RegisterListView {
     @ViewBuilder
-    private func cardView(file: Template) -> some View {
+    private func cardView(file: WorldTemplate) -> some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
                 HStack {
@@ -94,14 +92,14 @@ private extension RegisterListView {
 // MARK: Handler
 
 private extension RegisterListView {
-    private func getPlyAndImageList() -> [Template] {
+    private func getPlyAndImageList() -> [WorldTemplate] {
         let plyFiles = FileHelper.getFileList(atDirectory: "ply")
         let imgFiles = FileHelper.getFileList(atDirectory: "img")
-        var templates: [Template] = []
+        var templates: [WorldTemplate] = []
         
         for (index, _) in plyFiles.enumerated() {
             guard let plyFile = plyFiles[safe: index], let imgFile = imgFiles[safe: index] else { continue }
-            templates.append(Template(plyUrl: plyFile, imgUrl: imgFile))
+            templates.append(WorldTemplate(plyUrl: plyFile, imgUrl: imgFile))
         }
         
         return templates

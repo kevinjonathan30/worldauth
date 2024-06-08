@@ -18,13 +18,14 @@ struct AuthenticationView: View {
     @State private var showMesh = false
     @State private var isViewActive = false
     @State private var fileList: [URL] = []
+    @State private var showOnboarding = false
     
     @EnvironmentObject var viewModel: AppViewModel
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     init() {
         let session = ARSession()
-        session.run(ARWorldHelper.getARWorldTrackingConfiguration(), options: [.resetTracking,.removeExistingAnchors,.stopTrackedRaycasts])
+        session.run(ARWorldHelper.getARWorldTrackingConfiguration(), options: ARWorldHelper.getARWorldTrackingOptions())
         self.session = session
         self.scene = SCNScene()
     }
@@ -38,14 +39,17 @@ struct AuthenticationView: View {
             showMesh: self.$showMesh
         )
         .navigationTitle("Authentication")
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 toolbarTrailingView()
             }
         }
         .onAppear {
-            fileList = []
+            fileList = FileHelper.getFileList(atDirectory: "ply")
+            guard !fileList.isEmpty else {
+                showOnboarding = true
+                return
+            }
             isViewActive = true
         }
         .onDisappear {
@@ -53,8 +57,21 @@ struct AuthenticationView: View {
         }
         .onReceive(timer) { _ in
             if isViewActive {
-                updatePlyFile()
+                authenticate()
             }
+        }
+        .sheet(isPresented: $showOnboarding) {
+            OnboardingView()
+                .confirmAction {
+                    showOnboarding = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        NavigationHelper.push(.registerView)
+                    }
+                }
+                .cancelAction {
+                    showOnboarding = false
+                }
+                .environmentObject(viewModel)
         }
     }
 }
@@ -91,24 +108,29 @@ private extension AuthenticationView {
 // MARK: Handler
 
 private extension AuthenticationView {
-    private func updatePlyFile() {
+    private func authenticate() {
         guard let pointCloud = self.session.currentFrame?.rawFeaturePoints else { return }
         let pointsWithColor = pointCloud.points.map { (position: $0, color: UIColor(self.pointColor)) }
         
         DispatchQueue.global(qos: .userInitiated).async {
             viewModel.pointCloudData.append(contentsOf: pointsWithColor)
-            processPly()
+            processAuthentication()
         }
     }
     
-    private func processPly() {
+    private func processAuthentication() {
         guard !viewModel.pointCloudData.isEmpty else { return }
         let plyString = PointCloudHelper.createPlyString(from: viewModel.pointCloudData)
         
-        fileList = fileList.isEmpty ? FileHelper.getFileList(atDirectory: "ply") : fileList
         guard !fileList.isEmpty else { return }
         
-        let similarity = PointCloudHelper.calculateSimilarity(savedPlyFileURL: fileList[0], currentPlyFileString: plyString)
+        for fileUrl in fileList {
+            processPly(savedPlyFileURL: fileUrl, plyString: plyString)
+        }
+    }
+    
+    private func processPly(savedPlyFileURL: URL, plyString: String) {
+        let similarity = PointCloudHelper.calculateSimilarity(savedPlyFileURL: savedPlyFileURL, currentPlyFileString: plyString)
         print(similarity ?? "")
         
         DispatchQueue.main.async {

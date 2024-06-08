@@ -8,30 +8,39 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var viewModel: AppViewModel = AppViewModel()
+    @EnvironmentObject var viewModel: AppViewModel
+    var selectedTab: Int = 0
     
     var body: some View {
-        TabView {
-            LazyView(
-                AuthenticationView()
-                    .environmentObject(viewModel)
-            )
-            .tabItem {
-                Label("Authentication", systemImage: "key.fill")
-            }
-            
-            LazyView(
-                RegisterListView()
-                    .environmentObject(viewModel)
-            )
-            .tabItem {
-                Label("Locations", systemImage: "mappin.and.ellipse.circle.fill")
+        ViewRouter(router: NavigationHelper.getRouter()) { path in
+            switch path {
+            case .root:
+                determineView()
+            case .registerView:
+                LazyView(
+                    RegisterView()
+                )
             }
         }
-        .navigationTitle("WorldAuth")
+    }
+}
+
+extension ContentView {
+    @ViewBuilder
+    func determineView() -> some View {
+        switch self.selectedTab {
+        case 0:
+            LazyView(
+                AuthenticationView()
+            )
+        default:
+            LazyView(
+                RegisterListView()
+            )
+        }
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(selectedTab: 0)
 }

@@ -11,10 +11,18 @@ import ARKit
 struct ARWorldHelper {
     static func getARWorldTrackingConfiguration() -> ARWorldTrackingConfiguration {
         let configuration = ARWorldTrackingConfiguration()
-        configuration.sceneReconstruction = .mesh
+//        configuration.sceneReconstruction = .mesh
         configuration.environmentTexturing = .automatic
         configuration.planeDetection = [.horizontal, .vertical]
         
         return configuration
+    }
+    
+    static func getARWorldTrackingOptions() -> ARSession.RunOptions {
+        return [
+            .resetTracking,
+            .removeExistingAnchors,
+            .stopTrackedRaycasts
+        ]
     }
 }
