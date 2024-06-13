@@ -23,7 +23,6 @@ extension ARSceneView: UIViewRepresentable {
         let arView = ARSCNView(frame: .zero)
         arView.rendersMotionBlur = false
         arView.rendersCameraGrain = false
-        arView.automaticallyUpdatesLighting = false
         return arView
     }
     
@@ -76,7 +75,7 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
         // Add point cloud node if showPointCloud is true
         if showPointCloud {
             guard let pointCloud = frame.rawFeaturePoints else { return }
-            let pointCloudNode = createPointCloudNode(from: pointCloud, color: pointColor)
+            let pointCloudNode = PointCloudHelper.createPointCloudNode(from: pointCloud, color: pointColor)
             pointCloudNode.name = "PointCloud"
             scene.rootNode.addChildNode(pointCloudNode)
         }
@@ -86,7 +85,7 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
             let meshAnchors = frame.anchors.compactMap { $0 as? ARMeshAnchor }
             for anchor in meshAnchors {
                 let scnGeometry = SCNGeometry(from: anchor.geometry)
-
+                
                 let defaultMaterial = SCNMaterial()
                 defaultMaterial.fillMode = .lines
                 defaultMaterial.diffuse.contents = self.lineColor.cgColor
@@ -121,21 +120,4 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
         showPointCloud: .constant(true),
         showMesh: .constant(false)
     )
-}
-
-func createPointCloudNode(from pointCloud: ARPointCloud, color: Color, pointSize: CGFloat = 0.005) -> SCNNode {
-    let node = SCNNode()
-
-    for index in 0..<pointCloud.__count {
-        let point = pointCloud.points[index]
-        let vector = SCNVector3Make(point.x, point.y, point.z)
-        let sphere = SCNSphere(radius: pointSize)
-        sphere.firstMaterial?.diffuse.contents = color.cgColor
-        sphere.firstMaterial?.lightingModel = .constant
-        let pointNode = SCNNode(geometry: sphere)
-        pointNode.position = vector
-        node.addChildNode(pointNode)
-    }
-
-    return node
 }

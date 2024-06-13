@@ -19,6 +19,7 @@ struct AuthenticationView: View {
     @State private var isViewActive = false
     @State private var fileList: [URL] = []
     @State private var showOnboarding = false
+    @State private var similarityPercentage: String = "0%"
     
     @EnvironmentObject var viewModel: AppViewModel
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -31,13 +32,19 @@ struct AuthenticationView: View {
     }
     
     var body: some View {
-        ARSceneView(
-            session: self.$session,
-            scene: self.$scene,
-            pointColor: self.$pointColor,
-            showPointCloud: self.$showPointCloud,
-            showMesh: self.$showMesh
-        )
+        ZStack(alignment: .bottom) {
+            ARSceneView(
+                session: self.$session,
+                scene: self.$scene,
+                pointColor: self.$pointColor,
+                showPointCloud: self.$showPointCloud,
+                showMesh: self.$showMesh
+            )
+            
+            Text(similarityPercentage)
+                .foregroundStyle(.white)
+                .zIndex(999)
+        }
         .navigationTitle("Authentication")
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -108,13 +115,27 @@ private extension AuthenticationView {
 // MARK: Handler
 
 private extension AuthenticationView {
-    private func authenticate() {
-        guard let pointCloud = self.session.currentFrame?.rawFeaturePoints else { return }
-        let pointsWithColor = pointCloud.points.map { (position: $0, color: UIColor(self.pointColor)) }
+    private func authenticate() { // TODO: Handle if range is farther than 5 meters (Hint: lidar point clouds are 576)
+//        guard let pointCloud = self.session.currentFrame?.rawFeaturePoints else { return }
+//        let pointsWithColor = pointCloud.points.map { (position: $0, color: UIColor(self.pointColor)) }
         
+        guard let anchors = self.session.currentFrame?.anchors else { return }
+        let meshAnchors = anchors.compactMap { $0 as? ARMeshAnchor }
+        var pointsWithColor: [(position: SIMD3<Float>, color: UIColor)] = []
+
+        // Process all anchors on a background queue
         DispatchQueue.global(qos: .userInitiated).async {
-            viewModel.pointCloudData.append(contentsOf: pointsWithColor)
-            processAuthentication()
+            for anchor in meshAnchors {
+                let vertices = PointCloudHelper.extractVertices(from: anchor.geometry)
+                let coloredVertices = vertices.map { (position: $0, color: UIColor(self.pointColor)) }
+                pointsWithColor.append(contentsOf: coloredVertices)
+            }
+            
+            // Append processed data to viewModel on the main queue
+            DispatchQueue.main.async {
+                viewModel.pointCloudData.append(contentsOf: pointsWithColor)
+                processAuthentication() // Ensure this method handles UI updates safely
+            }
         }
     }
     
@@ -131,10 +152,11 @@ private extension AuthenticationView {
     
     private func processPly(savedPlyFileURL: URL, plyString: String) {
         let similarity = PointCloudHelper.calculateSimilarity(savedPlyFileURL: savedPlyFileURL, currentPlyFileString: plyString)
-        print(similarity ?? "")
+        similarityPercentage = "\(similarity ?? 0)%"
         
+        // TODO: Handle if success, ignore if nothing happens
         DispatchQueue.main.async {
-            if similarity ?? 0 >= 80 {
+            if similarity ?? 0 >= 80 { // TODO: Reconsider similarity percentage for auth
                 print("Similar!")
             } else {
                 print("Not Similar!")

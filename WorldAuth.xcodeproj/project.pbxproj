@@ -12,6 +12,7 @@
 		5D15EE542C0D9D5700673052 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE532C0D9D5700673052 /* ContentView.swift */; };
 		5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */; };
 		5D15EE5C2C0DA2A900673052 /* PLYVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE5B2C0DA2A900673052 /* PLYVertex.swift */; };
+		5D57D1762C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D57D1752C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift */; };
 		5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */; };
 		5DE2AB0A2C0AE22B000C7346 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB092C0AE22B000C7346 /* RegisterView.swift */; };
 		5DE2AB0C2C0AE22D000C7346 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE2AB0B2C0AE22D000C7346 /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 		5D15EE532C0D9D5700673052 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		5D15EE5B2C0DA2A900673052 /* PLYVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PLYVertex.swift; sourceTree = "<group>"; };
+		5D57D1752C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARMeshGeometry+Ext.swift"; sourceTree = "<group>"; };
 		5DE2AB042C0AE22B000C7346 /* WorldAuth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorldAuth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldAuthApp.swift; sourceTree = "<group>"; };
 		5DE2AB092C0AE22B000C7346 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
@@ -80,12 +82,11 @@
 		5D15EE4E2C0D88F600673052 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				5DFD7FF02C102DD7009CB20E /* Common */,
-				5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */,
 				5D15EE532C0D9D5700673052 /* ContentView.swift */,
-				5DEA68912C141C68008CD7A9 /* OnboardingView.swift */,
-				5DEA68702C11765A008CD7A9 /* RegisterListView.swift */,
-				5DE2AB092C0AE22B000C7346 /* RegisterView.swift */,
+				5D57D1792C1AE8D5007CD6AD /* Authentication */,
+				5DFD7FF02C102DD7009CB20E /* Common */,
+				5D57D1772C1AE8B3007CD6AD /* Onboarding */,
+				5D57D1782C1AE8CA007CD6AD /* Register */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -112,8 +113,9 @@
 		5D15EE512C0D892900673052 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				5DE2AB162C0AE277000C7346 /* SCNGeometry+Ext.swift */,
+				5D57D1752C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift */,
 				5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */,
+				5DE2AB162C0AE277000C7346 /* SCNGeometry+Ext.swift */,
 				5DEA688D2C13018B008CD7A9 /* UIImage+Ext.swift */,
 			);
 			path = Extension;
@@ -138,6 +140,31 @@
 				5DEA688B2C12F426008CD7A9 /* WorldTemplate.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		5D57D1772C1AE8B3007CD6AD /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				5DEA68912C141C68008CD7A9 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		5D57D1782C1AE8CA007CD6AD /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				5DEA68702C11765A008CD7A9 /* RegisterListView.swift */,
+				5DE2AB092C0AE22B000C7346 /* RegisterView.swift */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
+		5D57D1792C1AE8D5007CD6AD /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */,
+			);
+			path = Authentication;
 			sourceTree = "<group>";
 		};
 		5DE2AAFB2C0AE22B000C7346 = {
@@ -293,6 +320,7 @@
 				5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */,
 				5DEA68892C12D811008CD7A9 /* FileHelper.swift in Sources */,
 				5DE2AB182C0AE277000C7346 /* SCNGeometry+Ext.swift in Sources */,
+				5D57D1762C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift in Sources */,
 				5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */,
 				5DEA688E2C13018B008CD7A9 /* UIImage+Ext.swift in Sources */,
 				5DEA68732C117A67008CD7A9 /* PointCloudHelper.swift in Sources */,

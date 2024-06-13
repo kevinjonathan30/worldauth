@@ -8,7 +8,6 @@
 import ARKit
 import SwiftUI
 import SceneKit
-import ZIPFoundation
 import Combine
 import AudioToolbox
 
@@ -159,9 +158,15 @@ private extension RegisterView {
                 }
                 viewModel.pointCloudData.removeAll()
             } else {
-                guard let pointCloud = self.session.currentFrame?.rawFeaturePoints else { return }
-                let pointsWithColor = pointCloud.points.map { (position: $0, color: UIColor(self.pointColor)) }
-                viewModel.pointCloudData.append(contentsOf: pointsWithColor)
+//                guard let pointCloud = self.session.currentFrame?.rawFeaturePoints else { return }
+                guard let anchors = self.session.currentFrame?.anchors else { return }
+                let meshAnchors = anchors.compactMap { $0 as? ARMeshAnchor }
+                var pointsWithColor: [(position: SIMD3<Float>, color: UIColor)] = []
+                for anchor in meshAnchors {
+                    let vertices = PointCloudHelper.extractVertices(from: anchor.geometry)
+                    pointsWithColor.append(contentsOf: vertices.map { (position: $0, color: UIColor(self.pointColor)) })
+                }
+                viewModel.pointCloudData = pointsWithColor
             }
         }
     }
@@ -194,53 +199,6 @@ private extension RegisterView {
                 
                 saveImage(uiImage)
             }
-        }
-    }
-    
-    private func shareFiles() {
-        guard !viewModel.capturedPlyFileURLs.isEmpty, !viewModel.capturedImageURLs.isEmpty else {
-            print("No PLY or JPG files found")
-            return
-        }
-        
-        // Disable point cloud and mesh state everytime user tries to share, and revert it later
-        viewModel.showPointCloudTemp = showPointCloud
-        showPointCloud = false
-        viewModel.showMeshTemp = showMesh
-        showMesh = false
-        
-        let fileManager = FileManager.default
-        let dateString = DateHelper.getStringFromDate()
-        let zipFileName = "PointCloud_\(dateString).zip"
-        guard let documentsDirectoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
-        let zipFileURL = documentsDirectoryURL.appendingPathComponent(zipFileName)
-        
-        do {
-            let archive = try Archive(url: zipFileURL, accessMode: .create)
-            for plyFileURL in viewModel.capturedPlyFileURLs {
-                try archive.addEntry(with: plyFileURL.lastPathComponent, relativeTo: documentsDirectoryURL)
-            }
-            for imageFileURL in viewModel.capturedImageURLs {
-                try archive.addEntry(with: imageFileURL.lastPathComponent, relativeTo: documentsDirectoryURL)
-            }
-            
-            DispatchQueue.main.async {
-                let activityViewController = UIActivityViewController(activityItems: [zipFileURL], applicationActivities: nil)
-                activityViewController.completionWithItemsHandler =  { _, _, _, _ in
-                    showPointCloud = viewModel.showPointCloudTemp
-                    showMesh = viewModel.showMeshTemp
-                }
-                if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
-                    scene.windows.first?.rootViewController?.present(
-                        activityViewController,
-                        animated: true,
-                        completion: nil
-                    )
-                }
-            }
-            
-        } catch {
-            print(error.localizedDescription)
         }
     }
 }

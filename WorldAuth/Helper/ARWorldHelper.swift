@@ -11,9 +11,10 @@ import ARKit
 struct ARWorldHelper {
     static func getARWorldTrackingConfiguration() -> ARWorldTrackingConfiguration {
         let configuration = ARWorldTrackingConfiguration()
-//        configuration.sceneReconstruction = .mesh
+        configuration.sceneReconstruction = .mesh
         configuration.environmentTexturing = .automatic
         configuration.planeDetection = [.horizontal, .vertical]
+        configuration.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
         
         return configuration
     }

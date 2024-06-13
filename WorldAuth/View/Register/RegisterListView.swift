@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ZIPFoundation
 
 struct RegisterListView: View {
     @State var fileList: [WorldTemplate] = []
@@ -71,6 +72,13 @@ private extension RegisterListView {
         )
         .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .contextMenu {
+            Button {
+                shareFiles(plyUrl: file.plyUrl)
+            } label: {
+                Label("Share", systemImage: "square.and.arrow.up")
+                
+            }
+            
             Button(role: .destructive) {
                 delete(plyUrl: file.plyUrl, imgUrl: file.imgUrl)
             } label: {
@@ -84,7 +92,7 @@ private extension RegisterListView {
               let uiImage = UIImage(data: imageData) else {
             return Image(systemName: "photo")
         }
-
+        
         return Image(uiImage: uiImage)
     }
 }
@@ -109,6 +117,22 @@ private extension RegisterListView {
         if FileHelper.deleteFile(atDirectory: "ply", fileName: plyUrl.lastPathComponent),
            FileHelper.deleteFile(atDirectory: "img", fileName: imgUrl.lastPathComponent) {
             fileList = getPlyAndImageList()
+        }
+    }
+    
+    private func shareFiles(plyUrl: URL) {
+        DispatchQueue.main.async {
+            let activityViewController = UIActivityViewController(activityItems: [plyUrl], applicationActivities: nil)
+            activityViewController.completionWithItemsHandler =  { _, _, _, _ in
+                
+            }
+            if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+                scene.windows.first?.rootViewController?.present(
+                    activityViewController,
+                    animated: true,
+                    completion: nil
+                )
+            }
         }
     }
 }
