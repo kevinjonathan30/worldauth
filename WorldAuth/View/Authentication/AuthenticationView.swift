@@ -14,12 +14,13 @@ struct AuthenticationView: View {
     @State var session: ARSession
     @State var scene: SCNScene
     @State var pointColor = Color.white
-    @State private var showPointCloud = true
-    @State private var showMesh = false
+    @State private var showPointCloud = false
+    @State private var showMesh = true
     @State private var isViewActive = false
     @State private var fileList: [URL] = []
     @State private var showOnboarding = false
-    @State private var similarityPercentage: String = "0%"
+    @State private var similarityPercentage: Float = 0
+    @State var isTakingPointCloud = false
     
     @EnvironmentObject var viewModel: AppViewModel
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -41,16 +42,13 @@ struct AuthenticationView: View {
                 showMesh: self.$showMesh
             )
             
-            Text(similarityPercentage)
+            Text("\(similarityPercentage)%")
                 .foregroundStyle(.white)
                 .zIndex(999)
+            
+            takePointCloudButton()
         }
         .navigationTitle("Authentication")
-        .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                toolbarTrailingView()
-            }
-        }
         .onAppear {
             fileList = FileHelper.getFileList(atDirectory: "ply")
             guard !fileList.isEmpty else {
@@ -63,9 +61,9 @@ struct AuthenticationView: View {
             isViewActive = false
         }
         .onReceive(timer) { _ in
-            if isViewActive {
-                authenticate()
-            }
+            //            if isViewActive {
+            //                authenticate()
+            //            }
         }
         .sheet(isPresented: $showOnboarding) {
             OnboardingView()
@@ -89,25 +87,58 @@ private extension AuthenticationView {
     @ViewBuilder
     private func toolbarTrailingView() -> some View {
         Group {
-            if isViewActive {
-                Menu {
-                    Toggle(
-                        isOn: $showPointCloud,
-                        label: {
-                            Label("Point", systemImage: "point.3.filled.connected.trianglepath.dotted")
-                        }
-                    )
-                    
-                    Toggle(
-                        isOn: $showMesh,
-                        label: {
-                            Label("Mesh", systemImage: "square.split.diagonal.2x2.fill")
-                        }
-                    )
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                }
+            Menu {
+                Toggle(
+                    isOn: $showPointCloud,
+                    label: {
+                        Label("Point", systemImage: "point.3.filled.connected.trianglepath.dotted")
+                    }
+                )
+                
+                Toggle(
+                    isOn: $showMesh,
+                    label: {
+                        Label("Mesh", systemImage: "square.split.diagonal.2x2.fill")
+                    }
+                )
+            } label: {
+                Image(systemName: "ellipsis.circle")
             }
+        }
+    }
+    
+    @ViewBuilder
+    private func takePointCloudButton() -> some View {
+        VStack {
+            Button(action: { handleTakePointCloudButtonEvent() }) {
+                Image(systemName: getIconByTakePointCloudState())
+                    .foregroundColor(.red)
+                    .font(.title)
+                    .frame(width: 80, height: 80)
+                    .background(Color.white)
+                    .clipShape(Circle())
+            }
+            .padding()
+        }
+        .padding(.bottom, 20)
+    }
+    
+    private func getIconByTakePointCloudState() -> String {
+        return isTakingPointCloud ? "stop.circle.fill" : "record.circle.fill"
+    }
+    
+    private func handleTakePointCloudButtonEvent() {
+        if isTakingPointCloud {
+            isTakingPointCloud = false
+            let recordStartSoundID: SystemSoundID = 1118
+            AudioServicesPlaySystemSound(recordStartSoundID)
+            authenticate()
+        } else {
+            isTakingPointCloud = true
+            similarityPercentage = 0
+            savePlyFile()
+            let recordStartSoundID: SystemSoundID = 1117
+            AudioServicesPlaySystemSound(recordStartSoundID)
         }
     }
 }
@@ -115,28 +146,38 @@ private extension AuthenticationView {
 // MARK: Handler
 
 private extension AuthenticationView {
-    private func authenticate() { // TODO: Handle if range is farther than 5 meters (Hint: lidar point clouds are 576)
-//        guard let pointCloud = self.session.currentFrame?.rawFeaturePoints else { return }
-//        let pointsWithColor = pointCloud.points.map { (position: $0, color: UIColor(self.pointColor)) }
-        
-        guard let anchors = self.session.currentFrame?.anchors else { return }
-        let meshAnchors = anchors.compactMap { $0 as? ARMeshAnchor }
-        var pointsWithColor: [(position: SIMD3<Float>, color: UIColor)] = []
-
-        // Process all anchors on a background queue
-        DispatchQueue.global(qos: .userInitiated).async {
-            for anchor in meshAnchors {
-                let vertices = PointCloudHelper.extractVertices(from: anchor.geometry)
-                let coloredVertices = vertices.map { (position: $0, color: UIColor(self.pointColor)) }
-                pointsWithColor.append(contentsOf: coloredVertices)
-            }
-            
-            // Append processed data to viewModel on the main queue
-            DispatchQueue.main.async {
-                viewModel.pointCloudData.append(contentsOf: pointsWithColor)
-                processAuthentication() // Ensure this method handles UI updates safely
+    private func savePlyFile() {
+        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+            if !isTakingPointCloud {
+                timer.invalidate()
+            } else {
+                // guard let pointCloud = self.session.currentFrame?.rawFeaturePoints else { return }
+                guard let anchors = self.session.currentFrame?.anchors else { return }
+                let meshAnchors = anchors.compactMap { $0 as? ARMeshAnchor }
+                var pointsWithColor: [(position: SIMD3<Float>, color: UIColor)] = []
+                for anchor in meshAnchors {
+                    let vertices = PointCloudHelper.extractVertices(from: anchor.geometry)
+                    pointsWithColor.append(contentsOf: vertices.map { (position: $0, color: UIColor(self.pointColor)) })
+                }
+                viewModel.pointCloudData = pointsWithColor
             }
         }
+    }
+    
+    private func authenticate() {
+        guard let anchors = self.session.currentFrame?.anchors else { return }
+        let meshAnchors = anchors.compactMap { $0 as? ARMeshAnchor }
+        
+        var pointsWithColor: [(position: SIMD3<Float>, color: UIColor)] = []
+        for anchor in meshAnchors {
+            let vertices = PointCloudHelper.extractVertices(from: anchor.geometry)
+            let coloredVertices = vertices.map { (position: $0, color: UIColor(self.pointColor)) }
+            pointsWithColor.append(contentsOf: coloredVertices)
+        }
+        
+        viewModel.pointCloudData.append(contentsOf: pointsWithColor)
+        processAuthentication()
+        
     }
     
     private func processAuthentication() {
@@ -152,17 +193,16 @@ private extension AuthenticationView {
     
     private func processPly(savedPlyFileURL: URL, plyString: String) {
         let similarity = PointCloudHelper.calculateSimilarity(savedPlyFileURL: savedPlyFileURL, currentPlyFileString: plyString)
-        similarityPercentage = "\(similarity ?? 0)%"
         
-        // TODO: Handle if success, ignore if nothing happens
-        DispatchQueue.main.async {
-            if similarity ?? 0 >= 80 { // TODO: Reconsider similarity percentage for auth
-                print("Similar!")
-            } else {
-                print("Not Similar!")
-            }
-            viewModel.pointCloudData.removeAll()
+        if similarity ?? 0 > similarityPercentage {
+            similarityPercentage = similarity ?? 0
         }
+        if similarity ?? 0 >= 80 {
+            print("Similar!")
+        } else {
+            print("Not Similar!")
+        }
+        viewModel.pointCloudData.removeAll()
     }
 }
 

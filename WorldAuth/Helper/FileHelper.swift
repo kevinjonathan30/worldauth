@@ -41,7 +41,7 @@ struct FileHelper {
         }
     }
     
-    static func getImageDataByName(atDirectory: String = "", fileName: String) -> Data? {
+    static func getDataByName(atDirectory: String = "", fileName: String) -> Data? {
         let fileManager = FileManager.default
         
         guard let directoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
@@ -72,10 +72,6 @@ struct FileHelper {
             print(error.localizedDescription)
             return false
         }
-    }
-    
-    static func shareFile(fileURL: URL) {
-        
     }
     
 //    private func shareFiles() {

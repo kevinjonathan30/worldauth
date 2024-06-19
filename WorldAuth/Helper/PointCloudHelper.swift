@@ -266,8 +266,8 @@ struct PointCloudHelper {
         
         // Overall similarity (average of both metrics)
         let overallSimilarity = (hausdorffSimilarity + chamferSimilarity) / 2.0
-        print("Overall Similarity: \(overallSimilarity)%")
+        print("Overall Similarity: \(chamferSimilarity)%")
         
-        return overallSimilarity
+        return chamferSimilarity
     }
 }

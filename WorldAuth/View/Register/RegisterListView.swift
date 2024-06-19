@@ -88,7 +88,7 @@ private extension RegisterListView {
     }
     
     func loadImageFromURL(fileName: String) -> Image {
-        guard let imageData = FileHelper.getImageDataByName(atDirectory: "img", fileName: fileName),
+        guard let imageData = FileHelper.getDataByName(atDirectory: "img", fileName: fileName),
               let uiImage = UIImage(data: imageData) else {
             return Image(systemName: "photo")
         }

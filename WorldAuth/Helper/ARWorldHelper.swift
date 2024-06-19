@@ -12,8 +12,7 @@ struct ARWorldHelper {
     static func getARWorldTrackingConfiguration() -> ARWorldTrackingConfiguration {
         let configuration = ARWorldTrackingConfiguration()
         configuration.sceneReconstruction = .mesh
-        configuration.environmentTexturing = .automatic
-        configuration.planeDetection = [.horizontal, .vertical]
+        configuration.planeDetection = [.horizontal]
         configuration.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
         
         return configuration
@@ -21,6 +20,7 @@ struct ARWorldHelper {
     
     static func getARWorldTrackingOptions() -> ARSession.RunOptions {
         return [
+            .resetSceneReconstruction,
             .resetTracking,
             .removeExistingAnchors,
             .stopTrackedRaycasts

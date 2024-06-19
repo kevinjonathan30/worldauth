@@ -15,8 +15,8 @@ struct RegisterView: View {
     @State var session: ARSession
     @State var scene: SCNScene
     @State var pointColor = Color.white
-    @State private var showPointCloud = true
-    @State private var showMesh = false
+    @State private var showPointCloud = false
+    @State private var showMesh = true
     
     @State var isTakingPointCloud = false
     @State var isScreenBlack = false
@@ -40,11 +40,6 @@ struct RegisterView: View {
         }
         .navigationTitle("Register")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                toolbarTrailingView()
-            }
-        }
     }
 }
 
