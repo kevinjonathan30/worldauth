@@ -8,22 +8,37 @@
 import Foundation
 
 struct NetworkHelper {
-    static func uploadPLYData(_ plyData: Data) {
+    static func checkPlyData(_ files: [Data], completion: @escaping (Bool, Error?) -> Void) {
         guard let url = URL(string: "https://yourserver.com/upload") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
-        request.httpBody = plyData
-        
+
+        let boundary = UUID().uuidString
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        var body = Data()
+        for (index, fileData) in files.enumerated() {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"file\(index + 1)\"; filename=\"file\(index + 1).ply\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: application/octet-stream\r\n\r\n".data(using: .utf8)!)
+            body.append(fileData)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+
+        request.httpBody = body
+
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("Error uploading point cloud: \(error)")
+                print("Error uploading files: \(error)")
+                completion(false, error)
                 return
             }
-            
-            print("Point cloud uploaded successfully!")
+
+            completion(true, nil)
+            print("Files uploaded successfully!")
         }
-        
+
         task.resume()
     }
 }

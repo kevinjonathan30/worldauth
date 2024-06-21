@@ -50,8 +50,8 @@ struct FileHelper {
         let fileNameURL = filePathURL.appendingPathComponent(fileName)
         
         do {
-            let imageData = try Data(contentsOf: fileNameURL)
-            return imageData
+            let data = try Data(contentsOf: fileNameURL)
+            return data
         } catch {
             print(error.localizedDescription)
             return nil

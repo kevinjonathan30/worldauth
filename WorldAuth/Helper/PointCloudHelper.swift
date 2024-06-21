@@ -76,9 +76,7 @@ struct PointCloudHelper {
     }
     
     static func parsePLYVertices(data: Data) -> [PLYVertex]? {
-        guard let stringData = String(data: data, encoding: .utf8) else {
-            return nil
-        }
+        guard let stringData = String(data: data, encoding: .utf8) else { return nil }
         
         var vertices: [PLYVertex] = []
         var isHeaderFinished = false
@@ -218,26 +216,19 @@ struct PointCloudHelper {
               let file2Vertices = PointCloudHelper.parsePLYVertices(data: file2Data) else { return }
         
         // Compute similarity metrics
-        let hausdorffDistance1 = computeHausdorffDistance(vertices1: file1Vertices, vertices2: file2Vertices)
-        let hausdorffDistance2 = computeHausdorffDistance(vertices1: file2Vertices, vertices2: file1Vertices)
-        let hausdorffDistance = max(hausdorffDistance1, hausdorffDistance2)
         let chamferDistance = computeChamferDistance(vertices1: file1Vertices, vertices2: file2Vertices)
         
         // Normalize distances
-        let normalizedHausdorff = normalizeDistance(hausdorffDistance)
         let normalizedChamfer = normalizeDistance(chamferDistance)
         
         // Convert to similarity percentage
-        let hausdorffSimilarity = (1.0 - normalizedHausdorff) * 100.0
         let chamferSimilarity = (1.0 - normalizedChamfer) * 100.0
         
         // Print results
-        print("Hausdorff Distance: \(hausdorffDistance), Similarity: \(hausdorffSimilarity)%")
         print("Chamfer Distance: \(chamferDistance), Similarity: \(chamferSimilarity)%")
         
         // Overall similarity (average of both metrics)
-        let overallSimilarity = (hausdorffSimilarity + chamferSimilarity) / 2.0
-        print("Overall Similarity: \(overallSimilarity)%")
+        print("Overall Similarity: \(chamferSimilarity)%")
     }
     
     static func calculateSimilarity(savedPlyFileURL: URL, currentPlyFileString: String) -> Float? {
@@ -247,25 +238,18 @@ struct PointCloudHelper {
               let currentPlyFileVertices = PointCloudHelper.parsePLYVertices(data: currentPlyFileString) else { return nil }
         
         // Compute similarity metrics
-        let hausdorffDistance1 = computeHausdorffDistance(vertices1: savedPlyFileVertices, vertices2: currentPlyFileVertices)
-        let hausdorffDistance2 = computeHausdorffDistance(vertices1: currentPlyFileVertices, vertices2: savedPlyFileVertices)
-        let hausdorffDistance = max(hausdorffDistance1, hausdorffDistance2)
         let chamferDistance = computeChamferDistance(vertices1: savedPlyFileVertices, vertices2: currentPlyFileVertices)
         
         // Normalize distances
-        let normalizedHausdorff = normalizeDistance(hausdorffDistance)
         let normalizedChamfer = normalizeDistance(chamferDistance)
         
         // Convert to similarity percentage
-        let hausdorffSimilarity = (1.0 - normalizedHausdorff) * 100.0
         let chamferSimilarity = (1.0 - normalizedChamfer) * 100.0
         
         // Print results
-        print("Hausdorff Distance: \(hausdorffDistance), Similarity: \(hausdorffSimilarity)%")
         print("Chamfer Distance: \(chamferDistance), Similarity: \(chamferSimilarity)%")
         
         // Overall similarity (average of both metrics)
-        let overallSimilarity = (hausdorffSimilarity + chamferSimilarity) / 2.0
         print("Overall Similarity: \(chamferSimilarity)%")
         
         return chamferSimilarity

@@ -61,9 +61,9 @@ struct AuthenticationView: View {
             isViewActive = false
         }
         .onReceive(timer) { _ in
-            //            if isViewActive {
-            //                authenticate()
-            //            }
+//            if isViewActive {
+//                authenticate()
+//            }
         }
         .sheet(isPresented: $showOnboarding) {
             OnboardingView()
@@ -185,13 +185,32 @@ private extension AuthenticationView {
         let plyString = PointCloudHelper.createPlyString(from: viewModel.pointCloudData)
         
         guard !fileList.isEmpty else { return }
-        
+
+        // Create a dispatch group
+        let dispatchGroup = DispatchGroup()
+
+        // Create a queue to manage sequential execution
+        let queue = DispatchQueue(label: "jp.waseda.WorldAuthSequenceQueue")
+
+        // Iterate over the file list
         for fileUrl in fileList {
-            processPly(savedPlyFileURL: fileUrl, plyString: plyString)
+            dispatchGroup.enter()
+            queue.async {
+//                self.processPlyOnline(savedPlyFileURL: fileUrl, plyString: plyString) {
+//                    dispatchGroup.leave()
+//                }
+                self.processPly(savedPlyFileURL: fileUrl, plyString: plyString) {
+                    dispatchGroup.leave()
+                }
+            }
+            // Wait for the current task to finish before starting the next one
+            dispatchGroup.wait()
         }
+        
+        viewModel.pointCloudData.removeAll()
     }
     
-    private func processPly(savedPlyFileURL: URL, plyString: String) {
+    private func processPly(savedPlyFileURL: URL, plyString: String, completion: @escaping () -> Void) {
         let similarity = PointCloudHelper.calculateSimilarity(savedPlyFileURL: savedPlyFileURL, currentPlyFileString: plyString)
         
         if similarity ?? 0 > similarityPercentage {
@@ -202,7 +221,23 @@ private extension AuthenticationView {
         } else {
             print("Not Similar!")
         }
-        viewModel.pointCloudData.removeAll()
+        completion()
+    }
+    
+    private func processPlyOnline(savedPlyFileURL: URL, plyString: String, completion: @escaping () -> Void) {
+        guard let targetData = FileHelper.getDataByName(atDirectory: "ply", fileName: savedPlyFileURL.lastPathComponent) else {
+            completion()
+            return
+        }
+        let sourceData = Data(plyString.utf8)
+        NetworkHelper.checkPlyData([targetData, sourceData]) { data, error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                print("Is User Authenticated: \(data)")
+            }
+            completion()
+        }
     }
 }
 
