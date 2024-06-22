@@ -16,6 +16,7 @@ struct AuthenticationView: View {
     @State var pointColor = Color.white
     @State private var showPointCloud = false
     @State private var showMesh = true
+    @State private var isIdealDistance: DistanceState = .normal
     @State private var isViewActive = false
     @State private var fileList: [URL] = []
     @State private var showOnboarding = false
@@ -33,13 +34,16 @@ struct AuthenticationView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack {
+            distanceIndicator()
+            
             ARSceneView(
                 session: self.$session,
                 scene: self.$scene,
                 pointColor: self.$pointColor,
                 showPointCloud: self.$showPointCloud,
-                showMesh: self.$showMesh
+                showMesh: self.$showMesh,
+                isIdealDistance: self.$isIdealDistance
             )
             
             Text("\(similarityPercentage)%")
@@ -49,6 +53,8 @@ struct AuthenticationView: View {
             takePointCloudButton()
         }
         .navigationTitle("Authentication")
+        .toolbar(.hidden)
+        .edgesIgnoringSafeArea(.top)
         .onAppear {
             fileList = FileHelper.getFileList(atDirectory: "ply")
             guard !fileList.isEmpty else {
@@ -110,6 +116,8 @@ private extension AuthenticationView {
     @ViewBuilder
     private func takePointCloudButton() -> some View {
         VStack {
+            Spacer()
+            
             Button(action: { handleTakePointCloudButtonEvent() }) {
                 Image(systemName: getIconByTakePointCloudState())
                     .foregroundColor(.red)
@@ -121,10 +129,49 @@ private extension AuthenticationView {
             .padding()
         }
         .padding(.bottom, 20)
+        .transaction { transaction in
+            transaction.animation = .none
+        }
+    }
+    
+    @ViewBuilder
+    private func distanceIndicator() -> some View {
+        if isIdealDistance != .normal {
+            VStack {
+                Text(getDistanceState())
+                    .foregroundStyle(.white)
+                    .zIndex(999)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .background(.green)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    )
+                    .padding()
+                
+                Spacer()
+            }
+            .padding(.top, 32)
+            .transaction { transaction in
+                transaction.animation = .none
+            }
+            .zIndex(999)
+        }
     }
     
     private func getIconByTakePointCloudState() -> String {
         return isTakingPointCloud ? "stop.circle.fill" : "record.circle.fill"
+    }
+    
+    private func getDistanceState() -> String {
+        switch isIdealDistance {
+        case .normal:
+            return ""
+        case .close:
+            return "Your device is too close to the environment, please step farther."
+        case .far:
+            return "Your device is too far from the environment, please step closer."
+        }
     }
     
     private func handleTakePointCloudButtonEvent() {

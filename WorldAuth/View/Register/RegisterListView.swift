@@ -13,7 +13,7 @@ struct RegisterListView: View {
     @EnvironmentObject var viewModel: AppViewModel
     
     var body: some View {
-        VStack {
+        ZStack {
             switch(fileList.count) {
             case 0:
                 Text("No Saved Point Cloud")
@@ -27,17 +27,12 @@ struct RegisterListView: View {
                 }
                 .padding(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
             }
+            
+            floatingButton()
         }
         .navigationTitle("Locations")
-        .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Button {
-                    NavigationHelper.push(.registerView)
-                } label: {
-                    Text("Add New")
-                }
-            }
-        }
+        .toolbar(.hidden)
+        .edgesIgnoringSafeArea(.top)
         .onAppear {
             fileList = getPlyAndImageList()
         }
@@ -84,6 +79,30 @@ private extension RegisterListView {
             } label: {
                 Label("Delete", systemImage: "trash.fill")
             }
+        }
+    }
+    
+    @ViewBuilder
+    private func floatingButton() -> some View {
+        VStack {
+            Spacer()
+            
+            Button {
+                NavigationHelper.push(.registerView)
+            } label: {
+                Text("Add New")
+                    .bold()
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(
+                        Capsule(style: .continuous)
+                            .background(.accent)
+                            .clipShape(Capsule())
+                    )
+            }
+        }
+        .transaction { transaction in
+            transaction.animation = .none
         }
     }
     

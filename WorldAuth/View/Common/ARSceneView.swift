@@ -15,6 +15,7 @@ struct ARSceneView {
     @Binding var pointColor: Color
     @Binding var showPointCloud: Bool
     @Binding var showMesh: Bool
+    @Binding var isIdealDistance: DistanceState
 }
 
 extension ARSceneView: UIViewRepresentable {
@@ -27,7 +28,13 @@ extension ARSceneView: UIViewRepresentable {
     }
     
     func makeCoordinator() -> Self.Coordinator {
-        Self.Coordinator(scene: self.$scene, pointColor: self.$pointColor, showPointCloud: self.$showPointCloud, showMesh: self.$showMesh)
+        Self.Coordinator(
+            scene: self.$scene,
+            pointColor: self.$pointColor,
+            showPointCloud: self.$showPointCloud,
+            showMesh: self.$showMesh,
+            isIdealDistance: self.$isIdealDistance
+        )
     }
     
     func updateUIView(_ uiView: ARSCNView, context: Context) {
@@ -50,13 +57,15 @@ extension ARSceneView {
         @Binding var pointColor: Color
         @Binding var showPointCloud: Bool
         @Binding var showMesh: Bool
+        @Binding var isIdealDistance: DistanceState
         var knownAnchors = [UUID: SCNNode]()
         
-        init(scene: Binding<SCNScene>, pointColor: Binding<Color>, showPointCloud: Binding<Bool>, showMesh: Binding<Bool>) {
+        init(scene: Binding<SCNScene>, pointColor: Binding<Color>, showPointCloud: Binding<Bool>, showMesh: Binding<Bool>, isIdealDistance: Binding<DistanceState>) {
             self._scene = scene
             self._pointColor = pointColor
             self._showPointCloud = showPointCloud
             self._showMesh = showMesh
+            self._isIdealDistance = isIdealDistance
         }
     }
 }
@@ -98,6 +107,10 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
                 self.knownAnchors[anchor.identifier] = meshNode
             }
         }
+        
+        guard let sceneDepth = frame.smoothedSceneDepth ?? frame.sceneDepth else { return }
+        let depthPixelBuffer = sceneDepth.depthMap
+        getDistanceInMeters(pixelBuffer: depthPixelBuffer)
     }
     
     func session(_ session: ARSession, didRemove anchors: [ARAnchor]) {
@@ -110,6 +123,38 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
             }
         }
     }
+    
+    func getDistanceInMeters(pixelBuffer: CVPixelBuffer) {
+        let _ = CIImage(cvPixelBuffer: pixelBuffer).oriented(.right)
+                    
+        let width = CVPixelBufferGetWidth(pixelBuffer)
+        let height = CVPixelBufferGetHeight(pixelBuffer)
+                    
+        let centerX = width / 2
+        let centerY = height / 2
+
+        CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
+        let baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: Float32.self)
+                    
+        let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
+        let pixelIndex = Int(centerY) * bytesPerRow / MemoryLayout<Float32>.stride + Int(centerX)
+                    
+        let depthValue = baseAddress?[pixelIndex]
+                    
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
+                    
+        if let depthValue = depthValue {
+            let distanceInMeters = Double(depthValue)
+            
+            if distanceInMeters < 0.3 {
+                isIdealDistance = .close
+            } else if distanceInMeters > 2 {
+                isIdealDistance = .far
+            } else {
+                isIdealDistance = .normal
+            }
+        }
+    }
 }
 
 
@@ -119,6 +164,7 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
         scene: .constant(SCNScene()),
         pointColor: .constant(.white),
         showPointCloud: .constant(true),
-        showMesh: .constant(false)
+        showMesh: .constant(false),
+        isIdealDistance: .constant(.normal)
     )
 }

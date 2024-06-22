@@ -17,7 +17,7 @@ struct RegisterView: View {
     @State var pointColor = Color.white
     @State private var showPointCloud = false
     @State private var showMesh = true
-    
+    @State private var isIdealDistance: DistanceState = .normal
     @State var isTakingPointCloud = false
     @State var isScreenBlack = false
     
@@ -31,7 +31,9 @@ struct RegisterView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack {
+            distanceIndicator()
+            
             arSceneView()
             
             stutterView()
@@ -39,7 +41,9 @@ struct RegisterView: View {
             takePointCloudButton()
         }
         .navigationTitle("Register")
-        .navigationBarTitleDisplayMode(.inline)
+//        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden)
+        .edgesIgnoringSafeArea(.top)
     }
 }
 
@@ -53,7 +57,8 @@ private extension RegisterView {
             scene: self.$scene,
             pointColor: self.$pointColor,
             showPointCloud: self.$showPointCloud,
-            showMesh: self.$showMesh
+            showMesh: self.$showMesh,
+            isIdealDistance: self.$isIdealDistance
         )
     }
     
@@ -67,6 +72,8 @@ private extension RegisterView {
     @ViewBuilder
     private func takePointCloudButton() -> some View {
         VStack {
+            Spacer()
+            
             Button(action: { handleTakePointCloudButtonEvent() }) {
                 Image(systemName: getIconByTakePointCloudState())
                     .foregroundColor(.red)
@@ -78,6 +85,34 @@ private extension RegisterView {
             .padding()
         }
         .padding(.bottom, 20)
+        .transaction { transaction in
+            transaction.animation = .none
+        }
+    }
+    
+    @ViewBuilder
+    private func distanceIndicator() -> some View {
+        if isIdealDistance != .normal {
+            VStack {
+                Text(getDistanceState())
+                    .foregroundStyle(.white)
+                    .zIndex(999)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .background(.green)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    )
+                    .padding()
+                
+                Spacer()
+            }
+            .padding(.top, 32)
+            .transaction { transaction in
+                transaction.animation = .none
+            }
+            .zIndex(999)
+        }
     }
     
     @ViewBuilder
@@ -103,7 +138,16 @@ private extension RegisterView {
         }
     }
     
-    
+    private func getDistanceState() -> String {
+        switch isIdealDistance {
+        case .normal:
+            return ""
+        case .close:
+            return "Your device is too close to the environment, please step farther."
+        case .far:
+            return "Your device is too far from the environment, please step closer."
+        }
+    }
 }
 
 // MARK: Helper

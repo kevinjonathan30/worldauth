@@ -14,6 +14,7 @@
 		5D15EE5C2C0DA2A900673052 /* PLYVertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE5B2C0DA2A900673052 /* PLYVertex.swift */; };
 		5D4655F02C22A6F90013CB78 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */; };
 		5D57D1762C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D57D1752C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift */; };
+		5D835E1B2C26A5A200352304 /* DistanceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E1A2C26A5A200352304 /* DistanceState.swift */; };
 		5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */; };
 		5DE2AB0A2C0AE22B000C7346 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB092C0AE22B000C7346 /* RegisterView.swift */; };
 		5DE2AB0C2C0AE22D000C7346 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE2AB0B2C0AE22D000C7346 /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 		5D15EE5B2C0DA2A900673052 /* PLYVertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PLYVertex.swift; sourceTree = "<group>"; };
 		5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
 		5D57D1752C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARMeshGeometry+Ext.swift"; sourceTree = "<group>"; };
+		5D835E1A2C26A5A200352304 /* DistanceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceState.swift; sourceTree = "<group>"; };
 		5DE2AB042C0AE22B000C7346 /* WorldAuth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorldAuth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldAuthApp.swift; sourceTree = "<group>"; };
 		5DE2AB092C0AE22B000C7346 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
@@ -170,6 +172,14 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
+		5D835E192C26A58C00352304 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				5D835E1A2C26A5A200352304 /* DistanceState.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
 		5DE2AAFB2C0AE22B000C7346 = {
 			isa = PBXGroup;
 			children = (
@@ -190,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				5D15EE4F2C0D890500673052 /* App */,
+				5D835E192C26A58C00352304 /* Enum */,
 				5D15EE512C0D892900673052 /* Extension */,
 				5D15EE522C0D893500673052 /* Helper */,
 				5D15EE5A2C0DA29900673052 /* Model */,
@@ -310,6 +321,7 @@
 				5DEA68972C142430008CD7A9 /* Path.swift in Sources */,
 				5DEA688C2C12F426008CD7A9 /* WorldTemplate.swift in Sources */,
 				5DEA68712C11765A008CD7A9 /* RegisterListView.swift in Sources */,
+				5D835E1B2C26A5A200352304 /* DistanceState.swift in Sources */,
 				5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */,
 				5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */,
 				5DEA68752C119C70008CD7A9 /* AppDelegate.swift in Sources */,
