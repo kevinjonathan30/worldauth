@@ -8,19 +8,19 @@
 import UIKit
 
 struct NavigationHelper {
-    static private var selectedTab: Int = 0
+    static private var selectedTab: TabState = .authentication
     static private var authRouter = Router<Path>(root: .root)
     static private var listRouter = Router<Path>(root: .root)
     
-    static func setSelectedTab(newSelectedTab: Int) {
+    static func setSelectedTab(newSelectedTab: TabState) {
         selectedTab = newSelectedTab
     }
     
     static func getRouter() -> Router<Path> {
         switch selectedTab {
-        case 0:
+        case .authentication:
             return authRouter
-        default:
+        case .locations:
             return listRouter
         }
     }

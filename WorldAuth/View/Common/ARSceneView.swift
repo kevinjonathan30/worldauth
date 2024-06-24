@@ -12,8 +12,6 @@ import SwiftUI
 struct ARSceneView {
     @Binding var session: ARSession
     @Binding var scene: SCNScene
-    @Binding var pointColor: Color
-    @Binding var showPointCloud: Bool
     @Binding var showMesh: Bool
     @Binding var isIdealDistance: DistanceState
 }
@@ -30,8 +28,6 @@ extension ARSceneView: UIViewRepresentable {
     func makeCoordinator() -> Self.Coordinator {
         Self.Coordinator(
             scene: self.$scene,
-            pointColor: self.$pointColor,
-            showPointCloud: self.$showPointCloud,
             showMesh: self.$showMesh,
             isIdealDistance: self.$isIdealDistance
         )
@@ -54,16 +50,12 @@ extension ARSceneView: UIViewRepresentable {
 extension ARSceneView {
     final class Coordinator: NSObject {
         @Binding var scene: SCNScene
-        @Binding var pointColor: Color
-        @Binding var showPointCloud: Bool
         @Binding var showMesh: Bool
         @Binding var isIdealDistance: DistanceState
         var knownAnchors = [UUID: SCNNode]()
         
-        init(scene: Binding<SCNScene>, pointColor: Binding<Color>, showPointCloud: Binding<Bool>, showMesh: Binding<Bool>, isIdealDistance: Binding<DistanceState>) {
+        init(scene: Binding<SCNScene>, showMesh: Binding<Bool>, isIdealDistance: Binding<DistanceState>) {
             self._scene = scene
-            self._pointColor = pointColor
-            self._showPointCloud = showPointCloud
             self._showMesh = showMesh
             self._isIdealDistance = isIdealDistance
         }
@@ -78,14 +70,6 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
                     node.removeFromParentNode()
                 }
             }
-        
-        // Add point cloud node if showPointCloud is true
-        if self.showPointCloud {
-            guard let pointCloud = frame.rawFeaturePoints else { return }
-            let pointCloudNode = PointCloudHelper.createPointCloudNode(from: pointCloud, color: self.pointColor)
-            pointCloudNode.name = "PointCloud"
-            self.scene.rootNode.addChildNode(pointCloudNode)
-        }
 
         // Add mesh node if showMesh is true
         if self.showMesh {
@@ -95,7 +79,7 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
                 
                 let defaultMaterial = SCNMaterial()
                 defaultMaterial.fillMode = .lines
-                defaultMaterial.diffuse.contents = self.pointColor.cgColor
+                defaultMaterial.diffuse.contents = Color.white.cgColor
                 scnGeometry.materials = [defaultMaterial]
 
                 let meshNode = SCNNode(geometry: scnGeometry)
@@ -162,8 +146,6 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
     ARSceneView(
         session: .constant(ARSession()),
         scene: .constant(SCNScene()),
-        pointColor: .constant(.white),
-        showPointCloud: .constant(true),
         showMesh: .constant(false),
         isIdealDistance: .constant(.normal)
     )

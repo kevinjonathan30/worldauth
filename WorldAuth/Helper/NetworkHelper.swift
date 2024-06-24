@@ -8,8 +8,8 @@
 import Foundation
 
 struct NetworkHelper {
-    static func checkPlyData(_ files: [Data], completion: @escaping (Bool, Error?) -> Void) {
-        guard let url = URL(string: "https://yourserver.com/api/authenticate/") else { return }
+    static func checkPlyData(_ files: [Data], completion: @escaping (NetworkResponse?, Error?) -> Void) {
+        guard let url = URL(string: "http://10.24.86.250:8000/api/authenticate/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 
@@ -31,40 +31,34 @@ struct NetworkHelper {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error uploading files: \(error)")
-                completion(false, error)
+                completion(nil, error)
                 return
             }
 
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
                 print("Error with response status code")
-                completion(false, nil)
+                completion(nil, nil)
                 return
             }
 
             guard let data = data else {
                 print("No data received")
-                completion(false, nil)
+                completion(nil, nil)
                 return
             }
 
             do {
-                if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                    if let result = jsonResponse["result"] as? Bool {
-                        completion(result, nil)
-                        return
-                    }
-                }
+                let networkResponse = try JSONDecoder().decode(NetworkResponse.self, from: data)
+                completion(networkResponse, nil)
+                print("Files uploaded successfully!")
+                return
             } catch let parseError {
                 print("JSON parsing error: \(parseError)")
-                completion(false, parseError)
+                completion(nil, parseError)
                 return
             }
-
-            completion(false, nil)
-            print("Files uploaded successfully!")
         }
 
         task.resume()
     }
-
 }

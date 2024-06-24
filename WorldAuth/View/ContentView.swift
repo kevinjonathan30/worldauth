@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var viewModel: AppViewModel
-    var selectedTab: Int = 0
+    var selectedTab: TabState = .authentication
     
     var body: some View {
         ViewRouter(router: NavigationHelper.getRouter()) { path in
@@ -20,6 +20,10 @@ struct ContentView: View {
                 LazyView(
                     RegisterView()
                 )
+            case .successView(let similarity):
+                LazyView(
+                    SuccessView(similarity: similarity)
+                )
             }
         }
     }
@@ -29,11 +33,11 @@ extension ContentView {
     @ViewBuilder
     func determineView() -> some View {
         switch self.selectedTab {
-        case 0:
+        case .authentication:
             LazyView(
                 AuthenticationView()
             )
-        default:
+        case .locations:
             LazyView(
                 RegisterListView()
             )
@@ -42,5 +46,5 @@ extension ContentView {
 }
 
 #Preview {
-    ContentView(selectedTab: 0)
+    ContentView(selectedTab: .authentication)
 }

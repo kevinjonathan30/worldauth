@@ -14,8 +14,6 @@ import AudioToolbox
 struct RegisterView: View {
     @State var session: ARSession
     @State var scene: SCNScene
-    @State var pointColor = Color.white
-    @State private var showPointCloud = false
     @State private var showMesh = true
     @State private var isIdealDistance: DistanceState = .normal
     @State var isTakingPointCloud = false
@@ -41,9 +39,7 @@ struct RegisterView: View {
             takePointCloudButton()
         }
         .navigationTitle("Register")
-//        .navigationBarTitleDisplayMode(.inline)
-        .toolbar(.hidden)
-        .edgesIgnoringSafeArea(.top)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -55,8 +51,6 @@ private extension RegisterView {
         ARSceneView(
             session: self.$session,
             scene: self.$scene,
-            pointColor: self.$pointColor,
-            showPointCloud: self.$showPointCloud,
             showMesh: self.$showMesh,
             isIdealDistance: self.$isIdealDistance
         )
@@ -112,29 +106,6 @@ private extension RegisterView {
                 transaction.animation = .none
             }
             .zIndex(999)
-        }
-    }
-    
-    @ViewBuilder
-    private func toolbarTrailingView() -> some View {
-        Group {
-            Menu {
-                Toggle(
-                    isOn: $showPointCloud,
-                    label: {
-                        Label("Point", systemImage: "point.3.filled.connected.trianglepath.dotted")
-                    }
-                )
-                
-                Toggle(
-                    isOn: $showMesh,
-                    label: {
-                        Label("Mesh", systemImage: "square.split.diagonal.2x2.fill")
-                    }
-                )
-            } label: {
-                Image(systemName: "ellipsis.circle")
-            }
         }
     }
     
@@ -197,13 +168,12 @@ private extension RegisterView {
                 }
                 viewModel.pointCloudData.removeAll()
             } else {
-//                guard let pointCloud = self.session.currentFrame?.rawFeaturePoints else { return }
                 guard let anchors = self.session.currentFrame?.anchors else { return }
                 let meshAnchors = anchors.compactMap { $0 as? ARMeshAnchor }
                 var pointsWithColor: [(position: SIMD3<Float>, color: UIColor)] = []
                 for anchor in meshAnchors {
                     let vertices = PointCloudHelper.extractVertices(from: anchor.geometry)
-                    pointsWithColor.append(contentsOf: vertices.map { (position: $0, color: UIColor(self.pointColor)) })
+                    pointsWithColor.append(contentsOf: vertices.map { (position: $0, color: UIColor(Color.white)) })
                 }
                 viewModel.pointCloudData = pointsWithColor
             }

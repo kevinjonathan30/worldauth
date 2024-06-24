@@ -30,9 +30,7 @@ struct RegisterListView: View {
             
             floatingButton()
         }
-        .navigationTitle("Locations")
-        .toolbar(.hidden)
-        .edgesIgnoringSafeArea(.top)
+        .navigationTitle("Saved")
         .onAppear {
             fileList = getPlyAndImageList()
         }

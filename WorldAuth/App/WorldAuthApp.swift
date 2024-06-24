@@ -10,19 +10,19 @@ import SwiftUI
 @main
 struct WorldAuthApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @State private var selectedTab: Int = 0
+    @State private var selectedTab: TabState = .authentication
     
     var body: some Scene {
         WindowGroup {
             TabView(selection: $selectedTab) {
                 provideTab(
-                    selectedTab: 0,
+                    selectedTab: .authentication,
                     alt: "Authentication",
                     systemImage: "key.fill"
                 )
                 
                 provideTab(
-                    selectedTab: 1,
+                    selectedTab: .locations,
                     alt: "Locations",
                     systemImage: "mappin.and.ellipse.circle.fill"
                 )
@@ -39,7 +39,7 @@ struct WorldAuthApp: App {
 
 extension WorldAuthApp {
     private func provideTab(
-        selectedTab: Int,
+        selectedTab: TabState,
         alt: String,
         systemImage: String
     ) -> some View {
