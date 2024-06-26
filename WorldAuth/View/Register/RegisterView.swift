@@ -160,12 +160,20 @@ private extension RegisterView {
                 timer.invalidate()
                 guard !viewModel.pointCloudData.isEmpty else { return }
                 let plyString = PointCloudHelper.createPlyString(from: viewModel.pointCloudData)
-                let dateString = viewModel.currentTimestamp ?? DateHelper.getStringFromDate()
-                let fileName = "PointCloud_\(dateString).ply"
                 
-                if let fileURL = FileHelper.saveFile(data: Data(plyString.utf8), atDirectory: "ply", fileName: fileName) {
-                    self.viewModel.capturedPlyFileURLs.append(fileURL)
+                NetworkHelper.registerPointCloud(Data(plyString.utf8)) { data, error in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    } else {
+                        guard let data = data else { return }
+                        if data.success == true {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                NavigationHelper.pop()
+                            }
+                        }
+                    }
                 }
+                
                 viewModel.pointCloudData.removeAll()
             } else {
                 guard let anchors = self.session.currentFrame?.anchors else { return }
@@ -181,16 +189,7 @@ private extension RegisterView {
     }
     
     private func saveImage(_ image: UIImage) {
-        let dateString = viewModel.currentTimestamp ?? DateHelper.getStringFromDate()
-        let fileName = "Image_\(dateString).jpg"
-        
-        if let data = image.jpegData(compressionQuality: 0.9),
-           let fileURL = FileHelper.saveFile(data: data, atDirectory: "img", fileName: fileName) {
-            self.viewModel.capturedImageURLs.append(fileURL)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                NavigationHelper.pop()
-            }
-        }
+        if let data = image.jpegData(compressionQuality: 0.9) {  }
     }
     
     private func captureImage() {

@@ -9,6 +9,5 @@ import Foundation
 
 struct WorldTemplate: Identifiable, Hashable {
     var id: UUID = UUID()
-    var plyUrl: URL
-    var imgUrl: URL
+    var pcdName: String?
 }

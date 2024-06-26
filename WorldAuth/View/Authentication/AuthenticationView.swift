@@ -20,7 +20,6 @@ struct AuthenticationView: View {
     @State var isTakingPointCloud = false
     
     @EnvironmentObject var viewModel: AppViewModel
-    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
         ZStack {
@@ -39,12 +38,6 @@ struct AuthenticationView: View {
         .toolbar(.hidden)
         .edgesIgnoringSafeArea(.top)
         .onAppear {
-            fileList = FileHelper.getFileList(atDirectory: "ply")
-            guard !fileList.isEmpty else {
-                showOnboarding = true
-                return
-            }
-            
             let session = ARSession()
             session.run(ARWorldHelper.getARWorldTrackingConfiguration(), options: ARWorldHelper.getARWorldTrackingOptions())
             self.session = session
@@ -185,57 +178,26 @@ private extension AuthenticationView {
     private func processAuthentication() {
         guard !viewModel.pointCloudData.isEmpty else { return }
         let plyString = PointCloudHelper.createPlyString(from: viewModel.pointCloudData)
-        
-        guard !fileList.isEmpty else { return }
 
-        // Create a dispatch group
-        let dispatchGroup = DispatchGroup()
-
-        // Create a queue to manage sequential execution
-        let queue = DispatchQueue(label: "jp.waseda.WorldAuthSequenceQueue")
-
-        var shouldExit = false
-        // Iterate over the file list
-        for fileUrl in fileList {
-            if shouldExit { break }
-            dispatchGroup.enter()
-            queue.async {
-                self.processPly(savedPlyFileURL: fileUrl, plyString: plyString) { isSuccess in
-                    if isSuccess {
-                        shouldExit = true
-                    }
-                    dispatchGroup.leave()
-                }
-            }
-            // Wait for the current task to finish before starting the next one
-            dispatchGroup.wait()
-            if shouldExit { break }
-        }
+        self.processPly(plyString: plyString)
         
         viewModel.pointCloudData.removeAll()
     }
     
-    private func processPly(savedPlyFileURL: URL, plyString: String, completion: @escaping (Bool) -> Void) {
-        guard let targetData = FileHelper.getDataByName(atDirectory: "ply", fileName: savedPlyFileURL.lastPathComponent) else {
-            completion(false)
-            return
-        }
-        let sourceData = Data(plyString.utf8)
-        NetworkHelper.checkPlyData([targetData, sourceData]) { data, error in
+    private func processPly(plyString: String) {
+        let targetData = Data(plyString.utf8)
+        NetworkHelper.authenticatePointCloud(targetData) { data, error in
             if let error = error {
                 print(error.localizedDescription)
             } else {
-                guard let data = data else {
-                    completion(false)
-                    return
-                }
+                guard let data = data else { return }
+                
                 if data.success == true {
                     DispatchQueue.main.async {
                         NavigationHelper.push(.successView(data.fitness ?? 0))
                     }
                 }
             }
-            completion(true)
         }
     }
 }

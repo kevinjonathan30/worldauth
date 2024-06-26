@@ -45,16 +45,12 @@ private extension RegisterListView {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(file.plyUrl.lastPathComponent)
+                    Text(file.pcdName ?? "")
                         .bold()
                         .opacity(0.8)
                     
                     Spacer()
                 }.padding(.bottom, 1)
-                
-                loadImageFromURL(fileName: file.imgUrl.lastPathComponent)
-                    .resizable()
-                    .scaledToFit()
             }
         }
         .padding()
@@ -65,15 +61,8 @@ private extension RegisterListView {
         )
         .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .contextMenu {
-            Button {
-                shareFiles(plyUrl: file.plyUrl)
-            } label: {
-                Label("Share", systemImage: "square.and.arrow.up")
-                
-            }
-            
             Button(role: .destructive) {
-                delete(plyUrl: file.plyUrl, imgUrl: file.imgUrl)
+                delete(worldTemplate: file)
             } label: {
                 Label("Delete", systemImage: "trash.fill")
             }
@@ -118,39 +107,11 @@ private extension RegisterListView {
 
 private extension RegisterListView {
     private func getPlyAndImageList() -> [WorldTemplate] {
-        let plyFiles = FileHelper.getFileList(atDirectory: "ply")
-        let imgFiles = FileHelper.getFileList(atDirectory: "img")
-        var templates: [WorldTemplate] = []
-        
-        for (index, _) in plyFiles.enumerated() {
-            guard let plyFile = plyFiles[safe: index], let imgFile = imgFiles[safe: index] else { continue }
-            templates.append(WorldTemplate(plyUrl: plyFile, imgUrl: imgFile))
-        }
-        
-        return templates
+        return []
     }
     
-    private func delete(plyUrl: URL, imgUrl: URL) {
-        if FileHelper.deleteFile(atDirectory: "ply", fileName: plyUrl.lastPathComponent),
-           FileHelper.deleteFile(atDirectory: "img", fileName: imgUrl.lastPathComponent) {
-            fileList = getPlyAndImageList()
-        }
-    }
-    
-    private func shareFiles(plyUrl: URL) {
-        DispatchQueue.main.async {
-            let activityViewController = UIActivityViewController(activityItems: [plyUrl], applicationActivities: nil)
-            activityViewController.completionWithItemsHandler =  { _, _, _, _ in
-                
-            }
-            if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
-                scene.windows.first?.rootViewController?.present(
-                    activityViewController,
-                    animated: true,
-                    completion: nil
-                )
-            }
-        }
+    private func delete(worldTemplate: WorldTemplate) {
+        
     }
 }
 

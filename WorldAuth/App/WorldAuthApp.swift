@@ -24,7 +24,7 @@ struct WorldAuthApp: App {
                 provideTab(
                     selectedTab: .locations,
                     alt: "Locations",
-                    systemImage: "mappin.and.ellipse.circle.fill"
+                    systemImage: "location.fill"
                 )
             }
             .onChange(of: selectedTab) { newSelectedTab in
