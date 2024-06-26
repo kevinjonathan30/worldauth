@@ -18,8 +18,7 @@ struct RegisterView: View {
     @State private var isIdealDistance: DistanceState = .normal
     @State var isTakingPointCloud = false
     @State var isScreenBlack = false
-    
-    @EnvironmentObject var viewModel: AppViewModel
+    @State var pointCloudData: [(position: SIMD3<Float>, color: UIColor)] = []
     
     var body: some View {
         ZStack {
@@ -159,8 +158,8 @@ private extension RegisterView {
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
             if !isTakingPointCloud {
                 timer.invalidate()
-                guard !viewModel.pointCloudData.isEmpty else { return }
-                let plyString = PointCloudHelper.createPlyString(from: viewModel.pointCloudData)
+                guard !pointCloudData.isEmpty else { return }
+                let plyString = PointCloudHelper.createPlyString(from: pointCloudData)
                 
                 NetworkHelper.registerPointCloud(Data(plyString.utf8)) { data, error in
                     if let error = error {
@@ -175,7 +174,7 @@ private extension RegisterView {
                     }
                 }
                 
-                viewModel.pointCloudData.removeAll()
+                pointCloudData.removeAll()
             } else {
                 guard let anchors = self.session.currentFrame?.anchors else { return }
                 let meshAnchors = anchors.compactMap { $0 as? ARMeshAnchor }
@@ -184,7 +183,7 @@ private extension RegisterView {
                     let vertices = PointCloudHelper.extractVertices(from: anchor.geometry)
                     pointsWithColor.append(contentsOf: vertices.map { (position: $0, color: UIColor(Color.white)) })
                 }
-                viewModel.pointCloudData = pointsWithColor
+                pointCloudData = pointsWithColor
             }
         }
     }

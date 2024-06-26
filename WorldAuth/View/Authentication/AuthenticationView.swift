@@ -18,8 +18,7 @@ struct AuthenticationView: View {
     @State private var fileList: [URL] = []
     @State private var showOnboarding = false
     @State var isTakingPointCloud = false
-    
-    @EnvironmentObject var viewModel: AppViewModel
+    @State var pointCloudData: [(position: SIMD3<Float>, color: UIColor)] = []
     
     var body: some View {
         ZStack {
@@ -56,7 +55,6 @@ struct AuthenticationView: View {
                 .cancelAction {
                     showOnboarding = false
                 }
-                .environmentObject(viewModel)
         }
     }
 }
@@ -157,7 +155,7 @@ private extension AuthenticationView {
                     let vertices = PointCloudHelper.extractVertices(from: anchor.geometry)
                     pointsWithColor.append(contentsOf: vertices.map { (position: $0, color: UIColor(Color.white)) })
                 }
-                viewModel.pointCloudData = pointsWithColor
+                pointCloudData = pointsWithColor
             }
         }
     }
@@ -173,18 +171,18 @@ private extension AuthenticationView {
             pointsWithColor.append(contentsOf: coloredVertices)
         }
         
-        viewModel.pointCloudData.append(contentsOf: pointsWithColor)
+        pointCloudData.append(contentsOf: pointsWithColor)
         processAuthentication()
         
     }
     
     private func processAuthentication() {
-        guard !viewModel.pointCloudData.isEmpty else { return }
-        let plyString = PointCloudHelper.createPlyString(from: viewModel.pointCloudData)
+        guard !pointCloudData.isEmpty else { return }
+        let plyString = PointCloudHelper.createPlyString(from: pointCloudData)
 
         self.processPly(plyString: plyString)
         
-        viewModel.pointCloudData.removeAll()
+        pointCloudData.removeAll()
     }
     
     private func processPly(plyString: String) {

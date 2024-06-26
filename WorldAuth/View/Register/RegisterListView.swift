@@ -11,7 +11,6 @@ import ZIPFoundation
 struct RegisterListView: View {
     @State var pointCloudList: [WorldTemplate] = []
     @State var viewState: ViewState = .loading
-    @EnvironmentObject var viewModel: AppViewModel
     
     var body: some View {
         ZStack {

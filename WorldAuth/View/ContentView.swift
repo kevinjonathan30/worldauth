@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var viewModel: AppViewModel
     var selectedTab: TabState = .authentication
     
     var body: some View {
