@@ -9,5 +9,5 @@ import Foundation
 
 struct WorldTemplate: Identifiable, Hashable {
     var id: UUID = UUID()
-    var pcdName: String?
+    var pcdName: String
 }

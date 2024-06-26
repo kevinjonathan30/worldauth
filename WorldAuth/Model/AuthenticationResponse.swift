@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NetworkResponse: Codable {
+struct AuthenticationResponse: Codable {
     let success: Bool?
     let fitness: Double?
 }

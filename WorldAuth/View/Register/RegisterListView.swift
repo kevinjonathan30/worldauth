@@ -9,18 +9,23 @@ import SwiftUI
 import ZIPFoundation
 
 struct RegisterListView: View {
-    @State var fileList: [WorldTemplate] = []
+    @State var pointCloudList: [WorldTemplate] = []
+    @State var viewState: ViewState = .loading
     @EnvironmentObject var viewModel: AppViewModel
     
     var body: some View {
         ZStack {
-            switch(fileList.count) {
-            case 0:
+            switch viewState {
+            case .empty:
                 Text("No Saved Point Cloud")
-            default:
+            case .fail:
+                Text("Failed to Load Point Cloud")
+            case .loading:
+                ProgressView()
+            case .loaded:
                 ScrollView {
                     LazyVStack {
-                        ForEach(fileList) { file in
+                        ForEach(pointCloudList) { file in
                             cardView(file: file)
                         }
                     }
@@ -32,7 +37,7 @@ struct RegisterListView: View {
         }
         .navigationTitle("Saved")
         .onAppear {
-            fileList = getPlyAndImageList()
+            getPointCloudList()
         }
     }
 }
@@ -45,7 +50,7 @@ private extension RegisterListView {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(file.pcdName ?? "")
+                    Text(file.pcdName)
                         .bold()
                         .opacity(0.8)
                     
@@ -106,8 +111,18 @@ private extension RegisterListView {
 // MARK: Handler
 
 private extension RegisterListView {
-    private func getPlyAndImageList() -> [WorldTemplate] {
-        return []
+    private func getPointCloudList() {
+        viewState = .loading
+        NetworkHelper.getPointCloud { data, error in
+            if let error = error {
+                print(error.localizedDescription)
+                viewState = .fail
+            } else {
+                guard let data = data else { return }
+                pointCloudList = data
+                viewState = pointCloudList.isEmpty ? .empty : .loaded
+            }
+        }
     }
     
     private func delete(worldTemplate: WorldTemplate) {

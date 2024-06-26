@@ -8,7 +8,49 @@
 import Foundation
 
 struct NetworkHelper {
-    static func registerPointCloud(_ file: Data, completion: @escaping (NetworkResponse?, Error?) -> Void) {
+    static func getPointCloud(completion: @escaping ([WorldTemplate]?, Error?) -> Void) {
+        guard let url = URL(string: "http://10.24.74.23:8000/api/point_cloud/") else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error getting files: \(error)")
+                completion(nil, error)
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                print("Error with response status code")
+                completion(nil, nil)
+                return
+            }
+
+            guard let data = data else {
+                print("No data received")
+                completion(nil, nil)
+                return
+            }
+
+            do {
+                if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                    if let result = jsonResponse["data"] as? [String] {
+                        let data = result.map { WorldTemplate(pcdName: $0) }
+                        completion(data, nil)
+                        return
+                    }
+                }
+            } catch let parseError {
+                print("JSON parsing error: \(parseError)")
+                completion(nil, parseError)
+                return
+            }
+        }
+
+        task.resume()
+    }
+    
+    static func registerPointCloud(_ file: Data, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
         guard let url = URL(string: "http://10.24.74.23:8000/api/register/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -48,7 +90,7 @@ struct NetworkHelper {
             }
 
             do {
-                let networkResponse = try JSONDecoder().decode(NetworkResponse.self, from: data)
+                let networkResponse = try JSONDecoder().decode(AuthenticationResponse.self, from: data)
                 completion(networkResponse, nil)
                 print("Files uploaded successfully!")
                 return
@@ -62,7 +104,7 @@ struct NetworkHelper {
         task.resume()
     }
     
-    static func authenticatePointCloud(_ file: Data, completion: @escaping (NetworkResponse?, Error?) -> Void) {
+    static func authenticatePointCloud(_ file: Data, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
         guard let url = URL(string: "http://10.24.74.23:8000/api/authenticate/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -102,7 +144,7 @@ struct NetworkHelper {
             }
 
             do {
-                let networkResponse = try JSONDecoder().decode(NetworkResponse.self, from: data)
+                let networkResponse = try JSONDecoder().decode(AuthenticationResponse.self, from: data)
                 completion(networkResponse, nil)
                 print("Files uploaded successfully!")
                 return
