@@ -12,21 +12,14 @@ import Combine
 import AudioToolbox
 
 struct RegisterView: View {
-    @State var session: ARSession
-    @State var scene: SCNScene
+    @State var session: ARSession = ARSession()
+    @State var scene: SCNScene = SCNScene()
     @State private var showMesh = true
     @State private var isIdealDistance: DistanceState = .normal
     @State var isTakingPointCloud = false
     @State var isScreenBlack = false
     
     @EnvironmentObject var viewModel: AppViewModel
-    
-    init() {
-        let session = ARSession()
-        session.run(ARWorldHelper.getARWorldTrackingConfiguration(), options: ARWorldHelper.getARWorldTrackingOptions())
-        self.session = session
-        self.scene = SCNScene()
-    }
     
     var body: some View {
         ZStack {
@@ -40,6 +33,14 @@ struct RegisterView: View {
         }
         .navigationTitle("Register")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            let session = ARSession()
+            session.run(ARWorldHelper.getARWorldTrackingConfiguration(), options: ARWorldHelper.getARWorldTrackingOptions())
+            self.session = session
+        }
+        .onDisappear {
+            self.session.pause()
+        }
     }
 }
 
@@ -189,7 +190,7 @@ private extension RegisterView {
     }
     
     private func saveImage(_ image: UIImage) {
-        if let data = image.jpegData(compressionQuality: 0.9) {  }
+        if let _ = image.jpegData(compressionQuality: 0.9) {  }
     }
     
     private func captureImage() {

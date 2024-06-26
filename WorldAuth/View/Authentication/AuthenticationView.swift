@@ -42,6 +42,9 @@ struct AuthenticationView: View {
             session.run(ARWorldHelper.getARWorldTrackingConfiguration(), options: ARWorldHelper.getARWorldTrackingOptions())
             self.session = session
         }
+        .onDisappear {
+            self.session.pause()
+        }
         .sheet(isPresented: $showOnboarding) {
             OnboardingView()
                 .confirmAction {
