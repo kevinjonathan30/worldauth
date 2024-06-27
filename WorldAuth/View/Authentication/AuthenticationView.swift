@@ -15,23 +15,28 @@ struct AuthenticationView: View {
     @State var scene: SCNScene = SCNScene()
     @State private var showMesh = true
     @State private var isIdealDistance: DistanceState = .normal
-    @State private var fileList: [URL] = []
     @State private var showOnboarding = false
     @State var isTakingPointCloud = false
     @State var pointCloudData: [(position: SIMD3<Float>, color: UIColor)] = []
+    @State var viewState: ViewState = .loaded
     
     var body: some View {
         ZStack {
-            distanceIndicator()
-            
-            ARSceneView(
-                session: self.$session,
-                scene: self.$scene,
-                showMesh: self.$showMesh,
-                isIdealDistance: self.$isIdealDistance
-            )
-            
-            takePointCloudButton()
+            switch(viewState) {
+            case .loading:
+                ProgressView()
+            default:
+                distanceIndicator()
+                
+                ARSceneView(
+                    session: self.$session,
+                    scene: self.$scene,
+                    showMesh: self.$showMesh,
+                    isIdealDistance: self.$isIdealDistance
+                )
+                
+                takePointCloudButton()
+            }
         }
         .navigationTitle("Authentication")
         .toolbar(.hidden)
@@ -40,6 +45,7 @@ struct AuthenticationView: View {
             let session = ARSession()
             session.run(ARWorldHelper.getARWorldTrackingConfiguration(), options: ARWorldHelper.getARWorldTrackingOptions())
             self.session = session
+            self.viewState = .loaded
         }
         .onDisappear {
             self.session.pause()
@@ -162,6 +168,7 @@ private extension AuthenticationView {
     
     private func authenticate() {
         guard let anchors = self.session.currentFrame?.anchors else { return }
+        self.viewState = .loading
         let meshAnchors = anchors.compactMap { $0 as? ARMeshAnchor }
         
         var pointsWithColor: [(position: SIMD3<Float>, color: UIColor)] = []
@@ -173,7 +180,6 @@ private extension AuthenticationView {
         
         pointCloudData.append(contentsOf: pointsWithColor)
         processAuthentication()
-        
     }
     
     private func processAuthentication() {
@@ -193,10 +199,8 @@ private extension AuthenticationView {
             } else {
                 guard let data = data else { return }
                 
-                if data.success == true {
-                    DispatchQueue.main.async {
-                        NavigationHelper.push(.successView(data.fitness ?? 0))
-                    }
+                DispatchQueue.main.async {
+                    NavigationHelper.push(.successView(data.success ?? false, data.fitness ?? 0))
                 }
             }
         }

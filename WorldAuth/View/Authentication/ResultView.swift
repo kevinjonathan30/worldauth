@@ -1,5 +1,5 @@
 //
-//  SuccessView.swift
+//  ResultView.swift
 //  WorldAuth
 //
 //  Created by Kevin Jonathan on 2024/06/24.
@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-struct SuccessView: View {
+struct ResultView: View {
+    let success: Bool
     let similarity: Double
     
-    init(similarity: Double = 0) {
+    init(success: Bool = false, similarity: Double = 0) {
+        self.success = success
         self.similarity = similarity
     }
     
@@ -18,12 +20,12 @@ struct SuccessView: View {
         VStack {
             Spacer()
             
-            Image(systemName: "lock.open.fill")
+            Image(systemName: success ? "lock.open.fill" : "lock.slash.fill")
                 .font(.largeTitle)
             
             Spacer()
             
-            Text("Authentication Success")
+            Text(success ? "Authentication Success" : "Authentication Failed")
                 .font(.title2)
                 .bold()
             
@@ -40,7 +42,7 @@ struct SuccessView: View {
     }
 }
 
-private extension SuccessView {
+private extension ResultView {
     @ViewBuilder func backButton() -> some View {
         Button {
             NavigationHelper.pop()
@@ -62,5 +64,5 @@ private extension SuccessView {
 }
 
 #Preview {
-    SuccessView(similarity: 0.8)
+    ResultView(success: true, similarity: 1.0)
 }

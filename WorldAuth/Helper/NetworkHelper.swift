@@ -8,8 +8,22 @@
 import Foundation
 
 struct NetworkHelper {
+    static private var apiUrl: String {
+      get {
+        guard let filePath = Bundle.main.path(forResource: "WorldAuth-Info", ofType: "plist") else {
+          fatalError("Couldn't find file 'WorldAuth-Info.plist'.")
+        }
+          
+        let plist = NSDictionary(contentsOfFile: filePath)
+        guard let value = plist?.object(forKey: "API_URL") as? String else {
+          fatalError("Couldn't find key 'API_URL' in 'WorldAuth-Info.plist'.")
+        }
+        return value
+      }
+    }
+    
     static func getPointCloud(completion: @escaping ([WorldTemplate]?, Error?) -> Void) {
-        guard let url = URL(string: "http://10.24.74.23:8000/api/point_cloud/") else { return }
+        guard let url = URL(string: apiUrl + "/api/point_cloud/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
 
@@ -51,7 +65,7 @@ struct NetworkHelper {
     }
     
     static func registerPointCloud(_ file: Data, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
-        guard let url = URL(string: "http://10.24.74.23:8000/api/register/") else { return }
+        guard let url = URL(string: apiUrl + "/api/register/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 
@@ -105,7 +119,7 @@ struct NetworkHelper {
     }
     
     static func authenticatePointCloud(_ file: Data, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
-        guard let url = URL(string: "http://10.24.74.23:8000/api/authenticate/") else { return }
+        guard let url = URL(string: apiUrl + "/api/authenticate/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 

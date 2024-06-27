@@ -19,9 +19,9 @@ struct ContentView: View {
                 LazyView(
                     RegisterView()
                 )
-            case .successView(let similarity):
+            case .successView(let success, let similarity):
                 LazyView(
-                    SuccessView(similarity: similarity)
+                    ResultView(success: success, similarity: similarity)
                 )
             }
         }
