@@ -86,27 +86,25 @@ private extension RegisterView {
     
     @ViewBuilder
     private func distanceIndicator() -> some View {
-        if isIdealDistance != .normal {
-            VStack {
-                Text(getDistanceState())
-                    .foregroundStyle(.white)
-                    .zIndex(999)
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .background(.green)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    )
-                    .padding()
-                
-                Spacer()
-            }
-            .padding(.top, 32)
-            .transaction { transaction in
-                transaction.animation = .none
-            }
-            .zIndex(999)
+        VStack {
+            Text(getDistanceState())
+                .foregroundStyle(.white)
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .opacity(isIdealDistance == .normal ? 0 : 0.75)
+                        .zIndex(999)
+                        .clipShape(
+                            RoundedRectangle(cornerRadius: 8)
+                        )
+                )
+                .padding()
+            
+            Spacer()
         }
+        .padding(.top, 32)
+        .animation(.bouncy, value: isIdealDistance)
+        .zIndex(999)
     }
     
     private func getDistanceState() -> String {

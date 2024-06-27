@@ -22,21 +22,18 @@ struct AuthenticationView: View {
     
     var body: some View {
         ZStack {
-            switch(viewState) {
-            case .loading:
-                ProgressView()
-            default:
-                distanceIndicator()
-                
-                ARSceneView(
-                    session: self.$session,
-                    scene: self.$scene,
-                    showMesh: self.$showMesh,
-                    isIdealDistance: self.$isIdealDistance
-                )
-                
-                takePointCloudButton()
-            }
+            distanceIndicator()
+            
+            ARSceneView(
+                session: self.$session,
+                scene: self.$scene,
+                showMesh: self.$showMesh,
+                isIdealDistance: self.$isIdealDistance
+            )
+            
+            stutterView()
+            
+            takePointCloudButton()
         }
         .navigationTitle("Authentication")
         .toolbar(.hidden)
@@ -70,35 +67,37 @@ struct AuthenticationView: View {
 private extension AuthenticationView {
     @ViewBuilder
     private func takePointCloudButton() -> some View {
-        VStack {
-            Spacer()
-            
-            Button(action: { handleTakePointCloudButtonEvent() }) {
-                Image(systemName: getIconByTakePointCloudState())
-                    .foregroundColor(.red)
-                    .font(.title)
-                    .frame(width: 80, height: 80)
-                    .background(Color.white)
-                    .clipShape(Circle())
+        if viewState != .loading {
+            VStack {
+                Spacer()
+                
+                Button(action: { handleTakePointCloudButtonEvent() }) {
+                    Image(systemName: getIconByTakePointCloudState())
+                        .foregroundColor(.red)
+                        .font(.title)
+                        .frame(width: 80, height: 80)
+                        .background(Color.white)
+                        .clipShape(Circle())
+                }
+                .padding()
             }
-            .padding()
-        }
-        .padding(.bottom, 20)
-        .transaction { transaction in
-            transaction.animation = .none
+            .padding(.bottom, 20)
+            .transaction { transaction in
+                transaction.animation = .none
+            }
         }
     }
     
     @ViewBuilder
     private func distanceIndicator() -> some View {
-        if isIdealDistance != .normal {
+        if viewState != .loading {
             VStack {
                 Text(getDistanceState())
                     .foregroundStyle(.white)
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .background(.gray)
+                            .opacity(isIdealDistance == .normal ? 0 : 0.75)
                             .zIndex(999)
                             .clipShape(
                                 RoundedRectangle(cornerRadius: 8)
@@ -109,15 +108,29 @@ private extension AuthenticationView {
                 Spacer()
             }
             .padding(.top, 32)
-            .transaction { transaction in
-                transaction.animation = .none
-            }
+            .animation(.bouncy, value: isIdealDistance)
             .zIndex(999)
         }
     }
     
+    @ViewBuilder
+    private func stutterView() -> some View {
+        ZStack {
+            Color.white
+                
+            ProgressView()
+                .zIndex(999)
+        }
+        .opacity(getStutterViewState())
+        .animation(.easeInOut(duration: 0.1), value: viewState)
+    }
+    
     private func getIconByTakePointCloudState() -> String {
         return isTakingPointCloud ? "stop.circle.fill" : "record.circle.fill"
+    }
+    
+    private func getStutterViewState() -> Double {
+        return viewState == .loading ? 1 : 0
     }
     
     private func getDistanceState() -> String {
@@ -185,7 +198,7 @@ private extension AuthenticationView {
     private func processAuthentication() {
         guard !pointCloudData.isEmpty else { return }
         let plyString = PointCloudHelper.createPlyString(from: pointCloudData)
-
+        
         self.processPly(plyString: plyString)
         
         pointCloudData.removeAll()
