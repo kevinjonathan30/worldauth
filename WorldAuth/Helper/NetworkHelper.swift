@@ -5,7 +5,7 @@
 //  Created by Kevin Jonathan on 2024/06/19.
 //
 
-import Foundation
+import UIKit
 
 struct NetworkHelper {
     static private var apiUrl: String {
@@ -23,9 +23,11 @@ struct NetworkHelper {
     }
     
     static func getPointCloud(completion: @escaping ([WorldTemplate]?, Error?) -> Void) {
+        guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
         guard let url = URL(string: apiUrl + "/api/get_point_cloud/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+        request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -65,12 +67,14 @@ struct NetworkHelper {
     }
     
     static func registerPointCloud(_ file: Data, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
+        guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
         guard let url = URL(string: apiUrl + "/api/register/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
 
         var body = Data()
         
@@ -119,9 +123,11 @@ struct NetworkHelper {
     }
     
     static func authenticatePointCloud(_ file: Data, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
+        guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
         guard let url = URL(string: apiUrl + "/api/authenticate/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
 
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -173,9 +179,11 @@ struct NetworkHelper {
     }
     
     static func deletePointCloud(fileName: String, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
+        guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
         guard let url = URL(string: apiUrl + "/api/delete_point_cloud/\(fileName)/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
+        request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
