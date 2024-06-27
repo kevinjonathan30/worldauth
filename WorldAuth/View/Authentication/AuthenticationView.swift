@@ -18,7 +18,8 @@ struct AuthenticationView: View {
     @State private var showOnboarding = false
     @State var isTakingPointCloud = false
     @State var pointCloudData: [(position: SIMD3<Float>, color: UIColor)] = []
-    @State var viewState: ViewState = .loaded
+    @State var viewState: ViewState = .loading
+    @State var pointCloudList: [WorldTemplate] = []
     
     var body: some View {
         ZStack {
@@ -42,7 +43,7 @@ struct AuthenticationView: View {
             let session = ARSession()
             session.run(ARWorldHelper.getARWorldTrackingConfiguration(), options: ARWorldHelper.getARWorldTrackingOptions())
             self.session = session
-            self.viewState = .loaded
+            getPointCloudList()
         }
         .onDisappear {
             self.session.pause()
@@ -67,7 +68,7 @@ struct AuthenticationView: View {
 private extension AuthenticationView {
     @ViewBuilder
     private func takePointCloudButton() -> some View {
-        if viewState != .loading {
+        if viewState != .loading && !pointCloudList.isEmpty {
             VStack {
                 Spacer()
                 
@@ -162,6 +163,21 @@ private extension AuthenticationView {
 // MARK: Handler
 
 private extension AuthenticationView {
+    private func getPointCloudList() {
+        viewState = .loading
+        NetworkHelper.getPointCloud { data, error in
+            if let error = error {
+                print(error.localizedDescription)
+                viewState = .fail
+            } else {
+                guard let data = data else { return }
+                self.viewState = .loaded
+                pointCloudList = data
+                showOnboarding = data.isEmpty
+            }
+        }
+    }
+    
     private func savePlyFile() {
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
             if !isTakingPointCloud {
@@ -209,6 +225,7 @@ private extension AuthenticationView {
         NetworkHelper.authenticatePointCloud(targetData) { data, error in
             if let error = error {
                 print(error.localizedDescription)
+                self.viewState = .loaded
             } else {
                 guard let data = data else { return }
                 

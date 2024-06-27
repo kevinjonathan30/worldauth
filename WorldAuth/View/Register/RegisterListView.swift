@@ -24,8 +24,8 @@ struct RegisterListView: View {
             case .loaded:
                 ScrollView {
                     LazyVStack {
-                        ForEach(pointCloudList) { file in
-                            cardView(file: file)
+                        ForEach(pointCloudList) { worldTemplate in
+                            cardView(worldTemplate: worldTemplate)
                         }
                     }
                 }
@@ -45,11 +45,11 @@ struct RegisterListView: View {
 
 private extension RegisterListView {
     @ViewBuilder
-    private func cardView(file: WorldTemplate) -> some View {
+    private func cardView(worldTemplate: WorldTemplate) -> some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(file.pcdName)
+                    Text(worldTemplate.pcdName)
                         .bold()
                         .opacity(0.8)
                     
@@ -66,7 +66,7 @@ private extension RegisterListView {
         .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .contextMenu {
             Button(role: .destructive) {
-                delete(worldTemplate: file)
+                delete(worldTemplate: worldTemplate)
             } label: {
                 Label("Delete", systemImage: "trash.fill")
             }
@@ -125,7 +125,17 @@ private extension RegisterListView {
     }
     
     private func delete(worldTemplate: WorldTemplate) {
-        
+        NetworkHelper.deletePointCloud(fileName: worldTemplate.pcdName) { data, error in
+            if let error = error {
+                print(error.localizedDescription)
+                viewState = .fail
+            } else {
+                guard let data = data else { return }
+                if data.success ?? false {
+                    getPointCloudList()
+                }
+            }
+        }
     }
 }
 

@@ -8,6 +8,7 @@
 import Foundation
 
 struct AuthenticationResponse: Codable {
+    let error: String?
     let success: Bool?
     let fitness: Double?
 }

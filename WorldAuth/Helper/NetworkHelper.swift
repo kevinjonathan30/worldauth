@@ -23,7 +23,7 @@ struct NetworkHelper {
     }
     
     static func getPointCloud(completion: @escaping ([WorldTemplate]?, Error?) -> Void) {
-        guard let url = URL(string: apiUrl + "/api/point_cloud/") else { return }
+        guard let url = URL(string: apiUrl + "/api/get_point_cloud/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
 
@@ -153,7 +153,7 @@ struct NetworkHelper {
 
             guard let data = data else {
                 print("No data received")
-                completion(nil, nil)
+                completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
 
@@ -161,6 +161,45 @@ struct NetworkHelper {
                 let networkResponse = try JSONDecoder().decode(AuthenticationResponse.self, from: data)
                 completion(networkResponse, nil)
                 print("Files uploaded successfully!")
+                return
+            } catch let parseError {
+                print("JSON parsing error: \(parseError)")
+                completion(nil, parseError)
+                return
+            }
+        }
+
+        task.resume()
+    }
+    
+    static func deletePointCloud(fileName: String, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
+        guard let url = URL(string: apiUrl + "/api/delete_point_cloud/\(fileName)/") else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error deleting files: \(error)")
+                completion(nil, error)
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                print("Error with response status code")
+                completion(nil, nil)
+                return
+            }
+
+            guard let data = data else {
+                print("No data received")
+                completion(nil, nil)
+                return
+            }
+
+            do {
+                let networkResponse = try JSONDecoder().decode(AuthenticationResponse.self, from: data)
+                completion(networkResponse, nil)
+                print("Files deleted successfully!")
                 return
             } catch let parseError {
                 print("JSON parsing error: \(parseError)")
