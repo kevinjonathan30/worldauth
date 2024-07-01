@@ -43,8 +43,8 @@ extension ARSceneView: UIViewRepresentable {
         context.coordinator.toggleCoachingOverlayIfNeeded(on: arView)
     }
     
-    static func dismantleUIView(_ uiView: ARSCNView, coordinator: Coordinator) {
-        uiView.session.pause()
+    static func dismantleUIView(_ arView: ARSCNView, coordinator: Coordinator) {
+        arView.session.pause()
     }
 }
 
