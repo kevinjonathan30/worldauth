@@ -96,15 +96,6 @@ private extension RegisterListView {
             transaction.animation = .none
         }
     }
-    
-    func loadImageFromURL(fileName: String) -> Image {
-        guard let imageData = FileHelper.getDataByName(atDirectory: "img", fileName: fileName),
-              let uiImage = UIImage(data: imageData) else {
-            return Image(systemName: "photo")
-        }
-        
-        return Image(uiImage: uiImage)
-    }
 }
 
 // MARK: Handler

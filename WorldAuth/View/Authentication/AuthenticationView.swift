@@ -13,7 +13,6 @@ import Combine
 struct AuthenticationView: View {
     @State var session: ARSession = ARSession()
     @State var scene: SCNScene = SCNScene()
-    @State private var showMesh = true
     @State private var isIdealDistance: DistanceState = .normal
     @State private var showOnboarding = false
     @State var isTakingPointCloud = false
@@ -28,11 +27,10 @@ struct AuthenticationView: View {
             ARSceneView(
                 session: self.$session,
                 scene: self.$scene,
-                showMesh: self.$showMesh,
                 isIdealDistance: self.$isIdealDistance
             )
             
-            stutterView()
+            loadingView()
             
             takePointCloudButton()
         }
@@ -72,7 +70,7 @@ private extension AuthenticationView {
             VStack {
                 Spacer()
                 
-                Button(action: { handleTakePointCloudButtonEvent() }) {
+                Button(action: handleTakePointCloudButtonEvent) {
                     Image(systemName: getIconByTakePointCloudState())
                         .foregroundColor(.red)
                         .font(.title)
@@ -115,7 +113,7 @@ private extension AuthenticationView {
     }
     
     @ViewBuilder
-    private func stutterView() -> some View {
+    private func loadingView() -> some View {
         ZStack {
             Color.white
                 

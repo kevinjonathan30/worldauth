@@ -12,7 +12,6 @@ import SwiftUI
 struct ARSceneView {
     @Binding var session: ARSession
     @Binding var scene: SCNScene
-    @Binding var showMesh: Bool
     @Binding var isIdealDistance: DistanceState
 }
 
@@ -22,24 +21,26 @@ extension ARSceneView: UIViewRepresentable {
         arView.rendersMotionBlur = false
         arView.rendersCameraGrain = false
         arView.automaticallyUpdatesLighting = false
+        arView.scene = self.scene
+        
         return arView
     }
     
     func makeCoordinator() -> Self.Coordinator {
         Self.Coordinator(
+            session: self.$session,
             scene: self.$scene,
-            showMesh: self.$showMesh,
             isIdealDistance: self.$isIdealDistance
         )
     }
     
-    func updateUIView(_ uiView: ARSCNView, context: Context) {
-        if uiView.session != self.session {
-            uiView.session.delegate = nil
-            uiView.session = self.session
-            uiView.session.delegate = context.coordinator
+    func updateUIView(_ arView: ARSCNView, context: Context) {
+        if arView.session != self.session {
+            arView.session.delegate = nil
+            arView.session = self.session
+            arView.session.delegate = context.coordinator
         }
-        uiView.scene = self.scene
+        context.coordinator.toggleCoachingOverlayIfNeeded(on: arView)
     }
     
     static func dismantleUIView(_ uiView: ARSCNView, coordinator: Coordinator) {
@@ -49,14 +50,14 @@ extension ARSceneView: UIViewRepresentable {
 
 extension ARSceneView {
     final class Coordinator: NSObject {
+        @Binding var session: ARSession
         @Binding var scene: SCNScene
-        @Binding var showMesh: Bool
         @Binding var isIdealDistance: DistanceState
         var knownAnchors = [UUID: SCNNode]()
         
-        init(scene: Binding<SCNScene>, showMesh: Binding<Bool>, isIdealDistance: Binding<DistanceState>) {
+        init(session: Binding<ARSession>, scene: Binding<SCNScene>, isIdealDistance: Binding<DistanceState>) {
+            self._session = session
             self._scene = scene
-            self._showMesh = showMesh
             self._isIdealDistance = isIdealDistance
         }
     }
@@ -65,36 +66,33 @@ extension ARSceneView {
 extension ARSceneView.Coordinator: ARSessionDelegate {
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         // Clear the existing point cloud and mesh nodes
-            self.scene.rootNode.enumerateChildNodes { (node, _) in
-                if node.name == "PointCloud" || node.name == "Mesh" {
-                    node.removeFromParentNode()
-                }
-            }
-
-        // Add mesh node if showMesh is true
-        if self.showMesh {
-            let meshAnchors = frame.anchors.compactMap { $0 as? ARMeshAnchor }
-            for anchor in meshAnchors {
-                let scnGeometry = SCNGeometry(from: anchor.geometry)
-                
-                let defaultMaterial = SCNMaterial()
-                defaultMaterial.fillMode = .lines
-                defaultMaterial.diffuse.contents = Color.white.cgColor
-                scnGeometry.materials = [defaultMaterial]
-
-                let meshNode = SCNNode(geometry: scnGeometry)
-                meshNode.name = "Mesh"
-                meshNode.simdTransform = anchor.transform
-                
-                self.scene.rootNode.addChildNode(meshNode)
-                
-                self.knownAnchors[anchor.identifier] = meshNode
-            }
+        self.scene.rootNode.enumerateChildNodes { (node, _) in
+            node.removeFromParentNode()
         }
         
         guard let sceneDepth = frame.smoothedSceneDepth ?? frame.sceneDepth else { return }
-        let depthPixelBuffer = sceneDepth.depthMap
-        getDistanceInMeters(pixelBuffer: depthPixelBuffer)
+        let depthMap = sceneDepth.depthMap
+        
+        // Add mesh node
+        let meshAnchors = frame.anchors.compactMap { $0 as? ARMeshAnchor }
+        for anchor in meshAnchors {
+            let scnGeometry = SCNGeometry(from: anchor.geometry)
+            let defaultMaterial = SCNMaterial()
+            defaultMaterial.fillMode = .lines
+            defaultMaterial.diffuse.contents = Color.white.cgColor
+            scnGeometry.materials = [defaultMaterial]
+            
+            let meshNode = SCNNode(geometry: scnGeometry)
+            meshNode.name = "Mesh"
+            meshNode.simdTransform = anchor.transform
+            
+            self.scene.rootNode.addChildNode(meshNode)
+            
+            self.knownAnchors[anchor.identifier] = meshNode
+            
+        }
+        
+        getDistanceInMeters(pixelBuffer: depthMap)
     }
     
     func session(_ session: ARSession, didRemove anchors: [ARAnchor]) {
@@ -109,44 +107,67 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
     }
     
     func getDistanceInMeters(pixelBuffer: CVPixelBuffer) {
-        let _ = CIImage(cvPixelBuffer: pixelBuffer).oriented(.right)
-                    
         let width = CVPixelBufferGetWidth(pixelBuffer)
         let height = CVPixelBufferGetHeight(pixelBuffer)
-                    
+        
         let centerX = width / 2
         let centerY = height / 2
-
-        CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
-        let baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: Float32.self)
-                    
+        
+        CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
+        defer { CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly) }
+        guard let baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: Float32.self) else { return }
+        
         let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
         let pixelIndex = Int(centerY) * bytesPerRow / MemoryLayout<Float32>.stride + Int(centerX)
-                    
-        let depthValue = baseAddress?[pixelIndex]
-                    
-        CVPixelBufferUnlockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
-                    
-        if let depthValue = depthValue {
-            let distanceInMeters = Double(depthValue)
-            
-            if distanceInMeters < 0.3 {
-                isIdealDistance = .close
-            } else if distanceInMeters > 2 {
-                isIdealDistance = .far
-            } else {
-                isIdealDistance = .normal
-            }
+        
+        let depthValue = baseAddress[pixelIndex]
+        
+        let distanceInMeters = Double(depthValue)
+        
+        if distanceInMeters < 0.3 {
+            isIdealDistance = .close
+        } else if distanceInMeters > 2 {
+            isIdealDistance = .far
+        } else {
+            isIdealDistance = .normal
         }
     }
 }
 
+extension ARSceneView.Coordinator: ARCoachingOverlayViewDelegate {
+    func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        self.scene.rootNode.enumerateChildNodes { (node, _) in
+            node.removeFromParentNode()
+        }
+    }
+    
+    func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        coachingOverlayView.removeFromSuperview()
+    }
+    
+    // Toggle coaching overlay based on plane detection
+    func toggleCoachingOverlayIfNeeded(on arView: ARSCNView) {
+        let coachingOverlayView: ARCoachingOverlayView = ARCoachingOverlayView()
+        coachingOverlayView.session = arView.session
+        coachingOverlayView.goal = .verticalPlane
+        coachingOverlayView.autoresizingMask = [
+            .flexibleWidth, .flexibleHeight
+        ]
+        coachingOverlayView.delegate = self
+        coachingOverlayView.center = arView.center
+        coachingOverlayView.tag = 51
+
+        if let alreadyExistView = arView.viewWithTag(51) {
+            alreadyExistView.removeFromSuperview()
+        }
+        arView.addSubview(coachingOverlayView)
+    }
+}
 
 #Preview {
     ARSceneView(
         session: .constant(ARSession()),
         scene: .constant(SCNScene()),
-        showMesh: .constant(false),
         isIdealDistance: .constant(.normal)
     )
 }

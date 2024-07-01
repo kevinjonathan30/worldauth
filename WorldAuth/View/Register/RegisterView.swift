@@ -14,7 +14,6 @@ import AudioToolbox
 struct RegisterView: View {
     @State var session: ARSession = ARSession()
     @State var scene: SCNScene = SCNScene()
-    @State private var showMesh = true
     @State private var isIdealDistance: DistanceState = .normal
     @State var isTakingPointCloud = false
     @State var isScreenBlack = false
@@ -51,7 +50,6 @@ private extension RegisterView {
         ARSceneView(
             session: self.$session,
             scene: self.$scene,
-            showMesh: self.$showMesh,
             isIdealDistance: self.$isIdealDistance
         )
     }
@@ -68,7 +66,7 @@ private extension RegisterView {
         VStack {
             Spacer()
             
-            Button(action: { handleTakePointCloudButtonEvent() }) {
+            Button(action: handleTakePointCloudButtonEvent) {
                 Image(systemName: getIconByTakePointCloudState())
                     .foregroundColor(.red)
                     .font(.title)
@@ -143,7 +141,6 @@ private extension RegisterView {
             }
             let recordStartSoundID: SystemSoundID = 1118
             AudioServicesPlaySystemSound(recordStartSoundID)
-            captureImage()
         } else {
             isTakingPointCloud = true
             savePlyFile()
@@ -182,28 +179,6 @@ private extension RegisterView {
                     pointsWithColor.append(contentsOf: vertices.map { (position: $0, color: UIColor(Color.white)) })
                 }
                 pointCloudData = pointsWithColor
-            }
-        }
-    }
-    
-    private func saveImage(_ image: UIImage) {
-        if let _ = image.jpegData(compressionQuality: 0.9) {  }
-    }
-    
-    private func captureImage() {
-        if let currentFrame = self.session.currentFrame {
-            let image = CIImage(cvPixelBuffer: currentFrame.capturedImage)
-            let context = CIContext()
-            if let cgImage = context.createCGImage(image, from: image.extent) {
-                var uiImage = UIImage(cgImage: cgImage)
-                
-                // Check if the image orientation is landscape
-                if uiImage.size.width > uiImage.size.height {
-                    // Rotate the image to portrait orientation
-                    uiImage = uiImage.rotate(radians: .pi / 2)!
-                }
-                
-                saveImage(uiImage)
             }
         }
     }

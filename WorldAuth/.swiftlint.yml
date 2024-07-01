@@ -1,0 +1,4 @@
+disabled_rules:
+- trailing_newline
+- line_length
+- trailing_whitespace

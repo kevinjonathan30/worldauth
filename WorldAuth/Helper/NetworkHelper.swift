@@ -9,7 +9,6 @@ import UIKit
 
 struct NetworkHelper {
     static private var apiUrl: String {
-      get {
         guard let filePath = Bundle.main.path(forResource: "WorldAuth-Info", ofType: "plist") else {
           fatalError("Couldn't find file 'WorldAuth-Info.plist'.")
         }
@@ -19,7 +18,6 @@ struct NetworkHelper {
           fatalError("Couldn't find key 'API_URL' in 'WorldAuth-Info.plist'.")
         }
         return value
-      }
     }
     
     static func getPointCloud(completion: @escaping ([WorldTemplate]?, Error?) -> Void) {
