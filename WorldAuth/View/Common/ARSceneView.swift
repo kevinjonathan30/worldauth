@@ -54,6 +54,12 @@ extension ARSceneView {
         @Binding var scene: SCNScene
         @Binding var isIdealDistance: DistanceState
         var knownAnchors = [UUID: SCNNode]()
+        let defaultMaterial: SCNMaterial = {
+            let material = SCNMaterial()
+            material.fillMode = .lines
+            material.diffuse.contents = Color.white.cgColor
+            return material
+        }()
         
         init(session: Binding<ARSession>, scene: Binding<SCNScene>, isIdealDistance: Binding<DistanceState>) {
             self._session = session
@@ -75,21 +81,18 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
         
         // Add mesh node
         let meshAnchors = frame.anchors.compactMap { $0 as? ARMeshAnchor }
+
         for anchor in meshAnchors {
             let scnGeometry = SCNGeometry(from: anchor.geometry)
-            let defaultMaterial = SCNMaterial()
-            defaultMaterial.fillMode = .lines
-            defaultMaterial.diffuse.contents = Color.white.cgColor
             scnGeometry.materials = [defaultMaterial]
-            
+
             let meshNode = SCNNode(geometry: scnGeometry)
             meshNode.name = "Mesh"
             meshNode.simdTransform = anchor.transform
-            
+
             self.scene.rootNode.addChildNode(meshNode)
-            
+
             self.knownAnchors[anchor.identifier] = meshNode
-            
         }
         
         getDistanceInMeters(pixelBuffer: depthMap)
@@ -107,18 +110,18 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
     }
     
     func getDistanceInMeters(pixelBuffer: CVPixelBuffer) {
+        CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
+        defer { CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly) }
+        
+        guard let baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: Float32.self) else { return }
+        
         let width = CVPixelBufferGetWidth(pixelBuffer)
         let height = CVPixelBufferGetHeight(pixelBuffer)
-        
         let centerX = width / 2
         let centerY = height / 2
         
-        CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
-        defer { CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly) }
-        guard let baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: Float32.self) else { return }
-        
         let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
-        let pixelIndex = Int(centerY) * bytesPerRow / MemoryLayout<Float32>.stride + Int(centerX)
+        let pixelIndex = centerY * bytesPerRow / MemoryLayout<Float32>.stride + centerX
         
         let depthValue = baseAddress[pixelIndex]
         
@@ -156,7 +159,7 @@ extension ARSceneView.Coordinator: ARCoachingOverlayViewDelegate {
         coachingOverlayView.delegate = self
         coachingOverlayView.center = arView.center
         coachingOverlayView.tag = 51
-
+        
         if let alreadyExistView = arView.viewWithTag(51) {
             alreadyExistView.removeFromSuperview()
         }
