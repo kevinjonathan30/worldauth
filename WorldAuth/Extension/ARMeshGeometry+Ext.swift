@@ -10,8 +10,8 @@ import ARKit
 
 // Ref: https://developer.apple.com/documentation/arkit/armeshgeometry/
 extension ARMeshGeometry {
-    func vertex(at index: UInt32) -> SIMD3<Float> {
-        let vertexPointer = vertices.buffer.contents().advanced(by: vertices.offset + (vertices.stride * Int(index)))
+    func vertex(at index: Int) -> SIMD3<Float> {
+        let vertexPointer = vertices.buffer.contents().advanced(by: vertices.offset + (vertices.stride * index))
         let vertex = vertexPointer.assumingMemoryBound(to: SIMD3<Float>.self).pointee
         return vertex
     }

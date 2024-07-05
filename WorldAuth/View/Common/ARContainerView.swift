@@ -100,6 +100,9 @@ private extension ARContainerView {
 
 private extension ARContainerView {
     private func handleTakePointCloudButtonEvent() {
+        guard let anchors = self.session.currentFrame?.anchors,
+        !anchors.compactMap({ $0 as? ARMeshAnchor }).isEmpty else { return }
+        
         if isTakingPointCloud {
             isTakingPointCloud = false
             isScreenBlack = true

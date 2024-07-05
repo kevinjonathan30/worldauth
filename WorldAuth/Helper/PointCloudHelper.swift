@@ -8,14 +8,13 @@
 import SwiftUI
 import ARKit
 
-struct PointCloudHelper {    
+struct PointCloudHelper {
     static func extractVertices(from geometry: ARMeshGeometry) -> [SIMD3<Float>] {
         let vertexCount = geometry.vertices.count
         var vertices: [SIMD3<Float>] = []
-        vertices.reserveCapacity(vertexCount)
         
         for vertexIndex in 0..<vertexCount {
-            let vertex = geometry.vertex(at: UInt32(vertexIndex))
+            let vertex = geometry.vertex(at: vertexIndex)
             vertices.append(vertex)
         }
         
