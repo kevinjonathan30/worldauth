@@ -30,6 +30,7 @@ struct DistanceToasterView: View {
         }
         .padding(.top, 32)
         .animation(.bouncy, value: isIdealDistance)
+        .zIndex(999)
     }
 }
 

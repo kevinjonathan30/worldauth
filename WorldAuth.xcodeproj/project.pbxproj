@@ -13,6 +13,7 @@
 		5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */; };
 		5D4655F02C22A6F90013CB78 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */; };
 		5D47F1F22C37BD7000FDBA83 /* DistanceToasterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D47F1F12C37BD7000FDBA83 /* DistanceToasterView.swift */; };
+		5D47F1F42C37C44A00FDBA83 /* ARContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D47F1F32C37C44A00FDBA83 /* ARContainerView.swift */; };
 		5D57D1762C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D57D1752C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift */; };
 		5D835E1B2C26A5A200352304 /* DistanceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E1A2C26A5A200352304 /* DistanceState.swift */; };
 		5D835E1F2C29346500352304 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E1E2C29346500352304 /* ResultView.swift */; };
@@ -48,6 +49,7 @@
 		5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
 		5D47F1F12C37BD7000FDBA83 /* DistanceToasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceToasterView.swift; sourceTree = "<group>"; };
+		5D47F1F32C37C44A00FDBA83 /* ARContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARContainerView.swift; sourceTree = "<group>"; };
 		5D57D1752C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARMeshGeometry+Ext.swift"; sourceTree = "<group>"; };
 		5D835E1A2C26A5A200352304 /* DistanceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceState.swift; sourceTree = "<group>"; };
 		5D835E1E2C29346500352304 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 		5DFD7FF02C102DD7009CB20E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				5D47F1F32C37C44A00FDBA83 /* ARContainerView.swift */,
 				5DE2AB152C0AE276000C7346 /* ARSceneView.swift */,
 				5DFD7FEE2C102B79009CB20E /* LazyView.swift */,
 				5D47F1F12C37BD7000FDBA83 /* DistanceToasterView.swift */,
@@ -361,6 +364,7 @@
 				5DEA68922C141C68008CD7A9 /* OnboardingView.swift in Sources */,
 				5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */,
 				5D4655F02C22A6F90013CB78 /* NetworkHelper.swift in Sources */,
+				5D47F1F42C37C44A00FDBA83 /* ARContainerView.swift in Sources */,
 				5D835E242C29653B00352304 /* TabState.swift in Sources */,
 				5DE2AB182C0AE277000C7346 /* SCNGeometry+Ext.swift in Sources */,
 				5D57D1762C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift in Sources */,

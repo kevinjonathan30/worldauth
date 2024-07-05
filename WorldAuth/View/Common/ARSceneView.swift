@@ -13,6 +13,7 @@ struct ARSceneView {
     @Binding var session: ARSession
     @Binding var scene: SCNScene
     @Binding var isIdealDistance: DistanceState
+    @Binding var viewState: ViewState
 }
 
 extension ARSceneView: UIViewRepresentable {
@@ -30,7 +31,8 @@ extension ARSceneView: UIViewRepresentable {
         Self.Coordinator(
             session: self.$session,
             scene: self.$scene,
-            isIdealDistance: self.$isIdealDistance
+            isIdealDistance: self.$isIdealDistance,
+            viewState: self.$viewState
         )
     }
     
@@ -53,6 +55,7 @@ extension ARSceneView {
         @Binding var session: ARSession
         @Binding var scene: SCNScene
         @Binding var isIdealDistance: DistanceState
+        @Binding var viewState: ViewState
         var knownAnchors = [UUID: SCNNode]()
         let defaultMaterial: SCNMaterial = {
             let material = SCNMaterial()
@@ -61,10 +64,11 @@ extension ARSceneView {
             return material
         }()
         
-        init(session: Binding<ARSession>, scene: Binding<SCNScene>, isIdealDistance: Binding<DistanceState>) {
+        init(session: Binding<ARSession>, scene: Binding<SCNScene>, isIdealDistance: Binding<DistanceState>, viewState: Binding<ViewState>) {
             self._session = session
             self._scene = scene
             self._isIdealDistance = isIdealDistance
+            self._viewState = viewState
         }
     }
 }
@@ -142,10 +146,12 @@ extension ARSceneView.Coordinator: ARCoachingOverlayViewDelegate {
         self.scene.rootNode.enumerateChildNodes { (node, _) in
             node.removeFromParentNode()
         }
+        viewState = .fail
     }
     
     func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
         coachingOverlayView.removeFromSuperview()
+        viewState = .loaded
     }
     
     // Toggle coaching overlay based on plane detection
@@ -159,6 +165,7 @@ extension ARSceneView.Coordinator: ARCoachingOverlayViewDelegate {
         coachingOverlayView.delegate = self
         coachingOverlayView.center = arView.center
         coachingOverlayView.tag = 51
+        coachingOverlayView.layer.zPosition = 51
         
         if let alreadyExistView = arView.viewWithTag(51) {
             alreadyExistView.removeFromSuperview()
@@ -171,6 +178,7 @@ extension ARSceneView.Coordinator: ARCoachingOverlayViewDelegate {
     ARSceneView(
         session: .constant(ARSession()),
         scene: .constant(SCNScene()),
-        isIdealDistance: .constant(.normal)
+        isIdealDistance: .constant(.normal),
+        viewState: .constant(.loaded)
     )
 }
