@@ -108,7 +108,10 @@ private extension RegisterListView {
                 print(error.localizedDescription)
                 viewState = .fail
             } else {
-                guard let data = data else { return }
+                guard let data = data else {
+                    viewState = .fail
+                    return
+                }
                 pointCloudList = data
                 viewState = pointCloudList.isEmpty ? .empty : .loaded
             }
