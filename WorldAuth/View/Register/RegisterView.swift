@@ -35,7 +35,11 @@ private extension RegisterView {
                 viewState = .loaded
                 print(error.localizedDescription)
             } else {
-                guard let data = data else { return }
+                guard let data = data else {
+                    viewState = .loaded
+                    return
+                }
+                
                 if data.success == true {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         NavigationHelper.pop()

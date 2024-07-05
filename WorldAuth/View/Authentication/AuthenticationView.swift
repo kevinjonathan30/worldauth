@@ -67,10 +67,14 @@ private extension AuthenticationView {
                 print(error.localizedDescription)
                 self.viewState = .loaded
             } else {
-                guard let data = data else { return }
+                guard let data = data else {
+                    self.viewState = .loaded
+                    return
+                }
                 
                 DispatchQueue.main.async {
                     NavigationHelper.push(.successView(data.success ?? false, data.fitness ?? 0))
+                    self.viewState = .loaded
                 }
             }
         }
