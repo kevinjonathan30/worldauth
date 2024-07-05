@@ -21,7 +21,8 @@ struct RegisterView: View {
     
     var body: some View {
         ZStack {
-            distanceIndicator()
+            DistanceToasterView(isIdealDistance: $isIdealDistance)
+                .zIndex(999)
             
             arSceneView()
             
@@ -79,40 +80,6 @@ private extension RegisterView {
         .padding(.bottom, 20)
         .transaction { transaction in
             transaction.animation = .none
-        }
-    }
-    
-    @ViewBuilder
-    private func distanceIndicator() -> some View {
-        VStack {
-            Text(getDistanceState())
-                .foregroundStyle(.white)
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .opacity(isIdealDistance == .normal ? 0 : 0.75)
-                        .zIndex(999)
-                        .clipShape(
-                            RoundedRectangle(cornerRadius: 8)
-                        )
-                )
-                .padding()
-            
-            Spacer()
-        }
-        .padding(.top, 32)
-        .animation(.bouncy, value: isIdealDistance)
-        .zIndex(999)
-    }
-    
-    private func getDistanceState() -> String {
-        switch isIdealDistance {
-        case .normal:
-            return ""
-        case .close:
-            return "Your device is too close to the environment, please step farther."
-        case .far:
-            return "Your device is too far from the environment, please step closer."
         }
     }
 }

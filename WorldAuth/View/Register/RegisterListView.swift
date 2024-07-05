@@ -16,9 +16,9 @@ struct RegisterListView: View {
         ZStack {
             switch viewState {
             case .empty:
-                Text("No Saved Point Cloud")
+                Text("No Saved Room Template")
             case .fail:
-                Text("Failed to Load Point Cloud")
+                Text("Failed to Load Room Template")
             case .loading:
                 ProgressView()
             case .loaded:

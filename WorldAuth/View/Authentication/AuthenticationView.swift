@@ -22,7 +22,8 @@ struct AuthenticationView: View {
     
     var body: some View {
         ZStack {
-            distanceIndicator()
+            DistanceToasterView(isIdealDistance: $isIdealDistance)
+                .zIndex(999)
             
             ARSceneView(
                 session: self.$session,
@@ -53,9 +54,6 @@ struct AuthenticationView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         NavigationHelper.push(.registerView)
                     }
-                }
-                .cancelAction {
-                    showOnboarding = false
                 }
         }
     }
@@ -88,31 +86,6 @@ private extension AuthenticationView {
     }
     
     @ViewBuilder
-    private func distanceIndicator() -> some View {
-        if viewState != .loading {
-            VStack {
-                Text(getDistanceState())
-                    .foregroundStyle(.white)
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .opacity(isIdealDistance == .normal ? 0 : 0.75)
-                            .zIndex(999)
-                            .clipShape(
-                                RoundedRectangle(cornerRadius: 8)
-                            )
-                    )
-                    .padding()
-                
-                Spacer()
-            }
-            .padding(.top, 32)
-            .animation(.bouncy, value: isIdealDistance)
-            .zIndex(999)
-        }
-    }
-    
-    @ViewBuilder
     private func loadingView() -> some View {
         ZStack {
             Color.white
@@ -130,17 +103,6 @@ private extension AuthenticationView {
     
     private func getStutterViewState() -> Double {
         return viewState == .loading ? 1 : 0
-    }
-    
-    private func getDistanceState() -> String {
-        switch isIdealDistance {
-        case .normal:
-            return ""
-        case .close:
-            return "Your device is too close to the environment, please step farther."
-        case .far:
-            return "Your device is too far from the environment, please step closer."
-        }
     }
     
     private func handleTakePointCloudButtonEvent() {

@@ -9,18 +9,18 @@ import SwiftUI
 
 struct OnboardingView: View {
     var confirmAction: (() -> Void)?
-    var cancelAction: (() -> Void)?
     
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
             
-            Text("No Registered Point Cloud")
+            Text("No Registered Room Template")
                 .multilineTextAlignment(.center)
                 .font(.largeTitle)
                 .bold()
+                .padding(.bottom)
             
-            Text("To use WorldAuth, you must register your point cloud first for authentication purpose. Do you want to register it now?")
+            Text("To use WorldAuth, please register your room template for authentication purpose.")
                 .multilineTextAlignment(.center)
             
             Spacer()
@@ -29,14 +29,17 @@ struct OnboardingView: View {
                 confirmAction?()
             } label: {
                 Text("Register")
+                    .bold()
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(
+                        Capsule(style: .continuous)
+                            .background(.accent)
+                            .clipShape(Capsule())
+                    )
             }
-            
-            Spacer()
-            
-            Button {
-                cancelAction?()
-            } label: {
-                Text("Later")
+            .transaction { transaction in
+                transaction.animation = .none
             }
             
             Spacer()
@@ -58,15 +61,6 @@ extension OnboardingView {
     func confirmAction(_ confirmAction: @escaping(() -> Void)) -> Self {
         var copy = self
         copy.confirmAction = confirmAction
-        return copy
-    }
-    
-    /// cancelAction
-    /// - Parameter cancelAction: runs an action everytime the button is tapped
-    /// - Returns: OnboardingView
-    func cancelAction(_ cancelAction: @escaping(() -> Void)) -> Self {
-        var copy = self
-        copy.cancelAction = cancelAction
         return copy
     }
 }
