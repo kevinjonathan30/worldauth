@@ -34,7 +34,7 @@ struct RegisterListView: View {
             
             floatingButton()
         }
-        .navigationTitle("Saved")
+        .navigationTitle("My Room Template")
         .onAppear {
             getPointCloudList()
         }

@@ -23,8 +23,8 @@ struct WorldAuthApp: App {
                 
                 provideTab(
                     selectedTab: .locations,
-                    alt: "Locations",
-                    systemImage: "location.fill"
+                    alt: "My Room",
+                    systemImage: "house.fill"
                 )
             }
             .onChange(of: selectedTab) { newSelectedTab in

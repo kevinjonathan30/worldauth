@@ -18,6 +18,7 @@ struct DistanceToasterView: View {
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 8)
+                        .foregroundStyle(.black)
                         .opacity(isIdealDistance == .normal ? 0 : 0.75)
                         .zIndex(999)
                         .clipShape(
