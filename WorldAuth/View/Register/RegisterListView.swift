@@ -9,8 +9,14 @@ import SwiftUI
 import ZIPFoundation
 
 struct RegisterListView: View {
-    @State var pointCloudList: [WorldTemplate] = []
+    @State var roomList: [WorldTemplate] = []
     @State var viewState: ViewState = .loading
+    @State var searchQuery: String = ""
+    
+    var filteredRoomList: [WorldTemplate] {
+        guard !searchQuery.isEmpty else { return roomList }
+        return roomList.filter { $0.pcdName.contains(searchQuery) }
+    }
     
     var body: some View {
         ZStack {
@@ -32,19 +38,23 @@ struct RegisterListView: View {
             case .loaded:
                 ScrollView {
                     LazyVStack {
-                        ForEach(pointCloudList) { worldTemplate in
+                        ForEach(filteredRoomList) { worldTemplate in
                             cardView(worldTemplate: worldTemplate)
                         }
                     }
                 }
                 .padding(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
+                .searchable(text: $searchQuery)
+                .refreshable {
+                    getRoomList()
+                }
             }
             
             floatingButton()
         }
         .navigationTitle("My Room Template")
         .onAppear {
-            getPointCloudList()
+            getRoomList()
         }
     }
 }
@@ -57,7 +67,7 @@ private extension RegisterListView {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(worldTemplate.pcdName)
+                    Text(worldTemplate.pcdName.replacingOccurrences(of: ".pcd", with: ""))
                         .bold()
                         .opacity(0.8)
                     
@@ -79,12 +89,11 @@ private extension RegisterListView {
                 Label("Delete", systemImage: "trash.fill")
             }
             .accessibilityLabel(Text("Delete Button", comment: "Accessibility label for Button"))
-            .accessibilityHint(Text("Delete \(worldTemplate.pcdName)", comment: "Accessibility hint for Button"))
+            .accessibilityHint(Text("Delete \(worldTemplate.pcdName.replacingOccurrences(of: ".pcd", with: ""))", comment: "Accessibility hint for Button"))
             .accessibilityAddTraits([.isButton])
         }
-        ProgressView()
-            .accessibilityLabel(Text("Room Template Card View", comment: "Accessibility label for Card View"))
-            .accessibilityHint(Text("\(worldTemplate.pcdName). Please hold to delete", comment: "Accessibility hint for Progress View"))
+        .accessibilityLabel(Text("Room Template Card View", comment: "Accessibility label for Card View"))
+        .accessibilityHint(Text("\(worldTemplate.pcdName.replacingOccurrences(of: ".pcd", with: "")). Please hold to delete", comment: "Accessibility hint for Progress View"))
     }
     
     @ViewBuilder
@@ -118,7 +127,7 @@ private extension RegisterListView {
 // MARK: Handler
 
 private extension RegisterListView {
-    private func getPointCloudList() {
+    private func getRoomList() {
         viewState = .loading
         NetworkHelper.getPointCloud { data, error in
             if let error = error {
@@ -129,8 +138,8 @@ private extension RegisterListView {
                     viewState = .fail
                     return
                 }
-                pointCloudList = data
-                viewState = pointCloudList.isEmpty ? .empty : .loaded
+                roomList = data
+                viewState = filteredRoomList.isEmpty ? .empty : .loaded
             }
         }
     }
@@ -143,7 +152,7 @@ private extension RegisterListView {
             } else {
                 guard let data = data else { return }
                 if data.success ?? false {
-                    getPointCloudList()
+                    getRoomList()
                 }
             }
         }
