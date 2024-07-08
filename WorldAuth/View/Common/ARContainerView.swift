@@ -31,6 +31,9 @@ struct ARContainerView: View {
                 isIdealDistance: self.$isIdealDistance,
                 viewState: self.$viewState
             )
+            .accessibilityElement()
+            .accessibilityLabel(Text("AR Scene View", comment: "Accessibility label for AR scene view"))
+            .accessibilityHint(Text("Displays augmented reality content", comment: "Accessibility hint for AR scene view"))
             
             loadingView()
             
@@ -65,6 +68,7 @@ private extension ARContainerView {
             }
             .padding()
             .disabled(viewState == .fail)
+            .accessibilityElement()
             .accessibilityLabel(Text("Take Room Template Button", comment: "Accessibility label for button"))
             .accessibilityHint(Text("Click this button to scan the room template, and then move the device slowly", comment: "Accessibility hint for button"))
             .accessibilityAddTraits([.isButton])
@@ -86,14 +90,21 @@ private extension ARContainerView {
                     .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
                     .zIndex(999)
                     .padding(.bottom)
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("Loading Indicator", comment: "Accessibility label for loading indicator"))
+                    .accessibilityHint(Text("Indicates that data is loading", comment: "Accessibility hint for loading indicator"))
                 
                 Text("Loading Data..")
                     .foregroundStyle(.white)
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("Loading Text", comment: "Accessibility label for loading text"))
+                    .accessibilityHint(Text("Displays loading message", comment: "Accessibility hint for loading text"))
             }
         }
         .zIndex(999)
         .opacity(viewState == .loading ? 1 : 0)
         .animation(.easeInOut(duration: 0.1), value: viewState)
+        .accessibilityElement()
         .accessibilityLabel(Text("Loading View", comment: "Accessibility label for view"))
         .accessibilityHint(Text("Loading Data", comment: "Accessibility hint for view"))
     }
@@ -112,7 +123,7 @@ private extension ARContainerView {
 private extension ARContainerView {
     private func handleTakePointCloudButtonEvent() {
         guard let anchors = self.session.currentFrame?.anchors,
-        !anchors.compactMap({ $0 as? ARMeshAnchor }).isEmpty else { return }
+              !anchors.compactMap({ $0 as? ARMeshAnchor }).isEmpty else { return }
         
         if isTakingPointCloud {
             isTakingPointCloud = false
@@ -152,7 +163,7 @@ private extension ARContainerView {
 // MARK: Public Modifier
 
 extension ARContainerView {
-
+    
     /// onFinishRecording
     /// - Parameter action: runs an action everytime the recording is finished
     /// - Returns: ARContainerView

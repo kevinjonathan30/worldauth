@@ -22,8 +22,9 @@ struct ResultView: View {
             
             Image(systemName: success ? "lock.open.fill" : "lock.slash.fill")
                 .font(.largeTitle)
-                .accessibilityLabel(Text("Authentication result image", comment: "Accessibility label for image"))
-                .accessibilityHint(Text("\(success ? "Authentication Success" : "Authentication Failed")", comment: "Accessibility hint for image"))
+                .accessibilityElement()
+                .accessibilityLabel(Text("Authentication Result Image", comment: "Accessibility label for image"))
+                .accessibilityHint(Text(success ? "Authentication Success" : "Authentication Failed", comment: "Accessibility hint for image"))
                 .accessibilityAddTraits([.isImage])
             
             Spacer()
@@ -31,13 +32,15 @@ struct ResultView: View {
             Text(success ? "Authentication Success" : "Authentication Failed")
                 .font(.title2)
                 .bold()
-                .accessibilityLabel(Text("Similarity to room template matching result text", comment: "Accessibility label for text"))
-                .accessibilityHint(Text("\(success ? "Authentication Success" : "Authentication Failed")", comment: "Accessibility hint for text"))
+                .accessibilityElement()
+                .accessibilityLabel(Text("Authentication Result Text", comment: "Accessibility label for text"))
+                .accessibilityHint(Text(success ? "Authentication Success" : "Authentication Failed", comment: "Accessibility hint for text"))
                 .accessibilityAddTraits([.isStaticText])
             
-            Text("Similarity: \(similarity * 100)%")
-                .accessibilityLabel(Text("Similarity to room template text", comment: "Accessibility label for text"))
-                .accessibilityHint(Text("The similarity of the scanned room compared to the saved room template is \(similarity * 100)", comment: "Accessibility hint for text"))
+            Text(String(format: "Similarity: %.2f%%", similarity * 100))
+                .accessibilityElement()
+                .accessibilityLabel(Text("Similarity to Room Template Text", comment: "Accessibility label for text"))
+                .accessibilityHint(Text("The similarity of the scanned room compared to the saved room template is \(String(format: "Similarity: %.2f%%", similarity * 100))", comment: "Accessibility hint for text"))
                 .accessibilityAddTraits([.isStaticText])
             
             Spacer()
@@ -62,16 +65,17 @@ private extension ResultView {
                 .padding()
                 .background(
                     Capsule(style: .continuous)
-                        .background(.accent)
+                        .fill(Color.accentColor)
                         .clipShape(Capsule())
                 )
+                .accessibilityElement()
+                .accessibilityLabel(Text("Back to Home Button", comment: "Accessibility label for button"))
+                .accessibilityHint(Text("Return to Home Screen", comment: "Accessibility hint for button"))
+                .accessibilityAddTraits([.isButton])
         }
         .transaction { transaction in
             transaction.animation = .none
         }
-        .accessibilityLabel(Text("Back to Home Button", comment: "Accessibility label for button"))
-        .accessibilityHint(Text("Back To Home", comment: "Accessibility hint for button"))
-        .accessibilityAddTraits([.isButton])
     }
 }
 

@@ -23,6 +23,9 @@ struct AuthenticationView: View {
             .onAppear {
                 getPointCloudList()
             }
+            .accessibilityElement()
+            .accessibilityLabel(Text("Augmented Reality Container", comment: "Accessibility label for the AR container view"))
+            .accessibilityHint(Text("Displays the AR content for authentication", comment: "Accessibility hint for the AR container view"))
             .sheet(isPresented: $showOnboarding) {
                 OnboardingView()
                     .confirmAction {
@@ -31,6 +34,9 @@ struct AuthenticationView: View {
                             NavigationHelper.push(.registerView)
                         }
                     }
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("Onboarding View", comment: "Accessibility label for the onboarding view"))
+                    .accessibilityHint(Text("Displays onboarding instructions", comment: "Accessibility hint for the onboarding view"))
             }
     }
 }

@@ -20,16 +20,20 @@ struct WorldAuthApp: App {
                     alt: "Authentication",
                     systemImage: "key.fill"
                 )
-                .accessibilityLabel(Text("Authentication Tab Menu", comment: "Accessibility label for tab menu"))
-                .accessibilityHint(Text("Authentication menu", comment: "Accessibility hint for tab menu"))
+                .accessibilityElement()
+                .accessibilityLabel(Text("Authentication Tab Menu", comment: "Accessibility label for authentication tab"))
+                .accessibilityHint(Text("Tap to view authentication options", comment: "Accessibility hint for authentication tab"))
+                .accessibilityAddTraits(.isButton)
                 
                 provideTab(
-                    selectedTab: .locations,
+                    selectedTab: .rooms,
                     alt: "My Room",
                     systemImage: "house.fill"
                 )
-                .accessibilityLabel(Text("My Room Tab Menu", comment: "Accessibility label for tab menu"))
-                .accessibilityHint(Text("My room menu", comment: "Accessibility hint for tab menu"))
+                .accessibilityElement()
+                .accessibilityLabel(Text("My Room Tab Menu", comment: "Accessibility label for my room tab"))
+                .accessibilityHint(Text("Tap to view your room list", comment: "Accessibility hint for my room tab"))
+                .accessibilityAddTraits(.isButton)
             }
             .onChange(of: selectedTab) { newSelectedTab in
                 NavigationHelper.pop()
@@ -51,6 +55,9 @@ extension WorldAuthApp {
             .tag(selectedTab)
             .tabItem {
                 Label(alt, systemImage: systemImage)
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("\(alt) Tab", comment: "Accessibility label for tab item"))
+                    .accessibilityHint(Text("Tap to switch to the \(alt) tab", comment: "Accessibility hint for tab item"))
             }
     }
 }

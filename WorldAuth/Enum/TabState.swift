@@ -9,5 +9,5 @@ import Foundation
 
 enum TabState {
     case authentication
-    case locations
+    case rooms
 }

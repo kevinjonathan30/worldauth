@@ -18,10 +18,16 @@ struct ContentView: View {
             case .registerView:
                 LazyView(
                     RegisterView()
+                        .accessibilityElement()
+                        .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
+                        .accessibilityHint(Text("View to register new users", comment: "Accessibility hint for register view"))
                 )
             case .successView(let success, let similarity):
                 LazyView(
                     ResultView(success: success, similarity: similarity)
+                        .accessibilityElement()
+                        .accessibilityLabel(Text("Result View", comment: "Accessibility label for result view"))
+                        .accessibilityHint(Text("View showing registration results", comment: "Accessibility hint for result view"))
                 )
             }
         }
@@ -35,10 +41,16 @@ extension ContentView {
         case .authentication:
             LazyView(
                 AuthenticationView()
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("Authentication View", comment: "Accessibility label for authentication view"))
+                    .accessibilityHint(Text("View to authenticate users", comment: "Accessibility hint for authentication view"))
             )
-        case .locations:
+        case .rooms:
             LazyView(
                 RegisterListView()
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("Register List View", comment: "Accessibility label for register list view"))
+                    .accessibilityHint(Text("View showing the list of registered users", comment: "Accessibility hint for register list view"))
             )
         }
     }

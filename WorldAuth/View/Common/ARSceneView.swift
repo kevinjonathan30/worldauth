@@ -85,17 +85,17 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
         
         // Add mesh node
         let meshAnchors = frame.anchors.compactMap { $0 as? ARMeshAnchor }
-
+        
         for anchor in meshAnchors {
             let scnGeometry = SCNGeometry(from: anchor.geometry)
             scnGeometry.materials = [defaultMaterial]
-
+            
             let meshNode = SCNNode(geometry: scnGeometry)
             meshNode.name = "Mesh"
             meshNode.simdTransform = anchor.transform
-
+            
             self.scene.rootNode.addChildNode(meshNode)
-
+            
             self.knownAnchors[anchor.identifier] = meshNode
         }
         
@@ -166,6 +166,7 @@ extension ARSceneView.Coordinator: ARCoachingOverlayViewDelegate {
         coachingOverlayView.center = arView.center
         coachingOverlayView.tag = 51
         coachingOverlayView.layer.zPosition = 51
+        coachingOverlayView.isAccessibilityElement = true
         coachingOverlayView.accessibilityLabel = "AR Coaching View"
         coachingOverlayView.accessibilityHint = "Please move your device around slowly"
         

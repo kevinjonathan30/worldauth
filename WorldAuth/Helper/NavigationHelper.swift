@@ -20,7 +20,7 @@ struct NavigationHelper {
         switch selectedTab {
         case .authentication:
             return authRouter
-        case .locations:
+        case .rooms:
             return listRouter
         }
     }

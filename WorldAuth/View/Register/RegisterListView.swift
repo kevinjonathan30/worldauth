@@ -23,18 +23,21 @@ struct RegisterListView: View {
             switch viewState {
             case .empty:
                 Text("No Saved Room Template")
+                    .accessibilityElement()
                     .accessibilityLabel(Text("No Saved Room Template Text", comment: "Accessibility label for text"))
-                    .accessibilityHint(Text("No saved room template", comment: "Accessibility hint for text"))
+                    .accessibilityHint(Text("There are no saved room templates.", comment: "Accessibility hint for text"))
                     .accessibilityAddTraits([.isStaticText])
             case .fail:
                 Text("Failed to Load Room Template")
+                    .accessibilityElement()
                     .accessibilityLabel(Text("Failed To Load Room Text", comment: "Accessibility label for text"))
-                    .accessibilityHint(Text("Failed to Load Room Template", comment: "Accessibility hint for text"))
+                    .accessibilityHint(Text("Failed to load room templates. Please try again later.", comment: "Accessibility hint for text"))
                     .accessibilityAddTraits([.isStaticText])
             case .loading:
                 ProgressView()
+                    .accessibilityElement()
                     .accessibilityLabel(Text("Loading Progress View", comment: "Accessibility label for Progress View"))
-                    .accessibilityHint(Text("Loading Data", comment: "Accessibility hint for Progress View"))
+                    .accessibilityHint(Text("Loading data. Please wait.", comment: "Accessibility hint for Progress View"))
             case .loaded:
                 ScrollView {
                     LazyVStack {
@@ -87,13 +90,15 @@ private extension RegisterListView {
                 delete(worldTemplate: worldTemplate)
             } label: {
                 Label("Delete", systemImage: "trash.fill")
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("Delete Button", comment: "Accessibility label for delete button"))
+                    .accessibilityHint(Text("Delete \(worldTemplate.pcdName.replacingOccurrences(of: ".pcd", with: ""))", comment: "Accessibility hint for delete button"))
+                    .accessibilityAddTraits([.isButton])
             }
-            .accessibilityLabel(Text("Delete Button", comment: "Accessibility label for Button"))
-            .accessibilityHint(Text("Delete \(worldTemplate.pcdName.replacingOccurrences(of: ".pcd", with: ""))", comment: "Accessibility hint for Button"))
-            .accessibilityAddTraits([.isButton])
         }
-        .accessibilityLabel(Text("Room Template Card View", comment: "Accessibility label for Card View"))
-        .accessibilityHint(Text("\(worldTemplate.pcdName.replacingOccurrences(of: ".pcd", with: "")). Please hold to delete", comment: "Accessibility hint for Progress View"))
+        .accessibilityElement()
+        .accessibilityLabel(Text("Room Template Card View", comment: "Accessibility label for card view"))
+        .accessibilityHint(Text("Tap and hold to delete \(worldTemplate.pcdName.replacingOccurrences(of: ".pcd", with: ""))", comment: "Accessibility hint for card view"))
     }
     
     @ViewBuilder
@@ -110,13 +115,14 @@ private extension RegisterListView {
                     .padding()
                     .background(
                         Capsule(style: .continuous)
-                            .background(.accent)
+                            .fill(Color.accentColor)
                             .clipShape(Capsule())
                     )
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("Add New Floating Button", comment: "Accessibility label for add new button"))
+                    .accessibilityHint(Text("Add a new room template", comment: "Accessibility hint for add new button"))
+                    .accessibilityAddTraits([.isButton])
             }
-            .accessibilityLabel(Text("Add New Floating Button", comment: "Accessibility label for Button"))
-            .accessibilityHint(Text("Add New Room Template", comment: "Accessibility hint for Button"))
-            .accessibilityAddTraits([.isButton])
         }
         .transaction { transaction in
             transaction.animation = .none

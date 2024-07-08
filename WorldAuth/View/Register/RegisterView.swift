@@ -19,6 +19,9 @@ struct RegisterView: View {
             .onFinishRecording(register(pointCloudData:))
             .navigationTitle("Register")
             .navigationBarTitleDisplayMode(.inline)
+            .accessibilityElement()
+            .accessibilityLabel(Text("Register View", comment: "Accessibility label for Register view"))
+            .accessibilityHint(Text("Register a new room template using AR", comment: "Accessibility hint for Register view"))
     }
 }
 
