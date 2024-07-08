@@ -32,6 +32,9 @@ struct DistanceToasterView: View {
         .padding(.top, 32)
         .animation(.bouncy, value: isIdealDistance)
         .zIndex(999)
+        .accessibilityLabel(Text("Distance Indicator Toaster", comment: "Accessibility label for toaster"))
+        .accessibilityHint(Text("\(getDistanceState())", comment: "Accessibility hint for toaster"))
+        .accessibilityAddTraits([.updatesFrequently])
     }
 }
 

@@ -166,6 +166,8 @@ extension ARSceneView.Coordinator: ARCoachingOverlayViewDelegate {
         coachingOverlayView.center = arView.center
         coachingOverlayView.tag = 51
         coachingOverlayView.layer.zPosition = 51
+        coachingOverlayView.accessibilityLabel = "AR Coaching View"
+        coachingOverlayView.accessibilityHint = "Please move your device around slowly"
         
         if let alreadyExistView = arView.viewWithTag(51) {
             alreadyExistView.removeFromSuperview()

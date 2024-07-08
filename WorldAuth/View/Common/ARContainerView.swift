@@ -65,6 +65,9 @@ private extension ARContainerView {
             }
             .padding()
             .disabled(viewState == .fail)
+            .accessibilityLabel(Text("Take Room Template Button", comment: "Accessibility label for button"))
+            .accessibilityHint(Text("Click this button to scan the room template, and then move the device slowly", comment: "Accessibility hint for button"))
+            .accessibilityAddTraits([.isButton])
         }
         .padding(.bottom, 20)
         .transaction { transaction in
@@ -77,14 +80,22 @@ private extension ARContainerView {
         ZStack {
             Color.black
                 .opacity(0.9)
+            
+            VStack {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+                    .zIndex(999)
+                    .padding(.bottom)
                 
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
-                .zIndex(999)
+                Text("Loading Data..")
+                    .foregroundStyle(.white)
+            }
         }
         .zIndex(999)
         .opacity(viewState == .loading ? 1 : 0)
         .animation(.easeInOut(duration: 0.1), value: viewState)
+        .accessibilityLabel(Text("Loading View", comment: "Accessibility label for view"))
+        .accessibilityHint(Text("Loading Data", comment: "Accessibility hint for view"))
     }
 }
 

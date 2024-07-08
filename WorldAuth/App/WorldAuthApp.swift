@@ -20,12 +20,16 @@ struct WorldAuthApp: App {
                     alt: "Authentication",
                     systemImage: "key.fill"
                 )
+                .accessibilityLabel(Text("Authentication Tab Menu", comment: "Accessibility label for tab menu"))
+                .accessibilityHint(Text("Authentication menu", comment: "Accessibility hint for tab menu"))
                 
                 provideTab(
                     selectedTab: .locations,
                     alt: "My Room",
                     systemImage: "house.fill"
                 )
+                .accessibilityLabel(Text("My Room Tab Menu", comment: "Accessibility label for tab menu"))
+                .accessibilityHint(Text("My room menu", comment: "Accessibility hint for tab menu"))
             }
             .onChange(of: selectedTab) { newSelectedTab in
                 NavigationHelper.pop()
