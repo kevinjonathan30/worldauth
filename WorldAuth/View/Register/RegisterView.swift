@@ -48,6 +48,9 @@ private extension RegisterView {
                         NavigationHelper.pop()
                         viewState = .loaded
                     }
+                } else {
+                    viewState = .loaded
+                    print(data.error ?? "")
                 }
             }
         }

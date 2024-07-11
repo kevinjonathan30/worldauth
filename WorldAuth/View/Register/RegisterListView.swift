@@ -70,7 +70,7 @@ private extension RegisterListView {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(worldTemplate.pcdName.replacingOccurrences(of: ".pcd", with: ""))
+                    Text(worldTemplate.pcdName.replacingOccurrences(of: ".pcd", with: "").replacingOccurrences(of: "_", with: " "))
                         .bold()
                         .opacity(0.8)
                     

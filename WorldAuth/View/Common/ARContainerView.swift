@@ -94,7 +94,7 @@ private extension ARContainerView {
                     .accessibilityLabel(Text("Loading Indicator", comment: "Accessibility label for loading indicator"))
                     .accessibilityHint(Text("Indicates that data is loading", comment: "Accessibility hint for loading indicator"))
                 
-                Text("Loading Data..")
+                Text("Loading..")
                     .foregroundStyle(.white)
                     .accessibilityElement()
                     .accessibilityLabel(Text("Loading Text", comment: "Accessibility label for loading text"))
@@ -106,7 +106,7 @@ private extension ARContainerView {
         .animation(.easeInOut(duration: 0.1), value: viewState)
         .accessibilityElement()
         .accessibilityLabel(Text("Loading View", comment: "Accessibility label for view"))
-        .accessibilityHint(Text("Loading Data", comment: "Accessibility hint for view"))
+        .accessibilityHint(Text("Loading..", comment: "Accessibility hint for view"))
     }
 }
 
