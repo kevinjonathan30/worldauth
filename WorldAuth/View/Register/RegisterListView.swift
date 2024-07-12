@@ -15,17 +15,17 @@ struct RegisterListView: View {
     
     var filteredRoomList: [WorldTemplate] {
         guard !searchQuery.isEmpty else { return roomList }
-        return roomList.filter { $0.pcdName.contains(searchQuery) }
+        return roomList.filter { $0.pcdName.replacingOccurrences(of: ".pcd", with: "").replacingOccurrences(of: "_", with: " ").contains(searchQuery) }
     }
     
     var body: some View {
         ZStack {
             switch viewState {
             case .empty:
-                Text("No Saved Room Template")
+                Text("No Scanned Room Template")
                     .accessibilityElement()
-                    .accessibilityLabel(Text("No Saved Room Template Text", comment: "Accessibility label for text"))
-                    .accessibilityHint(Text("There are no saved room templates.", comment: "Accessibility hint for text"))
+                    .accessibilityLabel(Text("No Scanned Room Template Text", comment: "Accessibility label for text"))
+                    .accessibilityHint(Text("There are no scanned room templates.", comment: "Accessibility hint for text"))
                     .accessibilityAddTraits([.isStaticText])
             case .fail:
                 Text("Failed to Load Room Template")

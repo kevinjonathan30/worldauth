@@ -35,11 +35,12 @@ struct WorldAuthApp: App {
                 .accessibilityHint(Text("Tap to view your room list", comment: "Accessibility hint for my room tab"))
                 .accessibilityAddTraits(.isButton)
             }
-            .onChange(of: selectedTab) { newSelectedTab in
-                NavigationHelper.pop()
-                NavigationHelper.setSelectedTab(
-                    newSelectedTab: newSelectedTab
-                )
+            .onAppear {
+                NotificationCenter.default.addObserver(forName: Notification.Name("SelectedTabChanged"), object: nil, queue: .main) { notification in
+                    if let newSelectedTab = notification.object as? TabState {
+                        selectedTab = newSelectedTab
+                    }
+                }
             }
         }
     }

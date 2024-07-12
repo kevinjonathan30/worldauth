@@ -31,7 +31,7 @@ struct AuthenticationView: View {
                     .confirmAction {
                         showOnboarding = false
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            NavigationHelper.push(.registerView)
+                            NavigationHelper.setSelectedTab(newSelectedTab: .rooms)
                         }
                     }
                     .accessibilityElement()

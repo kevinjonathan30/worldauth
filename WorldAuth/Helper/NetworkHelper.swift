@@ -178,10 +178,11 @@ struct NetworkHelper {
     
     static func deletePointCloud(fileName: String, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
         guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
-        guard let url = URL(string: apiUrl + "/api/delete_point_cloud/\(fileName)/") else { return }
+        guard let url = URL(string: apiUrl + "/api/delete_point_cloud/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
+        request.setValue(fileName, forHTTPHeaderField: "FileRequest")
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {

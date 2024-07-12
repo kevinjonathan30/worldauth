@@ -14,6 +14,7 @@ struct NavigationHelper {
     
     static func setSelectedTab(newSelectedTab: TabState) {
         selectedTab = newSelectedTab
+        NotificationCenter.default.post(name: Notification.Name("SelectedTabChanged"), object: newSelectedTab)
     }
     
     static func getRouter() -> Router<Path> {
