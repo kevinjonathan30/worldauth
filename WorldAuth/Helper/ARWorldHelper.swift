@@ -14,7 +14,6 @@ struct ARWorldHelper {
         configuration.sceneReconstruction = .meshWithClassification
         configuration.planeDetection = [.horizontal]
         configuration.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
-        configuration.environmentTexturing = .automatic
         
         return configuration
     }
