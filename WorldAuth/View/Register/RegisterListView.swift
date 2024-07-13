@@ -15,7 +15,7 @@ struct RegisterListView: View {
     
     var filteredRoomList: [WorldTemplate] {
         guard !searchQuery.isEmpty else { return roomList }
-        return roomList.filter { $0.pcdName.replacingOccurrences(of: ".pcd", with: "").replacingOccurrences(of: "_", with: " ").contains(searchQuery) }
+        return roomList.filter { $0.pcdName.replacingOccurrences(of: ".ply", with: "").replacingOccurrences(of: "_", with: " ").contains(searchQuery) }
     }
     
     var body: some View {
@@ -70,7 +70,7 @@ private extension RegisterListView {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(worldTemplate.pcdName.replacingOccurrences(of: ".pcd", with: "").replacingOccurrences(of: "_", with: " "))
+                    Text(worldTemplate.pcdName.replacingOccurrences(of: ".ply", with: "").replacingOccurrences(of: "_", with: " "))
                         .bold()
                         .opacity(0.8)
                     
