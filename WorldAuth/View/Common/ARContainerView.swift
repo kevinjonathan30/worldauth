@@ -27,6 +27,7 @@ struct ARContainerView: View {
             
             ARSceneView(
                 session: self.$session,
+                scene: self.$scene,
                 isIdealDistance: self.$isIdealDistance,
                 viewState: self.$viewState
             )
