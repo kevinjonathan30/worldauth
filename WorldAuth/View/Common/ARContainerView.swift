@@ -11,12 +11,10 @@ import SceneKit
 import Combine
 
 struct ARContainerView: View {
-    @State var session: ARSession = ARSession()
-    @State var scene: SCNScene = SCNScene()
+    @State private var session: ARSession = ARSession()
+    @State private var scene: SCNScene = SCNScene()
     @State private var isIdealDistance: DistanceState = .normal
-    @State var isTakingPointCloud = false
-    @State var isScreenBlack = false
-    @State var pointCloudData: [(position: SIMD3<Float>, color: UIColor)] = []
+    @State private var isTakingPointCloud = false
     @Binding var viewState: ViewState
     
     var onFinishRecording: (([(position: SIMD3<Float>, color: UIColor)]) -> Void)?
@@ -28,6 +26,7 @@ struct ARContainerView: View {
             ARSceneView(
                 session: self.$session,
                 scene: self.$scene,
+                isTakingPointCloud: self.$isTakingPointCloud,
                 isIdealDistance: self.$isIdealDistance,
                 viewState: self.$viewState
             )
@@ -125,37 +124,24 @@ private extension ARContainerView {
         guard let anchors = self.session.currentFrame?.anchors,
               !anchors.compactMap({ $0 as? ARMeshAnchor }).isEmpty else { return }
         
+        guard let anchors = self.session.currentFrame?.anchors else { return }
+        let meshAnchors = anchors.compactMap { $0 as? ARMeshAnchor }
+        guard !meshAnchors.isEmpty else { return }
+        
         if isTakingPointCloud {
-            isTakingPointCloud = false
-            isScreenBlack = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                isScreenBlack = false
+            var pointsWithColor: [(position: SIMD3<Float>, color: UIColor)] = []
+            for anchor in meshAnchors {
+                let vertices = PointCloudHelper.extractVertices(from: anchor.geometry)
+                pointsWithColor.append(contentsOf: vertices.map { (position: $0, color: UIColor(Color.white)) })
             }
+            isTakingPointCloud = false
             let recordStartSoundID: SystemSoundID = 1118
             AudioServicesPlaySystemSound(recordStartSoundID)
-            onFinishRecording?(pointCloudData)
+            onFinishRecording?(pointsWithColor)
         } else {
             isTakingPointCloud = true
-            savePlyFile()
             let recordStartSoundID: SystemSoundID = 1117
             AudioServicesPlaySystemSound(recordStartSoundID)
-        }
-    }
-    
-    private func savePlyFile() {
-        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-            if !isTakingPointCloud {
-                timer.invalidate()
-            } else {
-                guard let anchors = self.session.currentFrame?.anchors else { return }
-                let meshAnchors = anchors.compactMap { $0 as? ARMeshAnchor }
-                var pointsWithColor: [(position: SIMD3<Float>, color: UIColor)] = []
-                for anchor in meshAnchors {
-                    let vertices = PointCloudHelper.extractVertices(from: anchor.geometry)
-                    pointsWithColor.append(contentsOf: vertices.map { (position: $0, color: UIColor(Color.white)) })
-                }
-                pointCloudData = pointsWithColor
-            }
         }
     }
 }
