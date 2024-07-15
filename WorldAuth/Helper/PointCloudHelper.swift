@@ -14,7 +14,7 @@ struct PointCloudHelper {
         var vertices: [SIMD3<Float>] = []
         
         for vertexIndex in 0..<vertexCount {
-            let vertex = geometry.vertex(at: vertexIndex)
+            let vertex = geometry.vertex(at: UInt32(vertexIndex))
             vertices.append(vertex)
         }
         

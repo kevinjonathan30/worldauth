@@ -121,18 +121,21 @@ private extension ARContainerView {
 
 private extension ARContainerView {
     private func handleTakePointCloudButtonEvent() {
-        guard let anchors = self.session.currentFrame?.anchors,
-              !anchors.compactMap({ $0 as? ARMeshAnchor }).isEmpty else { return }
-        
-        guard let anchors = self.session.currentFrame?.anchors else { return }
-        let meshAnchors = anchors.compactMap { $0 as? ARMeshAnchor }
-        guard !meshAnchors.isEmpty else { return }
+        guard let meshAnchors = session.currentFrame?.anchors.compactMap({ $0 as? ARMeshAnchor }), !meshAnchors.isEmpty else { return }
         
         if isTakingPointCloud {
             var pointsWithColor: [(position: SIMD3<Float>, color: UIColor)] = []
             for anchor in meshAnchors {
                 let vertices = PointCloudHelper.extractVertices(from: anchor.geometry)
-                pointsWithColor.append(contentsOf: vertices.map { (position: $0, color: UIColor(Color.white)) })
+                
+                // Transform vertices to world coordinates based on anchor's transform
+                let transformedVertices = vertices.map { vertex -> (position: SIMD3<Float>, color: UIColor) in
+                    let positionInLocal = vertex.position
+                    let positionInWorld = anchor.transform * SIMD4<Float>(positionInLocal.x, positionInLocal.y, positionInLocal.z, 1)
+                    return (position: SIMD3<Float>(positionInWorld.x, positionInWorld.y, positionInWorld.z), color: UIColor(Color.white))
+                }
+                
+                pointsWithColor.append(contentsOf: transformedVertices)
             }
             isTakingPointCloud = false
             let recordStartSoundID: SystemSoundID = 1118
