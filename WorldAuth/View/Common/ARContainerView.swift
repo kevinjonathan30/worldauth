@@ -48,6 +48,9 @@ struct ARContainerView: View {
         .onDisappear {
             self.session.pause()
         }
+        .onChange(of: isInitialized) { _ in
+            isTakingPointCloud = false
+        }
     }
 }
 
