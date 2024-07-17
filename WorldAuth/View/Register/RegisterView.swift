@@ -13,10 +13,19 @@ import AudioToolbox
 
 struct RegisterView: View {
     @State var viewState: ViewState = .loaded
+    @State private var showAlert = false
+    @State private var article = AlertArticle(title: "", description: "")
     
     var body: some View {
         ARContainerView(viewState: $viewState)
             .onFinishRecording(register(pointCloudData:))
+            .alert(article.title, isPresented: $showAlert, presenting: article) { _ in
+                Button("Close", role: .cancel) {
+                    showAlert = false
+                }
+            } message: { article in
+                Text(article.description)
+            }
             .navigationTitle("Register")
             .navigationBarTitleDisplayMode(.inline)
             .accessibilityElement()
@@ -36,7 +45,8 @@ private extension RegisterView {
         NetworkHelper.registerPointCloud(Data(plyString.utf8)) { data, error in
             if let error = error {
                 viewState = .loaded
-                print(error.localizedDescription)
+                article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
+                showAlert = true
             } else {
                 guard let data = data else {
                     viewState = .loaded

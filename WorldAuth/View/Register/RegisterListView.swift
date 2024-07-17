@@ -12,6 +12,8 @@ struct RegisterListView: View {
     @State var roomList: [WorldTemplate] = []
     @State var viewState: ViewState = .loading
     @State var searchQuery: String = ""
+    @State private var showAlert = false
+    @State private var article = AlertArticle(title: "", description: "")
     
     var filteredRoomList: [WorldTemplate] {
         guard !searchQuery.isEmpty else { return roomList }
@@ -58,6 +60,13 @@ struct RegisterListView: View {
         .navigationTitle("My Room Template")
         .onAppear {
             getRoomList()
+        }
+        .alert(article.title, isPresented: $showAlert, presenting: article) { _ in
+            Button("Close", role: .cancel) {
+                showAlert = false
+            }
+        } message: { article in
+            Text(article.description)
         }
     }
 }
@@ -137,7 +146,8 @@ private extension RegisterListView {
         viewState = .loading
         NetworkHelper.getPointCloud { data, error in
             if let error = error {
-                print(error.localizedDescription)
+                article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
+                showAlert = true
                 viewState = .fail
             } else {
                 guard let data = data else {
@@ -153,7 +163,8 @@ private extension RegisterListView {
     private func delete(worldTemplate: WorldTemplate) {
         NetworkHelper.deletePointCloud(fileName: worldTemplate.pcdName) { data, error in
             if let error = error {
-                print(error.localizedDescription)
+                article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
+                showAlert = true
                 viewState = .fail
             } else {
                 guard let data = data else { return }

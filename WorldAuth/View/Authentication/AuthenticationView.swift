@@ -13,6 +13,8 @@ import Combine
 struct AuthenticationView: View {
     @State private var showOnboarding = false
     @State var viewState: ViewState = .loading
+    @State private var showAlert = false
+    @State private var article = AlertArticle(title: "", description: "")
     
     var body: some View {
         ARContainerView(viewState: $viewState)
@@ -38,6 +40,13 @@ struct AuthenticationView: View {
                     .accessibilityLabel(Text("Onboarding View", comment: "Accessibility label for the onboarding view"))
                     .accessibilityHint(Text("Displays onboarding instructions", comment: "Accessibility hint for the onboarding view"))
             }
+            .alert(article.title, isPresented: $showAlert, presenting: article) { _ in
+                Button("Close", role: .cancel) {
+                    showAlert = false
+                }
+            } message: { article in
+                Text(article.description)
+            }
     }
 }
 
@@ -48,7 +57,8 @@ private extension AuthenticationView {
         viewState = .loading
         NetworkHelper.getPointCloud { data, error in
             if let error = error {
-                print(error.localizedDescription)
+                article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
+                showAlert = true
                 viewState = .fail
             } else {
                 guard let data = data else {
@@ -73,7 +83,8 @@ private extension AuthenticationView {
         let targetData = Data(plyString.utf8)
         NetworkHelper.authenticatePointCloud(targetData) { data, error in
             if let error = error {
-                print(error.localizedDescription)
+                article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
+                showAlert = true
                 self.viewState = .loaded
             } else {
                 guard let data = data else {

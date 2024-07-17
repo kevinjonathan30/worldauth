@@ -34,15 +34,15 @@ struct NetworkHelper {
                 return
             }
 
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
                 print("Error with response status code")
-                completion(nil, nil)
+                completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
 
             guard let data = data else {
                 print("No data received")
-                completion(nil, nil)
+                completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
 
@@ -93,15 +93,15 @@ struct NetworkHelper {
                 return
             }
 
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
                 print("Error with response status code")
-                completion(nil, nil)
+                completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
 
             guard let data = data else {
                 print("No data received")
-                completion(nil, nil)
+                completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
 
@@ -149,9 +149,9 @@ struct NetworkHelper {
                 return
             }
 
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
                 print("Error with response status code")
-                completion(nil, nil)
+                completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
 
@@ -191,15 +191,15 @@ struct NetworkHelper {
                 return
             }
 
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
                 print("Error with response status code")
-                completion(nil, nil)
+                completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
 
             guard let data = data else {
                 print("No data received")
-                completion(nil, nil)
+                completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
 
