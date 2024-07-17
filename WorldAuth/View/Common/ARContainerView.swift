@@ -14,6 +14,7 @@ struct ARContainerView: View {
     @State private var session: ARSession = ARSession()
     @State private var scene: SCNScene = SCNScene()
     @State private var isIdealDistance: DistanceState = .normal
+    @State private var isInitialized = false
     @State private var isTakingPointCloud = false
     @Binding var viewState: ViewState
     
@@ -26,6 +27,7 @@ struct ARContainerView: View {
             ARSceneView(
                 session: self.$session,
                 scene: self.$scene,
+                isInitialized: self.$isInitialized,
                 isTakingPointCloud: self.$isTakingPointCloud,
                 isIdealDistance: self.$isIdealDistance,
                 viewState: self.$viewState
@@ -58,15 +60,22 @@ private extension ARContainerView {
             Spacer()
             
             Button(action: handleTakePointCloudButtonEvent) {
-                Image(systemName: getIconByTakePointCloudState())
-                    .foregroundColor(.red)
-                    .font(.title)
-                    .frame(width: 80, height: 80)
-                    .background(Color.white)
-                    .clipShape(Circle())
+                if isInitialized {
+                    Image(systemName: getIconByTakePointCloudState())
+                        .foregroundColor(.red)
+                        .font(.title)
+                        .frame(width: 80, height: 80)
+                        .background(Color.white)
+                        .clipShape(Circle())
+                } else {
+                    ProgressView()
+                        .frame(width: 80, height: 80)
+                        .background(Color.white)
+                        .clipShape(Circle())
+                }
             }
             .padding()
-            .disabled(viewState == .fail)
+            .disabled(viewState == .fail || !isInitialized)
             .accessibilityElement()
             .accessibilityLabel(Text("Take Room Template Button", comment: "Accessibility label for button"))
             .accessibilityHint(Text("Click this button to scan the room template, and then move the device slowly", comment: "Accessibility hint for button"))
@@ -121,7 +130,7 @@ private extension ARContainerView {
 
 private extension ARContainerView {
     private func handleTakePointCloudButtonEvent() {
-        guard let meshAnchors = session.currentFrame?.anchors.compactMap({ $0 as? ARMeshAnchor }), !meshAnchors.isEmpty else { return }
+        guard let meshAnchors = session.currentFrame?.anchors.compactMap({ $0 as? ARMeshAnchor }) else { return }
         
         if isTakingPointCloud {
             var pointsWithColor: [(position: SIMD3<Float>, color: UIColor)] = []

@@ -12,6 +12,7 @@ import SwiftUI
 struct ARSceneView {
     @Binding var session: ARSession
     @Binding var scene: SCNScene
+    @Binding var isInitialized: Bool
     @Binding var isTakingPointCloud: Bool
     @Binding var isIdealDistance: DistanceState
     @Binding var viewState: ViewState
@@ -32,6 +33,7 @@ extension ARSceneView: UIViewRepresentable {
         Self.Coordinator(
             session: self.$session,
             scene: self.$scene,
+            isInitialized: self.$isInitialized,
             isTakingPointCloud: self.$isTakingPointCloud,
             isIdealDistance: self.$isIdealDistance,
             viewState: self.$viewState
@@ -56,6 +58,7 @@ extension ARSceneView {
     final class Coordinator: NSObject {
         @Binding var session: ARSession
         @Binding var scene: SCNScene
+        @Binding var isInitialized: Bool
         @Binding var isTakingPointCloud: Bool
         @Binding var isIdealDistance: DistanceState
         @Binding var viewState: ViewState
@@ -68,9 +71,17 @@ extension ARSceneView {
             return material
         }()
         
-        init(session: Binding<ARSession>, scene: Binding<SCNScene>, isTakingPointCloud: Binding<Bool>, isIdealDistance: Binding<DistanceState>, viewState: Binding<ViewState>) {
+        init(
+            session: Binding<ARSession>,
+            scene: Binding<SCNScene>,
+            isInitialized: Binding<Bool>,
+            isTakingPointCloud: Binding<Bool>,
+            isIdealDistance: Binding<DistanceState>,
+            viewState: Binding<ViewState>
+        ) {
             self._session = session
             self._scene = scene
+            self._isInitialized = isInitialized
             self._isTakingPointCloud = isTakingPointCloud
             self._isIdealDistance = isIdealDistance
             self._viewState = viewState
@@ -87,13 +98,15 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
         
         guard let sceneDepth = frame.smoothedSceneDepth ?? frame.sceneDepth else { return }
         let depthMap = sceneDepth.depthMap
+        guard let meshAnchors = session.currentFrame?.anchors.compactMap({ $0 as? ARMeshAnchor }), !meshAnchors.isEmpty else {
+            isInitialized = false
+            return
+        }
+        isInitialized = true
         
         getDistanceInMeters(pixelBuffer: depthMap)
         
         if isTakingPointCloud {
-            // Add mesh node
-            let meshAnchors = frame.anchors.compactMap { $0 as? ARMeshAnchor }
-            
             for anchor in meshAnchors {
                 let scnGeometry = SCNGeometry(from: anchor.geometry)
                 scnGeometry.materials = [defaultMaterial]
@@ -150,9 +163,6 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
 
 extension ARSceneView.Coordinator: ARCoachingOverlayViewDelegate {
     func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
-        self.scene.rootNode.enumerateChildNodes { (node, _) in
-            node.removeFromParentNode()
-        }
         viewState = .fail
     }
     
@@ -188,6 +198,7 @@ extension ARSceneView.Coordinator: ARCoachingOverlayViewDelegate {
     ARSceneView(
         session: .constant(ARSession()),
         scene: .constant(SCNScene()),
+        isInitialized: .constant(false),
         isTakingPointCloud: .constant(false),
         isIdealDistance: .constant(.normal),
         viewState: .constant(.loaded)
