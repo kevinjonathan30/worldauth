@@ -26,7 +26,6 @@
 		5DE2AB0F2C0AE22D000C7346 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE2AB0E2C0AE22D000C7346 /* Preview Assets.xcassets */; };
 		5DE2AB172C0AE277000C7346 /* ARSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB152C0AE276000C7346 /* ARSceneView.swift */; };
 		5DE2AB182C0AE277000C7346 /* SCNGeometry+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB162C0AE277000C7346 /* SCNGeometry+Ext.swift */; };
-		5DE2AB1B2C0AE302000C7346 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 5DE2AB1A2C0AE302000C7346 /* ZIPFoundation */; };
 		5DEA68712C11765A008CD7A9 /* RegisterListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68702C11765A008CD7A9 /* RegisterListView.swift */; };
 		5DEA68732C117A67008CD7A9 /* PointCloudHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68722C117A67008CD7A9 /* PointCloudHelper.swift */; };
 		5DEA68752C119C70008CD7A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68742C119C70008CD7A9 /* AppDelegate.swift */; };
@@ -88,7 +87,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DE2AB1B2C0AE302000C7346 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,7 +265,6 @@
 			);
 			name = WorldAuth;
 			packageProductDependencies = (
-				5DE2AB1A2C0AE302000C7346 /* ZIPFoundation */,
 			);
 			productName = WorldAuth;
 			productReference = 5DE2AB042C0AE22B000C7346 /* WorldAuth.app */;
@@ -298,7 +295,6 @@
 			);
 			mainGroup = 5DE2AAFB2C0AE22B000C7346;
 			packageReferences = (
-				5DE2AB192C0AE302000C7346 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			productRefGroup = 5DE2AB052C0AE22B000C7346 /* Products */;
 			projectDirPath = "";
@@ -522,7 +518,7 @@
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = "arkit armv7";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -559,7 +555,7 @@
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = "arkit armv7";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -600,25 +596,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		5DE2AB192C0AE302000C7346 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.19;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		5DE2AB1A2C0AE302000C7346 /* ZIPFoundation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5DE2AB192C0AE302000C7346 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
-			productName = ZIPFoundation;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5DE2AAFC2C0AE22B000C7346 /* Project object */;
 }
