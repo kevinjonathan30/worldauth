@@ -96,13 +96,14 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
             node.removeFromParentNode()
         }
         
-        guard let sceneDepth = frame.smoothedSceneDepth ?? frame.sceneDepth else { return }
-        let depthMap = sceneDepth.depthMap
         guard let meshAnchors = session.currentFrame?.anchors.compactMap({ $0 as? ARMeshAnchor }), !meshAnchors.isEmpty else {
             isInitialized = false
             return
         }
         isInitialized = true
+        
+        guard let sceneDepth = frame.smoothedSceneDepth ?? frame.sceneDepth else { return }
+        let depthMap = sceneDepth.depthMap
         
         getDistanceInMeters(pixelBuffer: depthMap)
         
