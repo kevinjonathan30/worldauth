@@ -17,7 +17,8 @@ struct RegisterListView: View {
     
     var filteredRoomList: [WorldTemplate] {
         guard !searchQuery.isEmpty else { return roomList }
-        return roomList.filter { $0.pcdName.replacingOccurrences(of: ".ply", with: "").replacingOccurrences(of: "_", with: " ").contains(searchQuery) }
+        return roomList
+            .filter { $0.pcdName.replacingOccurrences(of: ".ply", with: "").replacingOccurrences(of: "_", with: " ").contains(searchQuery) }
     }
     
     var body: some View {
@@ -43,7 +44,7 @@ struct RegisterListView: View {
             case .loaded:
                 ScrollView {
                     LazyVStack {
-                        ForEach(filteredRoomList) { worldTemplate in
+                        ForEach(filteredRoomList.sorted(by: {$0.pcdName < $1.pcdName})) { worldTemplate in
                             cardView(worldTemplate: worldTemplate)
                         }
                     }
@@ -112,29 +113,36 @@ private extension RegisterListView {
     
     @ViewBuilder
     private func floatingButton() -> some View {
-        VStack {
-            Spacer()
-            
-            Button {
-                NavigationHelper.push(.registerView)
-            } label: {
-                Text("Add New")
-                    .bold()
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(
-                        Capsule(style: .continuous)
-                            .fill(Color.accentColor)
-                            .clipShape(Capsule())
-                    )
-                    .accessibilityElement()
-                    .accessibilityLabel(Text("Add New Floating Button", comment: "Accessibility label for add new button"))
-                    .accessibilityHint(Text("Add a new room template", comment: "Accessibility hint for add new button"))
-                    .accessibilityAddTraits([.isButton])
+        if viewState == .empty || viewState == .loaded {
+            VStack {
+                Spacer()
+                
+                Button {
+                    if roomList.count >= 3 {
+                        article = AlertArticle(title: "Room Template Limit Reached", description: "You can only register up to 3 room templates. Please delete one registered room before registering the new one.")
+                        showAlert = true
+                    } else {
+                        NavigationHelper.push(.registerView)
+                    }
+                } label: {
+                    Text("Add New")
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(
+                            Capsule(style: .continuous)
+                                .fill(Color.accentColor)
+                                .clipShape(Capsule())
+                        )
+                        .accessibilityElement()
+                        .accessibilityLabel(Text("Add New Floating Button", comment: "Accessibility label for add new button"))
+                        .accessibilityHint(Text("Add a new room template", comment: "Accessibility hint for add new button"))
+                        .accessibilityAddTraits([.isButton])
+                }
             }
-        }
-        .transaction { transaction in
-            transaction.animation = .none
+            .transaction { transaction in
+                transaction.animation = .none
+            }
         }
     }
 }
