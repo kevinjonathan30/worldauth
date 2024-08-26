@@ -22,6 +22,13 @@ struct ContentView: View {
                         .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
                         .accessibilityHint(Text("View to register new users", comment: "Accessibility hint for register view"))
                 )
+            case .collectView:
+                LazyView(
+                    CollectView()
+                        .accessibilityElement()
+                        .accessibilityLabel(Text("Collect View", comment: "Accessibility label for collect view"))
+                        .accessibilityHint(Text("View to collect point clouds", comment: "Accessibility hint for collect view"))
+                )
             case .successView(let success, let similarity):
                 LazyView(
                     ResultView(success: success, similarity: similarity)

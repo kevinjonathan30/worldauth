@@ -55,9 +55,8 @@ private extension CollectView {
                 
                 if data.success == true {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        NavigationHelper.pop()
                         viewState = .loaded
-                        article = AlertArticle(title: "Registration done", description: "Successfully registered a point cloud to server")
-                        showAlert = true
                     }
                 } else {
                     viewState = .loaded

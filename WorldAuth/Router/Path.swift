@@ -10,5 +10,6 @@ import Foundation
 enum Path: Hashable {
     case root
     case registerView
+    case collectView
     case successView(Bool, Double)
 }

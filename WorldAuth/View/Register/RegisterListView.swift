@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ZIPFoundation
 
 struct RegisterListView: View {
     @State var roomList: [WorldTemplate] = []
@@ -118,12 +117,12 @@ private extension RegisterListView {
                 Spacer()
                 
                 Button {
-                    if roomList.count >= 3 {
-                        article = AlertArticle(title: "Room Template Limit Reached", description: "You can only register up to 3 room templates. Please delete one registered room before registering the new one.")
-                        showAlert = true
-                    } else {
-                        NavigationHelper.push(.registerView)
-                    }
+//                    if roomList.count >= 3 {
+//                        article = AlertArticle(title: "Room Template Limit Reached", description: "You can only register up to 3 room templates. Please delete one registered room before registering the new one.")
+//                        showAlert = true
+//                    } else {
+                        NavigationHelper.push(.collectView)
+//                    }
                 } label: {
                     Text("Add New")
                         .bold()

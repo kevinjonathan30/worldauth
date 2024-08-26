@@ -14,7 +14,33 @@ struct WorldAuthApp: App {
     
     var body: some Scene {
         WindowGroup {
-            CollectView()
+            TabView(selection: $selectedTab) {
+                provideTab(
+                    selectedTab: .authentication,
+                    alt: "Authentication",
+                    systemImage: "key.fill"
+                )
+                .accessibilityElement()
+                .accessibilityLabel(Text("Authentication Tab Menu", comment: "Accessibility label for authentication tab"))
+                .accessibilityHint(Text("Tap to view authentication options", comment: "Accessibility hint for authentication tab"))
+                .accessibilityAddTraits(.isButton)
+                
+                provideTab(
+                    selectedTab: .rooms,
+                    alt: "My Room",
+                    systemImage: "house.fill"
+                )
+                .accessibilityElement()
+                .accessibilityLabel(Text("My Room Tab Menu", comment: "Accessibility label for my room tab"))
+                .accessibilityHint(Text("Tap to view your room list", comment: "Accessibility hint for my room tab"))
+                .accessibilityAddTraits(.isButton)
+            }
+            .onChange(of: selectedTab) { newSelectedTab in
+                NavigationHelper.pop()
+                NavigationHelper.setSelectedTab(
+                    newSelectedTab: newSelectedTab
+                )
+            }
         }
     }
 }
