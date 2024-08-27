@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ZIPFoundation
 
 struct RegisterListView: View {
     @State var roomList: [WorldTemplate] = []
