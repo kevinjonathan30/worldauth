@@ -42,7 +42,7 @@ private extension RegisterView {
         viewState = .loading
         let plyString = PointCloudHelper.createPlyString(from: pointCloudData)
         
-        NetworkHelper.registerPointCloud(Data(plyString.utf8)) { data, error in
+        NetworkHelper.collectPointCloud(Data(plyString.utf8)) { data, error in
             if let error = error {
                 viewState = .loaded
                 article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
