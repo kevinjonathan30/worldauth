@@ -22,38 +22,12 @@ struct PointCloudHelper {
     }
     
     static func createPlyString(from points: [(position: SIMD3<Float>, color: UIColor)]) -> String {
-        let header = "ply\n" +
-        "format ascii 1.0\n" +
-        "element vertex \(points.count)\n" +
-        "property float x\n" +
-        "property float y\n" +
-        "property float z\n" +
-        "property uchar red\n" +
-        "property uchar green\n" +
-        "property uchar blue\n" +
-        "property uchar alpha\n" +
-        "element face 0\n" + // No faces
-        "property list uchar int vertex_indices\n" + // Omit face and vertex indices
-        "end_header\n"
-        
         var body = ""
         
         for point in points {
-            var red: CGFloat = 0.0
-            var green: CGFloat = 0.0
-            var blue: CGFloat = 0.0
-            var alpha: CGFloat = 0.0
-            
-            point.color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-            
-            let redByte = UInt8(red * 255)
-            let greenByte = UInt8(green * 255)
-            let blueByte = UInt8(blue * 255)
-            let alphaByte = UInt8(alpha * 255)
-            
-            body += "\(point.position.x) \(point.position.y) \(point.position.z) \(redByte) \(greenByte) \(blueByte) \(alphaByte)\n"
+            body += "\(point.position.x) \(point.position.y) \(point.position.z)\n"
         }
         
-        return header + body
+        return body
     }
 }
