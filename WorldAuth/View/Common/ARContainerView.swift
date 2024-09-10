@@ -72,6 +72,7 @@ private extension ARContainerView {
                         .clipShape(Circle())
                 } else {
                     ProgressView()
+                        .tint(.black)
                         .frame(width: 80, height: 80)
                         .background(Color.white)
                         .clipShape(Circle())

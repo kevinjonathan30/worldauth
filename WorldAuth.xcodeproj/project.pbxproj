@@ -54,6 +54,7 @@
 		5D47F1F12C37BD7000FDBA83 /* DistanceToasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceToasterView.swift; sourceTree = "<group>"; };
 		5D47F1F32C37C44A00FDBA83 /* ARContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARContainerView.swift; sourceTree = "<group>"; };
 		5D57D1752C1AE08E007CD6AD /* ARMeshGeometry+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARMeshGeometry+Ext.swift"; sourceTree = "<group>"; };
+		5D8077722C882B12001A7F7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5D835E1A2C26A5A200352304 /* DistanceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceState.swift; sourceTree = "<group>"; };
 		5D835E1E2C29346500352304 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		5D835E212C29416500352304 /* AuthenticationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationResponse.swift; sourceTree = "<group>"; };
@@ -95,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5D04AEC82C9013EC00E3C75E /* Collect */ = {
+			isa = PBXGroup;
+			children = (
+				5D1CB4D32C7C42CA004F59A5 /* CollectView.swift */,
+			);
+			path = Collect;
+			sourceTree = "<group>";
+		};
 		5D15EE4E2C0D88F600673052 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -103,7 +112,7 @@
 				5DFD7FF02C102DD7009CB20E /* Common */,
 				5D57D1772C1AE8B3007CD6AD /* Onboarding */,
 				5D57D1782C1AE8CA007CD6AD /* Register */,
-				5D1CB4D32C7C42CA004F59A5 /* CollectView.swift */,
+				5D04AEC82C9013EC00E3C75E /* Collect */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -208,6 +217,7 @@
 		5DE2AB062C0AE22B000C7346 /* WorldAuth */ = {
 			isa = PBXGroup;
 			children = (
+				5D8077722C882B12001A7F7A /* Info.plist */,
 				5D15EE4F2C0D890500673052 /* App */,
 				5D835E192C26A58C00352304 /* Enum */,
 				5D15EE512C0D892900673052 /* Extension */,
@@ -515,6 +525,7 @@
 				DEVELOPMENT_TEAM = 3USSPQR589;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WorldAuth/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app will use camera/lidar for sensing data. ";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -552,6 +563,7 @@
 				DEVELOPMENT_TEAM = 3USSPQR589;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WorldAuth/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app will use camera/lidar for sensing data. ";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

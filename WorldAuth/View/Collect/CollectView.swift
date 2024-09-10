@@ -28,6 +28,7 @@ struct CollectView: View {
             }
             .navigationTitle("Register")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar(.hidden, for: .tabBar)
             .accessibilityElement()
             .accessibilityLabel(Text("Register View", comment: "Accessibility label for Register view"))
             .accessibilityHint(Text("Register a new room template using AR", comment: "Accessibility hint for Register view"))
