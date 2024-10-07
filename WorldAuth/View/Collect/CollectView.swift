@@ -15,6 +15,7 @@ struct CollectView: View {
     @State var viewState: ViewState = .loaded
     @State private var showAlert = false
     @State private var article = AlertArticle(title: "", description: "")
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         ARContainerView(viewState: $viewState)
@@ -56,7 +57,7 @@ private extension CollectView {
                 
                 if data.success == true {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        NavigationHelper.pop()
+                        dismiss()
                         viewState = .loaded
                     }
                 } else {

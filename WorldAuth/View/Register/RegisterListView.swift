@@ -135,14 +135,14 @@ private extension RegisterListView {
             VStack {
                 Spacer()
                 
-                Button {
-                    //                    if roomList.count >= 3 {
-                    //                        article = AlertArticle(title: "Room Template Limit Reached", description: "You can only register up to 3 room templates. Please delete one registered room before registering the new one.")
-                    //                        showAlert = true
-                    //                    } else {
-                    NavigationHelper.push(.collectView)
-                    //                    }
-                } label: {
+                NavigationLink(
+                    destination: LazyView(
+                        CollectView()
+                            .accessibilityElement()
+                            .accessibilityLabel(Text("Collect View", comment: "Accessibility label for collect view"))
+                            .accessibilityHint(Text("View to collect point clouds", comment: "Accessibility hint for collect view"))
+                    )
+                ) {
                     Text("Add New")
                         .bold()
                         .foregroundColor(.white)
@@ -150,12 +150,12 @@ private extension RegisterListView {
                         .background(
                             Capsule(style: .continuous)
                                 .fill(Color.accentColor)
-                                .clipShape(Capsule())
                         )
                         .accessibilityElement()
                         .accessibilityLabel(Text("Add New Floating Button", comment: "Accessibility label for add new button"))
                         .accessibilityHint(Text("Add a new room template", comment: "Accessibility hint for add new button"))
                         .accessibilityAddTraits([.isButton])
+                    
                 }
             }
             .transaction { transaction in
