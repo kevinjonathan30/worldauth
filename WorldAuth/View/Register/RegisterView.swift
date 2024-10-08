@@ -12,6 +12,7 @@ import Combine
 import AudioToolbox
 
 struct RegisterView: View {
+    @Environment(\.dismiss) private var dismiss
     @State var viewState: ViewState = .loaded
     @State private var showAlert = false
     @State private var article = AlertArticle(title: "", description: "")
@@ -28,6 +29,7 @@ struct RegisterView: View {
             }
             .navigationTitle("Register")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar(.hidden, for: .tabBar)
             .accessibilityElement()
             .accessibilityLabel(Text("Register View", comment: "Accessibility label for Register view"))
             .accessibilityHint(Text("Register a new room template using AR", comment: "Accessibility hint for Register view"))
@@ -55,7 +57,7 @@ private extension RegisterView {
                 
                 if data.success == true {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        NavigationHelper.pop()
+                        dismiss()
                         viewState = .loaded
                     }
                 } else {

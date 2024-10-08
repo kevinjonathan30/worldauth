@@ -8,54 +8,51 @@
 import SwiftUI
 
 struct ContentView: View {
-    var selectedTab: TabState = .authentication
-    
     var body: some View {
-        ViewRouter(router: NavigationHelper.getRouter()) { path in
-            switch path {
-            case .root:
-                determineView()
-            case .registerView:
+        TabView {
+            NavigationStack {
                 LazyView(
-                    RegisterView()
+                    AuthenticationView()
                         .accessibilityElement()
-                        .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
-                        .accessibilityHint(Text("View to register new users", comment: "Accessibility hint for register view"))
+                        .accessibilityLabel(Text("Authentication View", comment: "Accessibility label for authentication view"))
+                        .accessibilityHint(Text("View to authenticate users", comment: "Accessibility hint for authentication view"))
                 )
-            case .successView(let success, let similarity):
+                .accessibilityElement()
+                .accessibilityLabel(Text("Authentication Tab Menu", comment: "Accessibility label for authentication tab"))
+                .accessibilityHint(Text("Tap to view authentication options", comment: "Accessibility hint for authentication tab"))
+                .accessibilityAddTraits(.isButton)
+            }
+            .tag("Authentication")
+            .tabItem {
+                Label("Authentication", systemImage: "key.fill")
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("Authentication Tab", comment: "Accessibility label for tab item"))
+                    .accessibilityHint(Text("Tap to switch to the Authentication tab", comment: "Accessibility hint for tab item"))
+            }
+            
+            NavigationStack {
                 LazyView(
-                    ResultView(success: success, similarity: similarity)
+                    RegisterListView()
                         .accessibilityElement()
-                        .accessibilityLabel(Text("Result View", comment: "Accessibility label for result view"))
-                        .accessibilityHint(Text("View showing registration results", comment: "Accessibility hint for result view"))
+                        .accessibilityLabel(Text("Register List View", comment: "Accessibility label for register list view"))
+                        .accessibilityHint(Text("View showing the list of registered users", comment: "Accessibility hint for register list view"))
                 )
+                .accessibilityElement()
+                .accessibilityLabel(Text("My Room Tab Menu", comment: "Accessibility label for my room tab"))
+                .accessibilityHint(Text("Tap to view your room list", comment: "Accessibility hint for my room tab"))
+                .accessibilityAddTraits(.isButton)
+            }
+            .tag("My Room Template")
+            .tabItem {
+                Label("My Room Template", systemImage: "house.fill")
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("My Room Template Tab", comment: "Accessibility label for tab item"))
+                    .accessibilityHint(Text("Tap to switch to the My Room Template tab", comment: "Accessibility hint for tab item"))
             }
         }
     }
 }
 
-extension ContentView {
-    @ViewBuilder
-    func determineView() -> some View {
-        switch self.selectedTab {
-        case .authentication:
-            LazyView(
-                AuthenticationView()
-                    .accessibilityElement()
-                    .accessibilityLabel(Text("Authentication View", comment: "Accessibility label for authentication view"))
-                    .accessibilityHint(Text("View to authenticate users", comment: "Accessibility hint for authentication view"))
-            )
-        case .rooms:
-            LazyView(
-                RegisterListView()
-                    .accessibilityElement()
-                    .accessibilityLabel(Text("Register List View", comment: "Accessibility label for register list view"))
-                    .accessibilityHint(Text("View showing the list of registered users", comment: "Accessibility hint for register list view"))
-            )
-        }
-    }
-}
-
 #Preview {
-    ContentView(selectedTab: .authentication)
+    ContentView()
 }

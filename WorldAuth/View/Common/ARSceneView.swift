@@ -100,7 +100,8 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
             isInitialized = false
             return
         }
-        isInitialized = true
+
+        self.isInitialized = true
         
         guard let sceneDepth = frame.smoothedSceneDepth ?? frame.sceneDepth else { return }
         let depthMap = sceneDepth.depthMap

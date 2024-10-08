@@ -64,7 +64,7 @@ struct NetworkHelper {
         task.resume()
     }
     
-    static func registerPointCloud(_ file: Data, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
+    static func registerPointCloud(_ file: Data, completion: @escaping (AuthenticationResult?, Error?) -> Void) {
         guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
         guard let url = URL(string: apiUrl + "/api/register/") else { return }
         var request = URLRequest(url: url)
@@ -106,7 +106,7 @@ struct NetworkHelper {
             }
 
             do {
-                let networkResponse = try JSONDecoder().decode(AuthenticationResponse.self, from: data)
+                let networkResponse = try JSONDecoder().decode(AuthenticationResult.self, from: data)
                 completion(networkResponse, nil)
                 print("Files uploaded successfully!")
                 return
@@ -120,7 +120,7 @@ struct NetworkHelper {
         task.resume()
     }
     
-    static func authenticatePointCloud(_ file: Data, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
+    static func authenticatePointCloud(_ file: Data, completion: @escaping (AuthenticationResult?, Error?) -> Void) {
         guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
         guard let url = URL(string: apiUrl + "/api/authenticate/") else { return }
         var request = URLRequest(url: url)
@@ -162,7 +162,7 @@ struct NetworkHelper {
             }
 
             do {
-                let networkResponse = try JSONDecoder().decode(AuthenticationResponse.self, from: data)
+                let networkResponse = try JSONDecoder().decode(AuthenticationResult.self, from: data)
                 completion(networkResponse, nil)
                 print("Files uploaded successfully!")
                 return
@@ -176,7 +176,7 @@ struct NetworkHelper {
         task.resume()
     }
     
-    static func deletePointCloud(fileName: String, completion: @escaping (AuthenticationResponse?, Error?) -> Void) {
+    static func deletePointCloud(fileName: String, completion: @escaping (AuthenticationResult?, Error?) -> Void) {
         guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
         guard let url = URL(string: apiUrl + "/api/delete_point_cloud/") else { return }
         var request = URLRequest(url: url)
@@ -204,7 +204,7 @@ struct NetworkHelper {
             }
 
             do {
-                let networkResponse = try JSONDecoder().decode(AuthenticationResponse.self, from: data)
+                let networkResponse = try JSONDecoder().decode(AuthenticationResult.self, from: data)
                 completion(networkResponse, nil)
                 print("Files deleted successfully!")
                 return

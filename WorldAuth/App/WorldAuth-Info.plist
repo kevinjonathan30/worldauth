@@ -3,6 +3,8 @@
 <plist version="1.0">
 <dict>
 	<key>API_URL</key>
+	<string>http://localhost:8000</string>
+	<key>API_URL_BACKUP</key>
 	<string>https://REMOVED-NGROK</string>
 </dict>
 </plist>

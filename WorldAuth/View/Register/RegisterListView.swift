@@ -41,14 +41,33 @@ struct RegisterListView: View {
                     .accessibilityLabel(Text("Loading Progress View", comment: "Accessibility label for Progress View"))
                     .accessibilityHint(Text("Loading data. Please wait.", comment: "Accessibility hint for Progress View"))
             case .loaded:
-                ScrollView {
-                    LazyVStack {
-                        ForEach(filteredRoomList.sorted(by: {$0.pcdName < $1.pcdName})) { worldTemplate in
-                            cardView(worldTemplate: worldTemplate)
-                        }
+                List {
+                    ForEach(filteredRoomList.sorted(by: {$0.pcdName < $1.pcdName})) { worldTemplate in
+                        Text(worldTemplate.pcdName.replacingOccurrences(of: ".ply", with: "").replacingOccurrences(of: "_", with: " "))
+                            .bold()
+                            .opacity(0.8)
+                            .swipeActions(edge: .trailing) {
+                                Button {
+                                    delete(worldTemplate: worldTemplate)
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                        .resizable()
+                                }
+                                .tint(.red)
+                            }
+                            .contextMenu {
+                                Button(role: .destructive) {
+                                    delete(worldTemplate: worldTemplate)
+                                } label: {
+                                    Label("Delete", systemImage: "trash.fill")
+                                        .accessibilityElement()
+                                        .accessibilityLabel(Text("Delete Button", comment: "Accessibility label for delete button"))
+                                        .accessibilityHint(Text("Delete \(worldTemplate.pcdName.replacingOccurrences(of: ".pcd", with: ""))", comment: "Accessibility hint for delete button"))
+                                        .accessibilityAddTraits([.isButton])
+                                }
+                            }
                     }
                 }
-                .padding(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
                 .searchable(text: $searchQuery)
                 .refreshable {
                     getRoomList()
@@ -116,14 +135,14 @@ private extension RegisterListView {
             VStack {
                 Spacer()
                 
-                Button {
-                    if roomList.count >= 3 {
-                        article = AlertArticle(title: "Room Template Limit Reached", description: "You can only register up to 3 room templates. Please delete one registered room before registering the new one.")
-                        showAlert = true
-                    } else {
-                        NavigationHelper.push(.registerView)
-                    }
-                } label: {
+                NavigationLink(
+                    destination: LazyView(
+                        RegisterView()
+                            .accessibilityElement()
+                            .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
+                            .accessibilityHint(Text("View to register point clouds", comment: "Accessibility hint for register view"))
+                    )
+                ) {
                     Text("Add New")
                         .bold()
                         .foregroundColor(.white)
@@ -131,12 +150,12 @@ private extension RegisterListView {
                         .background(
                             Capsule(style: .continuous)
                                 .fill(Color.accentColor)
-                                .clipShape(Capsule())
                         )
                         .accessibilityElement()
                         .accessibilityLabel(Text("Add New Floating Button", comment: "Accessibility label for add new button"))
                         .accessibilityHint(Text("Add a new room template", comment: "Accessibility hint for add new button"))
                         .accessibilityAddTraits([.isButton])
+                    
                 }
             }
             .transaction { transaction in

@@ -14,39 +14,65 @@ struct AuthenticationView: View {
     @State private var showOnboarding = false
     @State var viewState: ViewState = .loading
     @State private var showAlert = false
+    @State private var navigateToRegister: Bool = false
+    @State private var navigateToResult: AuthenticationResult?
     @State private var article = AlertArticle(title: "", description: "")
     
     var body: some View {
-        ARContainerView(viewState: $viewState)
-            .onFinishRecording(authenticate(pointCloudData:))
-            .navigationTitle("Authentication")
-            .toolbar(.hidden)
-            .edgesIgnoringSafeArea(.top)
-            .onAppear {
-                getPointCloudList()
-            }
-            .accessibilityElement()
-            .accessibilityLabel(Text("Augmented Reality Container", comment: "Accessibility label for the AR container view"))
-            .accessibilityHint(Text("Displays the AR content for authentication", comment: "Accessibility hint for the AR container view"))
-            .sheet(isPresented: $showOnboarding) {
-                OnboardingView()
-                    .confirmAction {
-                        showOnboarding = false
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            NavigationHelper.push(.registerView)
-                        }
-                    }
-                    .accessibilityElement()
-                    .accessibilityLabel(Text("Onboarding View", comment: "Accessibility label for the onboarding view"))
-                    .accessibilityHint(Text("Displays onboarding instructions", comment: "Accessibility hint for the onboarding view"))
-            }
-            .alert(article.title, isPresented: $showAlert, presenting: article) { _ in
-                Button("Close", role: .cancel) {
-                    showAlert = false
+        VStack {
+            ARContainerView(viewState: $viewState)
+                .onFinishRecording(authenticate(pointCloudData:))
+                .navigationTitle("Authentication")
+                .toolbar(.hidden)
+                .edgesIgnoringSafeArea(.top)
+                .onAppear {
+                    getPointCloudList()
                 }
-            } message: { article in
-                Text(article.description)
-            }
+                .accessibilityElement()
+                .accessibilityLabel(Text("Augmented Reality Container", comment: "Accessibility label for the AR container view"))
+                .accessibilityHint(Text("Displays the AR content for authentication", comment: "Accessibility hint for the AR container view"))
+                .sheet(isPresented: $showOnboarding) {
+                    OnboardingView()
+                        .confirmAction {
+                            showOnboarding = false
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                navigateToRegister = true
+                            }
+                        }
+                        .accessibilityElement()
+                        .accessibilityLabel(Text("Onboarding View", comment: "Accessibility label for the onboarding view"))
+                        .accessibilityHint(Text("Displays onboarding instructions", comment: "Accessibility hint for the onboarding view"))
+                }
+                .alert(article.title, isPresented: $showAlert, presenting: article) { _ in
+                    Button("Close", role: .cancel) {
+                        showAlert = false
+                    }
+                } message: { article in
+                    Text(article.description)
+                }
+            
+            NavigationLink(destination: LazyView(
+                RegisterView()
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
+                    .accessibilityHint(Text("View to register new users", comment: "Accessibility hint for register view"))
+            ), isActive: $navigateToRegister, label: { EmptyView() })
+            
+            NavigationLink(destination: LazyView(
+                ResultView(success: navigateToResult?.success ?? false, similarity: navigateToResult?.fitness ?? 0)
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("Result View", comment: "Accessibility label for result view"))
+                    .accessibilityHint(Text("View showing registration results", comment: "Accessibility hint for result view"))
+            ), isActive: Binding(
+                get: { navigateToResult != nil },
+                set: { isActive in
+                    if !isActive {
+                        navigateToResult = nil
+                    }
+                }
+            ), label: { EmptyView() }
+            )
+        }
     }
 }
 
@@ -93,7 +119,8 @@ private extension AuthenticationView {
                 }
                 
                 DispatchQueue.main.async {
-                    NavigationHelper.push(.successView(data.success ?? false, data.fitness ?? 0))
+//                    NavigationHelper.push(.successView(data.success ?? false, data.fitness ?? 0))
+                    navigateToResult = AuthenticationResult(error: nil, success: data.success ?? false, fitness: data.fitness ?? 0)
                     self.viewState = .loaded
                 }
             }
