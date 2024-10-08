@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ResultView: View {
+    @Environment(\.dismiss) private var dismiss
     let success: Bool
     let similarity: Double
     
@@ -57,7 +58,7 @@ struct ResultView: View {
 private extension ResultView {
     @ViewBuilder func backButton() -> some View {
         Button {
-            NavigationHelper.pop()
+            dismiss()
         } label: {
             Text("Back to Home")
                 .bold()

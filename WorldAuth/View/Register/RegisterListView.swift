@@ -137,10 +137,10 @@ private extension RegisterListView {
                 
                 NavigationLink(
                     destination: LazyView(
-                        CollectView()
+                        RegisterView()
                             .accessibilityElement()
-                            .accessibilityLabel(Text("Collect View", comment: "Accessibility label for collect view"))
-                            .accessibilityHint(Text("View to collect point clouds", comment: "Accessibility hint for collect view"))
+                            .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
+                            .accessibilityHint(Text("View to register point clouds", comment: "Accessibility hint for register view"))
                     )
                 ) {
                     Text("Add New")

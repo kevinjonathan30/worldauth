@@ -12,6 +12,7 @@ import Combine
 import AudioToolbox
 
 struct RegisterView: View {
+    @Environment(\.dismiss) private var dismiss
     @State var viewState: ViewState = .loaded
     @State private var showAlert = false
     @State private var article = AlertArticle(title: "", description: "")
@@ -43,7 +44,7 @@ private extension RegisterView {
         viewState = .loading
         let plyString = PointCloudHelper.createPlyString(from: pointCloudData)
         
-        NetworkHelper.collectPointCloud(Data(plyString.utf8)) { data, error in
+        NetworkHelper.registerPointCloud(Data(plyString.utf8)) { data, error in
             if let error = error {
                 viewState = .loaded
                 article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
@@ -56,7 +57,7 @@ private extension RegisterView {
                 
                 if data.success == true {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        NavigationHelper.pop()
+                        dismiss()
                         viewState = .loaded
                     }
                 } else {
