@@ -155,7 +155,6 @@ private extension RegisterListView {
                         .accessibilityLabel(Text("Add New Floating Button", comment: "Accessibility label for add new button"))
                         .accessibilityHint(Text("Add a new room template", comment: "Accessibility hint for add new button"))
                         .accessibilityAddTraits([.isButton])
-                    
                 }
             }
             .transaction { transaction in

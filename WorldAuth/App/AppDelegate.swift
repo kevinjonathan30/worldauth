@@ -7,6 +7,7 @@
 
 import UIKit
 import ARKit
+import FirebaseCore
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -36,6 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Unsupported Device: This app requires the LiDAR Scanner to access the scene's depth.
             """)
         }
+        
+        FirebaseApp.configure()
         
         return true
     }
