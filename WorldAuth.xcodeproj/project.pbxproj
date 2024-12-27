@@ -112,7 +112,6 @@
 			children = (
 				5DEA68742C119C70008CD7A9 /* AppDelegate.swift */,
 				5DE2AB0B2C0AE22D000C7346 /* Assets.xcassets */,
-				5DF60A932CD35B7800C7D189 /* GoogleService-Info.plist */,
 				5DE2AB1C2C0AE329000C7346 /* Info.plist */,
 				5D05D5AB2C2D02EB00F9A742 /* WorldAuth-Info.plist */,
 				5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */,
@@ -224,6 +223,7 @@
 				5DE2AB0D2C0AE22D000C7346 /* Preview Content */,
 				5D15EE4E2C0D88F600673052 /* View */,
 				5DAEA23A2C3296EB00644088 /* .swiftlint.yml */,
+				5DF60A932CD35B7800C7D189 /* GoogleService-Info.plist */,
 			);
 			path = WorldAuth;
 			sourceTree = "<group>";
@@ -328,6 +328,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		5D93F3A92D1E89DA001D29ED /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);

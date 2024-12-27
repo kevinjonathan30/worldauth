@@ -7,13 +7,15 @@
 
 import UIKit
 import ARKit
-import FirebaseCore
+import Firebase
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        FirebaseApp.configure()
+        
         guard ARWorldTrackingConfiguration.isSupported else {
             fatalError("""
                 ARKit is not available on this device. For apps that require ARKit
@@ -37,8 +39,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Unsupported Device: This app requires the LiDAR Scanner to access the scene's depth.
             """)
         }
-        
-        FirebaseApp.configure()
         
         return true
     }
