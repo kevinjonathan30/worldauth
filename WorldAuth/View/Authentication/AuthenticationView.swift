@@ -138,7 +138,7 @@ private extension AuthenticationView {
                 }
                 
                 DispatchQueue.main.async {
-                    navigateToResult = AuthenticationResult(error: nil, success: data.success ?? false, fitness: data.fitness ?? 0)
+                    navigateToResult = AuthenticationResult(error: nil, success: data.fitness == 1, fitness: data.fitness ?? 0)
                     self.viewState = .loaded
                 }
             }

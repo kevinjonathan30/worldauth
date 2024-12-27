@@ -23,7 +23,7 @@ struct ResultView: View {
         VStack {
             Spacer()
             
-            Image(systemName: "lock.open.fill")
+            Image(systemName: success ? "lock.open.fill" : "lock.slash.fill")
                 .font(.largeTitle)
                 .accessibilityElement()
                 .accessibilityLabel(Text("Authentication Result Image", comment: "Accessibility label for image"))
@@ -32,12 +32,12 @@ struct ResultView: View {
             
             Spacer()
             
-            Text("Authentication Done")
+            Text(success ? "Authentication Success" : "Authentication Failed")
                 .font(.title2)
                 .bold()
                 .accessibilityElement()
                 .accessibilityLabel(Text("Authentication Result Text", comment: "Accessibility label for text"))
-                .accessibilityHint(Text("Authentication Done", comment: "Accessibility hint for text"))
+                .accessibilityHint(Text(success ? "Authentication Success" : "Authentication Failed", comment: "Accessibility hint for text"))
                 .accessibilityAddTraits([.isStaticText])
             
             Text(String(format: "Similarity: %.2f%%", similarity * 100))
