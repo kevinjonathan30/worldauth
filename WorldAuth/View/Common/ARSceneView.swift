@@ -67,7 +67,7 @@ extension ARSceneView {
         let defaultMaterial: SCNMaterial = {
             let material = SCNMaterial()
             material.fillMode = .lines
-            material.diffuse.contents = UIColor.white.cgColor
+            material.diffuse.contents = UIColor.white
             return material
         }()
         
@@ -110,6 +110,7 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
         
         if isTakingPointCloud {
             for anchor in meshAnchors {
+                guard anchor.geometry.vertices.count > 0 else { continue }
                 let scnGeometry = SCNGeometry(from: anchor.geometry)
                 scnGeometry.materials = [defaultMaterial]
                 
@@ -117,8 +118,9 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
                 meshNode.name = "Mesh"
                 meshNode.simdTransform = anchor.transform
                 
-                self.scene.rootNode.addChildNode(meshNode)
-                
+                DispatchQueue.main.async {
+                    self.scene.rootNode.addChildNode(meshNode)
+                }
                 self.knownAnchors[anchor.identifier] = meshNode
             }
         }
