@@ -148,6 +148,8 @@ extension ARSceneView.Coordinator: ARSessionDelegate {
         let centerX = width / 2
         let centerY = height / 2
         
+        guard centerX < width, centerY < height else { return }
+        
         let bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer)
         let pixelIndex = centerY * bytesPerRow / MemoryLayout<Float32>.stride + centerX
         
