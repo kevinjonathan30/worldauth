@@ -5,7 +5,7 @@
 //  Created by Kevin Jonathan on 2024/06/07.
 //
 
-import Foundation
+import SwiftUI
 
 struct FileHelper {
     static func saveFile(data: Data, atDirectory directoryName: String = "", fileName: String) -> URL? {
@@ -45,7 +45,7 @@ struct FileHelper {
         let fileManager = FileManager.default
         
         guard let directoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
-
+        
         let filePathURL = directoryURL.appendingPathComponent(atDirectory)
         let fileNameURL = filePathURL.appendingPathComponent(fileName)
         
@@ -71,6 +71,13 @@ struct FileHelper {
         } catch {
             print(error.localizedDescription)
             return false
+        }
+    }
+    
+    static func sharePLYFile(url: URL) {
+        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        if let topController = UIApplication.shared.windows.first?.rootViewController {
+            topController.present(activityViewController, animated: true, completion: nil)
         }
     }
 }

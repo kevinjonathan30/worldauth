@@ -7,7 +7,6 @@
 
 import ARKit
 import SwiftUI
-import SceneKit
 import Combine
 
 struct AuthenticationView: View {
@@ -22,10 +21,9 @@ struct AuthenticationView: View {
         NavigationStack {
             VStack {
                 ARContainerView(viewState: $viewState)
-                    .onFinishRecording(authenticate(pointCloudData:))
-                    .navigationTitle("Authentication")
-                    .toolbar(.hidden)
-                    .edgesIgnoringSafeArea(.top)
+                    .onFinishRecording(authenticate(plyString:))
+                    .navigationTitle("WorldAuth")
+                    .navigationBarTitleDisplayMode(.inline)
                     .onAppear {
                         getPointCloudList()
                     }
@@ -116,10 +114,9 @@ private extension AuthenticationView {
         }
     }
     
-    private func authenticate(pointCloudData: [(position: SIMD3<Float>, color: UIColor)]) {
+    private func authenticate(plyString: String) {
         self.viewState = .loading
-        guard !pointCloudData.isEmpty else { return }
-        let plyString = PointCloudHelper.createPlyString(from: pointCloudData)
+        guard !plyString.isEmpty else { return }
         
         self.processPly(plyString: plyString)
     }

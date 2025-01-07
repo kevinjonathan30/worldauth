@@ -5,9 +5,7 @@
 //  Created by Kevin Jonathan on 2024/06/01.
 //
 
-import ARKit
 import SwiftUI
-import SceneKit
 import Combine
 import AudioToolbox
 
@@ -19,7 +17,7 @@ struct RegisterView: View {
     
     var body: some View {
         ARContainerView(viewState: $viewState)
-            .onFinishRecording(register(pointCloudData:))
+            .onFinishRecording(register(plyString:))
             .alert(article.title, isPresented: $showAlert, presenting: article) { _ in
                 Button("Close", role: .cancel) {
                     showAlert = false
@@ -39,10 +37,9 @@ struct RegisterView: View {
 // MARK: Handler
 
 private extension RegisterView {
-    private func register(pointCloudData: [(position: SIMD3<Float>, color: UIColor)]) {
-        guard !pointCloudData.isEmpty else { return }
+    private func register(plyString: String) {
+        guard !plyString.isEmpty else { return }
         viewState = .loading
-        let plyString = PointCloudHelper.createPlyString(from: pointCloudData)
         
         NetworkHelper.registerPointCloud(Data(plyString.utf8)) { data, error in
             if let error = error {
