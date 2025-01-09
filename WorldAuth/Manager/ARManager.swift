@@ -27,7 +27,6 @@ actor ARManager: NSObject, ARSessionDelegate, ObservableObject {
         configuration.planeDetection = [.horizontal]
         configuration.sceneReconstruction = .mesh
         sceneView.session.run(configuration)
-        sceneView.addCoaching()
         
         sceneView.scene.rootNode.addChildNode(geometryNode)
     }

@@ -24,7 +24,7 @@
 		5D873AA02D2CED8500746652 /* UIViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873A9F2D2CED7F00746652 /* UIViewWrapper.swift */; };
 		5D873AA22D2CEDFE00746652 /* ARContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AA12D2CEDFB00746652 /* ARContainerView.swift */; };
 		5D873AAF2D2D02B600746652 /* AlertArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AAE2D2D02B600746652 /* AlertArticle.swift */; };
-		5D873AB12D2D189600746652 /* ARSCNView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AB02D2D189600746652 /* ARSCNView+Ext.swift */; };
+		5D873AB32D2F964400746652 /* CoachingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AB22D2F964400746652 /* CoachingOverlayView.swift */; };
 		5D93F3A82D1E8948001D29ED /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5D93F3A72D1E8948001D29ED /* FirebaseCrashlytics */; };
 		5DA0256D2D1E806E0009C95C /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA0256C2D1E80670009C95C /* FileHelper.swift */; };
 		5DAEA23B2C3296EB00644088 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 5DAEA23A2C3296EB00644088 /* .swiftlint.yml */; };
@@ -61,7 +61,7 @@
 		5D873A9F2D2CED7F00746652 /* UIViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewWrapper.swift; sourceTree = "<group>"; };
 		5D873AA12D2CEDFB00746652 /* ARContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARContainerView.swift; sourceTree = "<group>"; };
 		5D873AAE2D2D02B600746652 /* AlertArticle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertArticle.swift; sourceTree = "<group>"; };
-		5D873AB02D2D189600746652 /* ARSCNView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARSCNView+Ext.swift"; sourceTree = "<group>"; };
+		5D873AB22D2F964400746652 /* CoachingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachingOverlayView.swift; sourceTree = "<group>"; };
 		5DA0256C2D1E80670009C95C /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
 		5DAEA23A2C3296EB00644088 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		5DE2AB042C0AE22B000C7346 /* WorldAuth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorldAuth.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,7 +121,6 @@
 			isa = PBXGroup;
 			children = (
 				5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */,
-				5D873AB02D2D189600746652 /* ARSCNView+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -246,8 +245,9 @@
 			isa = PBXGroup;
 			children = (
 				5D873AA12D2CEDFB00746652 /* ARContainerView.swift */,
-				5D873A9F2D2CED7F00746652 /* UIViewWrapper.swift */,
+				5D873AB22D2F964400746652 /* CoachingOverlayView.swift */,
 				5DFD7FEE2C102B79009CB20E /* LazyView.swift */,
+				5D873A9F2D2CED7F00746652 /* UIViewWrapper.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -394,6 +394,7 @@
 				5D873A932D2CEA8800746652 /* PointCloud.swift in Sources */,
 				5DEA68752C119C70008CD7A9 /* AppDelegate.swift in Sources */,
 				5D15EE542C0D9D5700673052 /* ContentView.swift in Sources */,
+				5D873AB32D2F964400746652 /* CoachingOverlayView.swift in Sources */,
 				5DEA68922C141C68008CD7A9 /* OnboardingView.swift in Sources */,
 				5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */,
 				5D4655F02C22A6F90013CB78 /* NetworkHelper.swift in Sources */,
@@ -402,7 +403,6 @@
 				5D873A9B2D2CEB4900746652 /* ARManager.swift in Sources */,
 				5D835E242C29653B00352304 /* TabState.swift in Sources */,
 				5D873AA22D2CEDFE00746652 /* ARContainerView.swift in Sources */,
-				5D873AB12D2D189600746652 /* ARSCNView+Ext.swift in Sources */,
 				5DA0256D2D1E806E0009C95C /* FileHelper.swift in Sources */,
 				5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */,
 			);

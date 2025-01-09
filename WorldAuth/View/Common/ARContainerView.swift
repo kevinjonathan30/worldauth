@@ -12,6 +12,7 @@ import Combine
 struct ARContainerView: View {
     @StateObject var arManager = ARManager()
     @Binding var viewState: ViewState
+    @State private var isCoachingActive = false
     
     var onFinishRecording: ((String) -> Void)?
     
@@ -21,6 +22,11 @@ struct ARContainerView: View {
                 .accessibilityElement()
                 .accessibilityLabel(Text("AR Scene View", comment: "Accessibility label for AR scene view"))
                 .accessibilityHint(Text("Displays augmented reality content", comment: "Accessibility hint for AR scene view"))
+            
+            CoachingOverlayView(sceneView: arManager.sceneView, isCoachingActive: $isCoachingActive)
+                .accessibilityElement()
+                .accessibilityLabel(Text("AR Coaching View", comment: "Accessibility label for AR coaching view"))
+                .accessibilityHint(Text("Move your iPhone slowly", comment: "Accessibility hint for AR coaching view"))
             
             loadingView()
             
@@ -46,7 +52,8 @@ private extension ARContainerView {
                     .clipShape(Circle())
             }
             .padding()
-            .disabled(viewState == .fail)
+            .disabled(viewState == .fail || isCoachingActive)
+            .opacity(isCoachingActive ? 0 : 1)
             .accessibilityElement()
             .accessibilityLabel(Text("Take Room Template Button", comment: "Accessibility label for button"))
             .accessibilityHint(Text("Click this button to scan the room template, and then move the device slowly", comment: "Accessibility hint for button"))
