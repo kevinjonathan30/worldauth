@@ -31,7 +31,7 @@ struct PLYFile {
         case cannotExport
     }
     
-    func savePLYFileToDocuments(fileName: String, data: Data) throws -> URL {
+    private func savePLYFileToDocuments(fileName: String, data: Data) throws -> URL {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let fileURL = documentsDirectory.appendingPathComponent(fileName)
         try data.write(to: fileURL)

@@ -76,8 +76,11 @@ struct FileHelper {
     
     static func sharePLYFile(url: URL) {
         let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        if let topController = UIApplication.shared.windows.first?.rootViewController {
-            topController.present(activityViewController, animated: true, completion: nil)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            if let topController = windowScene.windows.first?.rootViewController {
+                topController.present(activityViewController, animated: true, completion: nil)
+            }
         }
     }
 }
