@@ -71,6 +71,10 @@ struct PLYFile {
             throw Error.cannotExport
         }
         
-        return try savePLYFileToDocuments(fileName: "exported.ply", data: data)
+        let today = Date.now
+        let formatter3 = DateFormatter()
+        formatter3.dateFormat = "yyyy-MM-dd-HH-mm-ss"
+        
+        return try savePLYFileToDocuments(fileName: "exported-\(formatter3.string(from: today)).ply", data: data)
     }
 }
