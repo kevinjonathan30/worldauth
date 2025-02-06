@@ -28,6 +28,9 @@
 		5D93F3A82D1E8948001D29ED /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5D93F3A72D1E8948001D29ED /* FirebaseCrashlytics */; };
 		5DA0256D2D1E806E0009C95C /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA0256C2D1E80670009C95C /* FileHelper.swift */; };
 		5DAEA23B2C3296EB00644088 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 5DAEA23A2C3296EB00644088 /* .swiftlint.yml */; };
+		5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */; };
+		5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9C2D5479090077F66C /* MainView.swift */; };
+		5DC4CD9F2D547CBC0077F66C /* MeshAnchorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9E2D547CBC0077F66C /* MeshAnchorGenerator.swift */; };
 		5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */; };
 		5DE2AB0A2C0AE22B000C7346 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB092C0AE22B000C7346 /* RegisterView.swift */; };
 		5DE2AB0C2C0AE22D000C7346 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE2AB0B2C0AE22D000C7346 /* Assets.xcassets */; };
@@ -64,6 +67,9 @@
 		5D873AB22D2F964400746652 /* CoachingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachingOverlayView.swift; sourceTree = "<group>"; };
 		5DA0256C2D1E80670009C95C /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
 		5DAEA23A2C3296EB00644088 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneReconstructionView.swift; sourceTree = "<group>"; };
+		5DC4CD9C2D5479090077F66C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		5DC4CD9E2D547CBC0077F66C /* MeshAnchorGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshAnchorGenerator.swift; sourceTree = "<group>"; };
 		5DE2AB042C0AE22B000C7346 /* WorldAuth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorldAuth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldAuthApp.swift; sourceTree = "<group>"; };
 		5DE2AB092C0AE22B000C7346 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
@@ -96,11 +102,8 @@
 		5D15EE4E2C0D88F600673052 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				5D15EE532C0D9D5700673052 /* ContentView.swift */,
-				5D57D1792C1AE8D5007CD6AD /* Authentication */,
-				5DFD7FF02C102DD7009CB20E /* Common */,
-				5D57D1772C1AE8B3007CD6AD /* Onboarding */,
-				5D57D1782C1AE8CA007CD6AD /* Register */,
+				5DC4CDA22D5486370077F66C /* iOS */,
+				5DC4CDA32D5486410077F66C /* VisionOS */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -199,6 +202,35 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5DC4CD992D5477C70077F66C /* VisionOSViews */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = VisionOSViews;
+			sourceTree = "<group>";
+		};
+		5DC4CDA22D5486370077F66C /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				5D15EE532C0D9D5700673052 /* ContentView.swift */,
+				5D57D1792C1AE8D5007CD6AD /* Authentication */,
+				5DFD7FF02C102DD7009CB20E /* Common */,
+				5D57D1772C1AE8B3007CD6AD /* Onboarding */,
+				5D57D1782C1AE8CA007CD6AD /* Register */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		5DC4CDA32D5486410077F66C /* VisionOS */ = {
+			isa = PBXGroup;
+			children = (
+				5DC4CD9C2D5479090077F66C /* MainView.swift */,
+				5DC4CD9E2D547CBC0077F66C /* MeshAnchorGenerator.swift */,
+				5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */,
+			);
+			path = VisionOS;
+			sourceTree = "<group>";
+		};
 		5DE2AAFB2C0AE22B000C7346 = {
 			isa = PBXGroup;
 			children = (
@@ -219,16 +251,16 @@
 		5DE2AB062C0AE22B000C7346 /* WorldAuth */ = {
 			isa = PBXGroup;
 			children = (
+				5DAEA23A2C3296EB00644088 /* .swiftlint.yml */,
 				5D15EE4F2C0D890500673052 /* App */,
 				5D835E192C26A58C00352304 /* Enum */,
 				5D15EE512C0D892900673052 /* Extension */,
+				5DF60A932CD35B7800C7D189 /* GoogleService-Info.plist */,
 				5D15EE522C0D893500673052 /* Helper */,
 				5D873A9E2D2CED5600746652 /* Manager */,
 				5D15EE5A2C0DA29900673052 /* Model */,
 				5DE2AB0D2C0AE22D000C7346 /* Preview Content */,
 				5D15EE4E2C0D88F600673052 /* View */,
-				5DAEA23A2C3296EB00644088 /* .swiftlint.yml */,
-				5DF60A932CD35B7800C7D189 /* GoogleService-Info.plist */,
 			);
 			path = WorldAuth;
 			sourceTree = "<group>";
@@ -244,6 +276,7 @@
 		5DFD7FF02C102DD7009CB20E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				5DC4CD992D5477C70077F66C /* VisionOSViews */,
 				5D873AA12D2CEDFB00746652 /* ARContainerView.swift */,
 				5D873AB22D2F964400746652 /* CoachingOverlayView.swift */,
 				5DFD7FEE2C102B79009CB20E /* LazyView.swift */,
@@ -394,6 +427,7 @@
 				5D873A932D2CEA8800746652 /* PointCloud.swift in Sources */,
 				5DEA68752C119C70008CD7A9 /* AppDelegate.swift in Sources */,
 				5D15EE542C0D9D5700673052 /* ContentView.swift in Sources */,
+				5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */,
 				5D873AB32D2F964400746652 /* CoachingOverlayView.swift in Sources */,
 				5DEA68922C141C68008CD7A9 /* OnboardingView.swift in Sources */,
 				5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */,
@@ -402,7 +436,9 @@
 				5D873A972D2CEAD900746652 /* PixelBuffer.swift in Sources */,
 				5D873A9B2D2CEB4900746652 /* ARManager.swift in Sources */,
 				5D835E242C29653B00352304 /* TabState.swift in Sources */,
+				5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */,
 				5D873AA22D2CEDFE00746652 /* ARContainerView.swift in Sources */,
+				5DC4CD9F2D547CBC0077F66C /* MeshAnchorGenerator.swift in Sources */,
 				5DA0256D2D1E806E0009C95C /* FileHelper.swift in Sources */,
 				5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */,
 			);
@@ -542,14 +578,15 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WorldAuth/App/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "This app will use camera/lidar for sensing data. ";
+				INFOPLIST_KEY_CFBundleDisplayName = WorldAuth;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses camera for authentication purpose.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -560,11 +597,11 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,7";
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -580,14 +617,15 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WorldAuth/App/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "This app will use camera/lidar for sensing data. ";
+				INFOPLIST_KEY_CFBundleDisplayName = WorldAuth;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses camera for authentication purpose.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -598,11 +636,11 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,7";
-				XROS_DEPLOYMENT_TARGET = 1.0;
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};

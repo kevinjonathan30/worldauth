@@ -13,8 +13,20 @@ struct WorldAuthApp: App {
     @State private var selectedTab: TabState = .authentication
     
     var body: some Scene {
+        #if os(iOS)
         WindowGroup {
             ContentView()
         }
+        #endif
+        
+        #if os(visionOS)
+        WindowGroup {
+            MainView()
+        }
+        
+        ImmersiveSpace(id: "SceneReconstruction") {
+            SceneReconstructionView()
+        }
+        #endif
     }
 }
