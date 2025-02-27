@@ -78,4 +78,10 @@ actor ARManager: NSObject, ARSessionDelegate, ObservableObject {
             geometryNode.geometry = geometry
         }
     }
+    
+    func resetGeometry() async {
+        Task { @MainActor in
+            geometryNode.geometry = nil
+        }
+    }
 }

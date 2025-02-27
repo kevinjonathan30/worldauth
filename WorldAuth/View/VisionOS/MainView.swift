@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        Text("Scene Reconstruction Example")
+        Text("Scene Reconstruction")
             .onAppear {
                 #if os(visionOS)
                 Task {
@@ -28,7 +28,9 @@ struct MainView: View {
     #endif
 }
 
-#Preview {
+#if os(visionOS)
+#Preview(windowStyle: .automatic) {
     MainView()
 }
+#endif
 
