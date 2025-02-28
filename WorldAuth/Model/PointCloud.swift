@@ -98,4 +98,8 @@ actor PointCloud {
     }
     
     private(set) var vertices: [GridKey: Vertex] = [:]
+    
+    func clear() {
+        vertices.removeAll()
+    }
 }

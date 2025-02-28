@@ -34,7 +34,7 @@ struct ARContainerView: View {
         }
         .onDisappear {
             Task {
-                await arManager.resetGeometry()
+                await arManager.resetPointCloud()
             }
         }
     }
