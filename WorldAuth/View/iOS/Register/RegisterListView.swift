@@ -169,32 +169,45 @@ private extension RegisterListView {
 private extension RegisterListView {
     private func getRoomList() {
         viewState = .loading
-        NetworkHelper.getPointCloud { data, error in
-            if let error = error {
-                article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
-                showAlert = true
-                viewState = .fail
-            } else {
-                guard let data = data else {
+        if RemoteConfigProvider.shared.prefersOnDevice() && RemoteConfigProvider.shared.authenticationMethod() == "DGMR" {
+            let fileList = FileHelper.getFileList()
+            roomList = fileList.map { WorldTemplate(pcdName: $0.lastPathComponent) }
+            viewState = filteredRoomList.isEmpty ? .empty : .loaded
+        } else {
+            NetworkHelper.getPointCloud { data, error in
+                if let error = error {
+                    article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
+                    showAlert = true
                     viewState = .fail
-                    return
+                } else {
+                    guard let data = data else {
+                        viewState = .fail
+                        return
+                    }
+                    roomList = data
+                    viewState = filteredRoomList.isEmpty ? .empty : .loaded
                 }
-                roomList = data
-                viewState = filteredRoomList.isEmpty ? .empty : .loaded
             }
         }
     }
     
     private func delete(worldTemplate: WorldTemplate) {
-        NetworkHelper.deletePointCloud(fileName: worldTemplate.pcdName) { data, error in
-            if let error = error {
-                article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
-                showAlert = true
-                viewState = .fail
-            } else {
-                guard let data = data else { return }
-                if data.success ?? false {
-                    getRoomList()
+        if RemoteConfigProvider.shared.prefersOnDevice() && RemoteConfigProvider.shared.authenticationMethod() == "DGMR" {
+            let isDeleted = FileHelper.deleteFile(fileName: worldTemplate.pcdName)
+            if isDeleted {
+                getRoomList()
+            }
+        } else {
+            NetworkHelper.deletePointCloud(fileName: worldTemplate.pcdName) { data, error in
+                if let error = error {
+                    article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
+                    showAlert = true
+                    viewState = .fail
+                } else {
+                    guard let data = data else { return }
+                    if data.success ?? false {
+                        getRoomList()
+                    }
                 }
             }
         }

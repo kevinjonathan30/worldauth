@@ -46,10 +46,10 @@ struct ResultView: View {
                 .accessibilityHint(Text("The similarity of the scanned room compared to the saved room template is \(String(format: "Similarity: %.2f%%", similarity * 100))", comment: "Accessibility hint for text"))
                 .accessibilityAddTraits([.isStaticText])
             
-            Text("Auth Method: \(selectedMethod)")
+            Text("Auth Method: \(RemoteConfigProvider.shared.authenticationMethod())")
                 .accessibilityElement()
                 .accessibilityLabel(Text("Authentication Method", comment: "Accessibility label for text"))
-                .accessibilityHint(Text("The authentication method used is \(selectedMethod)", comment: "Accessibility hint for text"))
+                .accessibilityHint(Text("The authentication method used is \(RemoteConfigProvider.shared.authenticationMethod())", comment: "Accessibility hint for text"))
                 .accessibilityAddTraits([.isStaticText])
             
             Spacer()
@@ -60,11 +60,6 @@ struct ResultView: View {
         }
         .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
-        .task {
-            Task {
-                try await startFetching()
-            }
-        }
     }
 }
 
@@ -89,32 +84,6 @@ private extension ResultView {
         }
         .transaction { transaction in
             transaction.animation = .none
-        }
-    }
-}
-
-private extension ResultView {
-    private func startFetching() async throws {
-        let remoteConfig = RemoteConfig.remoteConfig()
-        let settings = RemoteConfigSettings()
-        settings.minimumFetchInterval = 0
-        remoteConfig.configSettings = settings
-        
-        do {
-            let config = try await remoteConfig.fetchAndActivate()
-            switch config {
-            case .successFetchedFromRemote:
-                self.selectedMethod = remoteConfig.configValue(forKey: "authentication_method").stringValue
-                return
-            case .successUsingPreFetchedData:
-                self.selectedMethod = remoteConfig.configValue(forKey: "authentication_method").stringValue
-                return
-            default:
-                print("Error activating")
-                return
-            }
-        } catch let error {
-            print("Error fetching: \(error.localizedDescription)")
         }
     }
 }

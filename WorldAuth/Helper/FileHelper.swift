@@ -58,6 +58,19 @@ struct FileHelper {
         }
     }
     
+    static func getDataStringByName(atDirectory: String = "", fileName: String) -> String {
+        if let data = FileHelper.getDataByName(atDirectory: atDirectory, fileName: fileName) {
+            if let content = String(data: data, encoding: .utf8) {
+                return content
+            } else {
+                print("Failed to decode data into a string.")
+            }
+        } else {
+            print("Failed to retrieve data.")
+        }
+        return ""
+    }
+    
     static func deleteFile(atDirectory: String = "", fileName: String) -> Bool {
         let fileManager = FileManager.default
         

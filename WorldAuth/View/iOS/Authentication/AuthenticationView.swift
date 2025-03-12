@@ -98,18 +98,24 @@ struct AuthenticationView: View {
 private extension AuthenticationView {
     private func getPointCloudList() {
         viewState = .loading
-        NetworkHelper.getPointCloud { data, error in
-            if let error = error {
-                article = AlertArticle(title: "An Error Occurred", description: error.localizedDescription)
-                showAlert = true
-                viewState = .fail
-            } else {
-                guard let data = data else {
+        if RemoteConfigProvider.shared.prefersOnDevice() && RemoteConfigProvider.shared.authenticationMethod() == "DGMR" {
+            let data = FileHelper.getFileList()
+            self.viewState = .loaded
+            showOnboarding = data.isEmpty
+        } else {
+            NetworkHelper.getPointCloud { data, error in
+                if let error = error {
+                    article = AlertArticle(title: "An Error Occurred", description: error.localizedDescription)
+                    showAlert = true
                     viewState = .fail
-                    return
+                } else {
+                    guard let data = data else {
+                        viewState = .fail
+                        return
+                    }
+                    self.viewState = .loaded
+                    showOnboarding = data.isEmpty
                 }
-                self.viewState = .loaded
-                showOnboarding = data.isEmpty
             }
         }
     }
@@ -122,7 +128,34 @@ private extension AuthenticationView {
     }
     
     private func processPly(plyString: String) {
+        if RemoteConfigProvider.shared.prefersOnDevice() {
+            processPlyOnDevice(plyString: plyString)
+            return
+        }
+        
+        processPlyOnline(plyString: plyString)
+    }
+    
+    private func processPlyOnDevice(plyString: String) {
+        switch RemoteConfigProvider.shared.authenticationMethod() {
+        case "DGMR":
+            var highestResult: Double = 0
+            for file in FileHelper.getFileList() {
+                let targetString = FileHelper.getDataStringByName(fileName: file.lastPathComponent)
+                print(targetString)
+                let result = AuthenticationHelper.runDeepGMRInference(source: plyString, target: targetString)
+                highestResult = result > highestResult ? result : highestResult
+            }
+            navigateToResult = AuthenticationResult(error: nil, success: highestResult == 1, fitness: highestResult)
+            self.viewState = .loaded
+        default:
+            processPlyOnline(plyString: plyString)
+        }
+    }
+    
+    private func processPlyOnline(plyString: String) {
         let targetData = Data(plyString.utf8)
+        
         NetworkHelper.authenticatePointCloud(targetData) { data, error in
             if let error = error {
                 article = AlertArticle(title: "An Error Occurred", description: error.localizedDescription)

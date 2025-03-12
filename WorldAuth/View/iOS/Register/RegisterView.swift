@@ -41,25 +41,37 @@ private extension RegisterView {
         guard !plyString.isEmpty else { return }
         viewState = .loading
         
-        NetworkHelper.registerPointCloud(Data(plyString.utf8)) { data, error in
-            if let error = error {
-                viewState = .loaded
-                article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
-                showAlert = true
-            } else {
-                guard let data = data else {
+        if RemoteConfigProvider.shared.prefersOnDevice() && RemoteConfigProvider.shared.authenticationMethod() == "DGMR" {
+            let url = FileHelper.saveFile(data: Data(plyString.utf8), fileName: "target.ply")
+            if url != nil {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    dismiss()
                     viewState = .loaded
-                    return
                 }
-                
-                if data.success == true {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        dismiss()
-                        viewState = .loaded
-                    }
-                } else {
+            } else {
+                viewState = .loaded
+            }
+        } else {
+            NetworkHelper.registerPointCloud(Data(plyString.utf8)) { data, error in
+                if let error = error {
                     viewState = .loaded
-                    print(data.error ?? "")
+                    article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
+                    showAlert = true
+                } else {
+                    guard let data = data else {
+                        viewState = .loaded
+                        return
+                    }
+                    
+                    if data.success == true {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            dismiss()
+                            viewState = .loaded
+                        }
+                    } else {
+                        viewState = .loaded
+                        print(data.error ?? "")
+                    }
                 }
             }
         }
