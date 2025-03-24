@@ -169,7 +169,7 @@ private extension RegisterListView {
 private extension RegisterListView {
     private func getRoomList() {
         viewState = .loading
-        if RemoteConfigProvider.shared.prefersOnDevice() && RemoteConfigProvider.shared.authenticationMethod() == "DGMR" {
+        if RemoteConfigProvider.shared.prefersOnDevice() {
             let fileList = FileHelper.getFileList()
             roomList = fileList.map { WorldTemplate(pcdName: $0.lastPathComponent) }
             viewState = filteredRoomList.isEmpty ? .empty : .loaded
@@ -192,7 +192,7 @@ private extension RegisterListView {
     }
     
     private func delete(worldTemplate: WorldTemplate) {
-        if RemoteConfigProvider.shared.prefersOnDevice() && RemoteConfigProvider.shared.authenticationMethod() == "DGMR" {
+        if RemoteConfigProvider.shared.prefersOnDevice() {
             let isDeleted = FileHelper.deleteFile(fileName: worldTemplate.pcdName)
             if isDeleted {
                 getRoomList()

@@ -98,7 +98,7 @@ struct AuthenticationView: View {
 private extension AuthenticationView {
     private func getPointCloudList() {
         viewState = .loading
-        if RemoteConfigProvider.shared.prefersOnDevice() && RemoteConfigProvider.shared.authenticationMethod() == "DGMR" {
+        if RemoteConfigProvider.shared.prefersOnDevice() {
             let data = FileHelper.getFileList()
             self.viewState = .loaded
             showOnboarding = data.isEmpty
@@ -137,20 +137,14 @@ private extension AuthenticationView {
     }
     
     private func processPlyOnDevice(plyString: String) {
-        switch RemoteConfigProvider.shared.authenticationMethod() {
-        case "DGMR":
-            var highestResult: Double = 0
-            for file in FileHelper.getFileList() {
-                let targetString = FileHelper.getDataStringByName(fileName: file.lastPathComponent)
-                print(targetString)
-                let result = AuthenticationHelper.runDeepGMRInference(source: plyString, target: targetString)
-                highestResult = result > highestResult ? result : highestResult
-            }
-            navigateToResult = AuthenticationResult(error: nil, success: highestResult == 1, fitness: highestResult)
-            self.viewState = .loaded
-        default:
-            processPlyOnline(plyString: plyString)
+        var highestResult: Double = 0
+        for file in FileHelper.getFileList() {
+            let targetString = FileHelper.getDataStringByName(fileName: file.lastPathComponent)
+            let result = AuthenticationHelper.runInference(source: plyString, target: targetString)
+            highestResult = result > highestResult ? result : highestResult
         }
+        navigateToResult = AuthenticationResult(error: nil, success: highestResult == 1, fitness: highestResult)
+        self.viewState = .loaded
     }
     
     private func processPlyOnline(plyString: String) {

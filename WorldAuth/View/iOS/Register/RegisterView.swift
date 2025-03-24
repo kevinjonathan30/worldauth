@@ -41,7 +41,7 @@ private extension RegisterView {
         guard !plyString.isEmpty else { return }
         viewState = .loading
         
-        if RemoteConfigProvider.shared.prefersOnDevice() && RemoteConfigProvider.shared.authenticationMethod() == "DGMR" {
+        if RemoteConfigProvider.shared.prefersOnDevice() {
             let url = FileHelper.saveFile(data: Data(plyString.utf8), fileName: "target.ply")
             if url != nil {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
