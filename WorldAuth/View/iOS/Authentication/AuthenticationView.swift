@@ -59,7 +59,7 @@ struct AuthenticationView: View {
                         .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
                         .accessibilityHint(Text("View to register new users", comment: "Accessibility hint for register view"))
                 }
-
+                
                 NavigationLink(value: "Result") {
                     EmptyView()
                 }
@@ -130,21 +130,31 @@ private extension AuthenticationView {
     private func processPly(plyString: String) {
         if RemoteConfigProvider.shared.prefersOnDevice() {
             processPlyOnDevice(plyString: plyString)
-            return
+        } else {
+            processPlyOnline(plyString: plyString)
         }
-        
-        processPlyOnline(plyString: plyString)
     }
     
     private func processPlyOnDevice(plyString: String) {
         var highestResult: Double = 0
+        
+        let group = DispatchGroup() // Create a DispatchGroup
+        
         for file in FileHelper.getFileList() {
             let targetString = FileHelper.getDataStringByName(fileName: file.lastPathComponent)
-            let result = AuthenticationHelper.runInference(source: plyString, target: targetString)
-            highestResult = result > highestResult ? result : highestResult
+            
+            group.enter()
+            
+            AuthenticationHelper.runInferenceAsync(source: plyString, target: targetString) { result in
+                highestResult = max(highestResult, result)
+                group.leave()
+            }
         }
-        navigateToResult = AuthenticationResult(error: nil, success: highestResult == 1, fitness: highestResult)
-        self.viewState = .loaded
+        
+        group.notify(queue: .main) {
+            self.navigateToResult = AuthenticationResult(error: nil, success: highestResult == 1, fitness: highestResult)
+            self.viewState = .loaded
+        }
     }
     
     private func processPlyOnline(plyString: String) {

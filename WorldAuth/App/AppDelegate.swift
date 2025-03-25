@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         RemoteConfigProvider.shared.fetchCloudValues()
+        AuthenticationHelper.initializePythonEnvironment()
         
         guard ARWorldTrackingConfiguration.isSupported else {
             fatalError("""

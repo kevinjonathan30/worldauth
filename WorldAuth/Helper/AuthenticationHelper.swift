@@ -15,7 +15,7 @@ import PythonKit
 struct AuthenticationHelper {
     
     // Initialize Python Environment Once
-    static private func initializePythonEnvironment() {
+    static func initializePythonEnvironment() {        
         PythonSupport.initialize()
         Open3DSupport.sitePackagesURL.insertPythonPath()
         NumPySupport.sitePackagesURL.insertPythonPath()
@@ -29,7 +29,16 @@ struct AuthenticationHelper {
         static let sys = Python.import("sys")
     }
     
-    static func runInference(source: String, target: String) -> Double {
+    static func runInferenceAsync(source: String, target: String, completion: @escaping (Double) -> Void) {
+        DispatchQueue.main.async {
+            let fitness = runInference(source: source, target: target)
+            DispatchQueue.main.async {
+                completion(fitness)
+            }
+        }
+    }
+    
+    static private func runInference(source: String, target: String) -> Double {
         switch RemoteConfigProvider.shared.authenticationMethod() {
         case "ICP":
             return runICPInference(source: source, target: target, isFgr: false, threshold: 0.35)
@@ -46,24 +55,22 @@ struct AuthenticationHelper {
 // MARK: - Registration Evaluation
 extension AuthenticationHelper {
     static private func evaluateRegistration(source: MLMultiArray, target: MLMultiArray, tMatrix: MLMultiArray) -> Double {
-        initializePythonEnvironment()
-        
         let o3d = PythonModules.o3d
-
+        
         let sourceNp = mlMultiArrayToNumPy(source)[0]
         let targetNp = mlMultiArrayToNumPy(target)[0]
         let t21Np = mlMultiArrayToNumPy(tMatrix)
-
+        
         let transformedPts2 = transformPoints(pts2: targetNp, t21: t21Np)
-
+        
         let pcd1 = o3d.geometry.PointCloud()
         let pcd2 = o3d.geometry.PointCloud()
         let pcd3 = o3d.geometry.PointCloud()
-
+        
         pcd1.points = o3d.utility.Vector3dVector(sourceNp)
         pcd2.points = o3d.utility.Vector3dVector(targetNp)
         pcd3.points = o3d.utility.Vector3dVector(transformedPts2)
-
+        
         let evaluation = o3d.pipelines.registration.evaluate_registration(pcd1, pcd3, 0.49)
         return Double(evaluation.fitness) ?? 0
     }
@@ -72,8 +79,6 @@ extension AuthenticationHelper {
 // MARK: - ICP & FGR
 extension AuthenticationHelper {
     static private func runICPInference(source: String, target: String, isFgr: Bool, threshold: Double) -> Double {
-        initializePythonEnvironment()
-        
         let o3d = PythonModules.o3d
         
         guard let source = createMLMultiArray(from: source),
@@ -86,7 +91,7 @@ extension AuthenticationHelper {
         
         let pcd1 = o3d.geometry.PointCloud()
         let pcd2 = o3d.geometry.PointCloud()
-
+        
         pcd1.points = o3d.utility.Vector3dVector(sourceNp)
         pcd2.points = o3d.utility.Vector3dVector(targetNp)
         
@@ -205,7 +210,7 @@ extension AuthenticationHelper {
             let numbers = line.split(separator: " ").compactMap { Float($0) }
             return numbers.isEmpty ? nil : numbers
         }
-
+        
         guard !points.isEmpty else { return nil }
         
         let rowCount = points.count
@@ -234,14 +239,16 @@ extension AuthenticationHelper {
         for i in 0..<multiArray.count {
             arrayData[i] = multiArray[i].doubleValue
         }
-
-        return np.array(arrayData).reshape(shape)
+        
+        let npArray = np.array(arrayData).reshape(shape)
+        
+        return npArray
     }
     
     static private func transformPoints(pts2: PythonObject, t21: PythonObject) -> PythonObject {
         let R = t21.slice(0, 3, 0, 3).T
         let t = t21.slice(0, 3, 3)
-
+        
         return (pts2.dot(R)) + t
     }
 }
