@@ -129,7 +129,9 @@ private extension AuthenticationView {
     
     private func processPly(plyString: String) {
         if RemoteConfigProvider.shared.prefersOnDevice() {
-            processPlyOnDevice(plyString: plyString)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                processPlyOnDevice(plyString: plyString)
+            }
         } else {
             processPlyOnline(plyString: plyString)
         }
@@ -138,23 +140,15 @@ private extension AuthenticationView {
     private func processPlyOnDevice(plyString: String) {
         var highestResult: Double = 0
         
-        let group = DispatchGroup() // Create a DispatchGroup
-        
         for file in FileHelper.getFileList() {
             let targetString = FileHelper.getDataStringByName(fileName: file.lastPathComponent)
             
-            group.enter()
-            
-            AuthenticationHelper.runInferenceAsync(source: plyString, target: targetString) { result in
-                highestResult = max(highestResult, result)
-                group.leave()
-            }
+            let result = AuthenticationHelper.runInference(source: plyString, target: targetString)
+            highestResult = max(highestResult, result)
         }
         
-        group.notify(queue: .main) {
-            self.navigateToResult = AuthenticationResult(error: nil, success: highestResult == 1, fitness: highestResult)
-            self.viewState = .loaded
-        }
+        self.navigateToResult = AuthenticationResult(error: nil, success: highestResult == 1, fitness: highestResult)
+        self.viewState = .loaded
     }
     
     private func processPlyOnline(plyString: String) {

@@ -29,16 +29,7 @@ struct AuthenticationHelper {
         static let sys = Python.import("sys")
     }
     
-    static func runInferenceAsync(source: String, target: String, completion: @escaping (Double) -> Void) {
-        DispatchQueue.main.async {
-            let fitness = runInference(source: source, target: target)
-            DispatchQueue.main.async {
-                completion(fitness)
-            }
-        }
-    }
-    
-    static private func runInference(source: String, target: String) -> Double {
+    static func runInference(source: String, target: String) -> Double {
         switch RemoteConfigProvider.shared.authenticationMethod() {
         case "ICP":
             return runICPInference(source: source, target: target, isFgr: false, threshold: 0.35)
