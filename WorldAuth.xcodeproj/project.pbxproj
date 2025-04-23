@@ -9,13 +9,15 @@
 /* Begin PBXBuildFile section */
 		5D05D5AA2C2BFA4A00F9A742 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D05D5A92C2BFA4A00F9A742 /* ViewState.swift */; };
 		5D05D5AC2C2D02EB00F9A742 /* WorldAuth-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D05D5AB2C2D02EB00F9A742 /* WorldAuth-Info.plist */; };
+		5D05DDCC2DACC02D008E859F /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5D05DDCB2DACC02D008E859F /* PythonKit */; };
 		5D07FF722D8026D400E84F4A /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D07FF712D8026D100E84F4A /* AuthenticationHelper.swift */; };
 		5D07FF742D80371800E84F4A /* RemoteConfigProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D07FF732D80371400E84F4A /* RemoteConfigProvider.swift */; };
 		5D15EE542C0D9D5700673052 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE532C0D9D5700673052 /* ContentView.swift */; };
 		5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */; };
-		5D42D7372D91596D0020C215 /* Open3D-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5D42D7362D91596D0020C215 /* Open3D-iOS */; };
+		5D457A332D9FDA4A007A1C90 /* FMR.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = 5D457A322D9FDA4A007A1C90 /* FMR.mlpackage */; };
 		5D4655F02C22A6F90013CB78 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */; };
-		5D8258262D840DBD000FE5A2 /* DeepGMR.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = 5D8258252D840DBD000FE5A2 /* DeepGMR.mlpackage */; };
+		5D4D41E52DACD3090044BC81 /* LAPACKE-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5D4D41E42DACD3090044BC81 /* LAPACKE-iOS */; };
+		5D578D172DACD29400C1F568 /* BLAS-LAPACK-AppStore-Workaround in Frameworks */ = {isa = PBXBuildFile; productRef = 5D578D162DACD29400C1F568 /* BLAS-LAPACK-AppStore-Workaround */; };
 		5D835E1F2C29346500352304 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E1E2C29346500352304 /* ResultView.swift */; };
 		5D835E222C29416500352304 /* AuthenticationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E212C29416500352304 /* AuthenticationResponse.swift */; };
 		5D835E242C29653B00352304 /* TabState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E232C29653B00352304 /* TabState.swift */; };
@@ -31,8 +33,9 @@
 		5D873AB32D2F964400746652 /* CoachingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AB22D2F964400746652 /* CoachingOverlayView.swift */; };
 		5D93F3A82D1E8948001D29ED /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5D93F3A72D1E8948001D29ED /* FirebaseCrashlytics */; };
 		5DA0256D2D1E806E0009C95C /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA0256C2D1E80670009C95C /* FileHelper.swift */; };
+		5DA8482A2DACD0EC00430C46 /* NumPy-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5DA848292DACD0EC00430C46 /* NumPy-iOS */; };
 		5DAEA23B2C3296EB00644088 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 5DAEA23A2C3296EB00644088 /* .swiftlint.yml */; };
-		5DC01A0E2D8968700083E2C3 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5DC01A0D2D8968700083E2C3 /* PythonKit */; };
+		5DC306572DB78A4100178332 /* DeepGMR.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = 5DC306562DB78A4100178332 /* DeepGMR.mlpackage */; };
 		5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */; };
 		5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9C2D5479090077F66C /* MainView.swift */; };
 		5DC4CD9F2D547CBC0077F66C /* MeshAnchorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9E2D547CBC0077F66C /* MeshAnchorGenerator.swift */; };
@@ -44,9 +47,12 @@
 		5DEA68752C119C70008CD7A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68742C119C70008CD7A9 /* AppDelegate.swift */; };
 		5DEA688C2C12F426008CD7A9 /* WorldTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA688B2C12F426008CD7A9 /* WorldTemplate.swift */; };
 		5DEA68922C141C68008CD7A9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68912C141C68008CD7A9 /* OnboardingView.swift */; };
+		5DEEA1692DACD5EA000A6E19 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5DEEA1682DACD5EA000A6E19 /* Python-iOS */; };
 		5DF60A942CD35B7800C7D189 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DF60A932CD35B7800C7D189 /* GoogleService-Info.plist */; };
 		5DF60A972CD35C4300C7D189 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF60A962CD35C4300C7D189 /* FirebaseCore */; };
 		5DF60A992CD35C4300C7D189 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF60A982CD35C4300C7D189 /* FirebaseRemoteConfig */; };
+		5DF9E3962DACC0BD00C0A37C /* Open3D-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF9E3952DACC0BD00C0A37C /* Open3D-iOS */; };
+		5DF9E3992DACCB9900C0A37C /* BLAS-LAPACK-AppStore-Workaround in Frameworks */ = {isa = PBXBuildFile; productRef = 5DF9E3982DACCB9900C0A37C /* BLAS-LAPACK-AppStore-Workaround */; };
 		5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFD7FEE2C102B79009CB20E /* LazyView.swift */; };
 		5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */; };
 /* End PBXBuildFile section */
@@ -58,8 +64,8 @@
 		5D07FF732D80371400E84F4A /* RemoteConfigProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigProvider.swift; sourceTree = "<group>"; };
 		5D15EE532C0D9D5700673052 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
+		5D457A322D9FDA4A007A1C90 /* FMR.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = FMR.mlpackage; sourceTree = "<group>"; };
 		5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
-		5D8258252D840DBD000FE5A2 /* DeepGMR.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = DeepGMR.mlpackage; sourceTree = "<group>"; };
 		5D835E1E2C29346500352304 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		5D835E212C29416500352304 /* AuthenticationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationResponse.swift; sourceTree = "<group>"; };
 		5D835E232C29653B00352304 /* TabState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabState.swift; sourceTree = "<group>"; };
@@ -75,6 +81,7 @@
 		5D873AB22D2F964400746652 /* CoachingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachingOverlayView.swift; sourceTree = "<group>"; };
 		5DA0256C2D1E80670009C95C /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
 		5DAEA23A2C3296EB00644088 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		5DC306562DB78A4100178332 /* DeepGMR.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = DeepGMR.mlpackage; sourceTree = "<group>"; };
 		5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneReconstructionView.swift; sourceTree = "<group>"; };
 		5DC4CD9C2D5479090077F66C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		5DC4CD9E2D547CBC0077F66C /* MeshAnchorGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshAnchorGenerator.swift; sourceTree = "<group>"; };
@@ -98,11 +105,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5DEEA1692DACD5EA000A6E19 /* Python-iOS in Frameworks */,
+				5DF9E3992DACCB9900C0A37C /* BLAS-LAPACK-AppStore-Workaround in Frameworks */,
+				5DA8482A2DACD0EC00430C46 /* NumPy-iOS in Frameworks */,
 				5D93F3A82D1E8948001D29ED /* FirebaseCrashlytics in Frameworks */,
 				5DF60A972CD35C4300C7D189 /* FirebaseCore in Frameworks */,
 				5DF60A992CD35C4300C7D189 /* FirebaseRemoteConfig in Frameworks */,
-				5DC01A0E2D8968700083E2C3 /* PythonKit in Frameworks */,
-				5D42D7372D91596D0020C215 /* Open3D-iOS in Frameworks */,
+				5D4D41E52DACD3090044BC81 /* LAPACKE-iOS in Frameworks */,
+				5D05DDCC2DACC02D008E859F /* PythonKit in Frameworks */,
+				5D578D172DACD29400C1F568 /* BLAS-LAPACK-AppStore-Workaround in Frameworks */,
+				5DF9E3962DACC0BD00C0A37C /* Open3D-iOS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,7 +124,8 @@
 		5D07FF6E2D80264E00E84F4A /* ML */ = {
 			isa = PBXGroup;
 			children = (
-				5D8258252D840DBD000FE5A2 /* DeepGMR.mlpackage */,
+				5D457A322D9FDA4A007A1C90 /* FMR.mlpackage */,
+				5DC306562DB78A4100178332 /* DeepGMR.mlpackage */,
 			);
 			path = ML;
 			sourceTree = "<group>";
@@ -328,8 +341,13 @@
 				5DF60A962CD35C4300C7D189 /* FirebaseCore */,
 				5DF60A982CD35C4300C7D189 /* FirebaseRemoteConfig */,
 				5D93F3A72D1E8948001D29ED /* FirebaseCrashlytics */,
-				5DC01A0D2D8968700083E2C3 /* PythonKit */,
-				5D42D7362D91596D0020C215 /* Open3D-iOS */,
+				5D05DDCB2DACC02D008E859F /* PythonKit */,
+				5DF9E3952DACC0BD00C0A37C /* Open3D-iOS */,
+				5DF9E3982DACCB9900C0A37C /* BLAS-LAPACK-AppStore-Workaround */,
+				5DA848292DACD0EC00430C46 /* NumPy-iOS */,
+				5D578D162DACD29400C1F568 /* BLAS-LAPACK-AppStore-Workaround */,
+				5D4D41E42DACD3090044BC81 /* LAPACKE-iOS */,
+				5DEEA1682DACD5EA000A6E19 /* Python-iOS */,
 			);
 			productName = WorldAuth;
 			productReference = 5DE2AB042C0AE22B000C7346 /* WorldAuth.app */;
@@ -360,8 +378,12 @@
 			mainGroup = 5DE2AAFB2C0AE22B000C7346;
 			packageReferences = (
 				5DF60A952CD35C4300C7D189 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				5DC01A0C2D8968700083E2C3 /* XCRemoteSwiftPackageReference "PythonKit" */,
-				5D42D7352D91596D0020C215 /* XCRemoteSwiftPackageReference "Open3D-iOS" */,
+				5D05DDCA2DACC02D008E859F /* XCLocalSwiftPackageReference "Packages/PythonKit" */,
+				5DF9E3942DACC0BD00C0A37C /* XCLocalSwiftPackageReference "Packages/Open3D-iOS" */,
+				5DA848282DACD0EC00430C46 /* XCLocalSwiftPackageReference "Packages/NumPy-iOS" */,
+				5D578D152DACD29400C1F568 /* XCLocalSwiftPackageReference "Packages/BLAS-LAPACK-AppStore-Workaround" */,
+				5D4D41E32DACD3090044BC81 /* XCLocalSwiftPackageReference "Packages/LAPACKE-iOS" */,
+				5DEEA1672DACD5EA000A6E19 /* XCLocalSwiftPackageReference "Packages/Python-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5DE2AB052C0AE22B000C7346 /* Products */;
@@ -446,7 +468,6 @@
 				5DEA68712C11765A008CD7A9 /* RegisterListView.swift in Sources */,
 				5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */,
 				5D835E222C29416500352304 /* AuthenticationResponse.swift in Sources */,
-				5D8258262D840DBD000FE5A2 /* DeepGMR.mlpackage in Sources */,
 				5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */,
 				5D873AAF2D2D02B600746652 /* AlertArticle.swift in Sources */,
 				5D873A9D2D2CED3F00746652 /* PLYFile.swift in Sources */,
@@ -461,9 +482,11 @@
 				5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */,
 				5D4655F02C22A6F90013CB78 /* NetworkHelper.swift in Sources */,
 				5D873A992D2CEAE700746652 /* YCBCRBuffer.swift in Sources */,
+				5D457A332D9FDA4A007A1C90 /* FMR.mlpackage in Sources */,
 				5D873A972D2CEAD900746652 /* PixelBuffer.swift in Sources */,
 				5D873A9B2D2CEB4900746652 /* ARManager.swift in Sources */,
 				5D835E242C29653B00352304 /* TabState.swift in Sources */,
+				5DC306572DB78A4100178332 /* DeepGMR.mlpackage in Sources */,
 				5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */,
 				5D873AA22D2CEDFE00746652 /* ARContainerView.swift in Sources */,
 				5DC4CD9F2D547CBC0077F66C /* MeshAnchorGenerator.swift in Sources */,
@@ -623,7 +646,7 @@
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -665,7 +688,7 @@
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -709,23 +732,34 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		5D05DDCA2DACC02D008E859F /* XCLocalSwiftPackageReference "Packages/PythonKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/PythonKit;
+		};
+		5D4D41E32DACD3090044BC81 /* XCLocalSwiftPackageReference "Packages/LAPACKE-iOS" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "Packages/LAPACKE-iOS";
+		};
+		5D578D152DACD29400C1F568 /* XCLocalSwiftPackageReference "Packages/BLAS-LAPACK-AppStore-Workaround" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "Packages/BLAS-LAPACK-AppStore-Workaround";
+		};
+		5DA848282DACD0EC00430C46 /* XCLocalSwiftPackageReference "Packages/NumPy-iOS" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "Packages/NumPy-iOS";
+		};
+		5DEEA1672DACD5EA000A6E19 /* XCLocalSwiftPackageReference "Packages/Python-iOS" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "Packages/Python-iOS";
+		};
+		5DF9E3942DACC0BD00C0A37C /* XCLocalSwiftPackageReference "Packages/Open3D-iOS" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "Packages/Open3D-iOS";
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
-		5D42D7352D91596D0020C215 /* XCRemoteSwiftPackageReference "Open3D-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/charliegarrison/Open3D-iOS";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-		5DC01A0C2D8968700083E2C3 /* XCRemoteSwiftPackageReference "PythonKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pvieito/PythonKit";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		5DF60A952CD35C4300C7D189 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -737,20 +771,30 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5D42D7362D91596D0020C215 /* Open3D-iOS */ = {
+		5D05DDCB2DACC02D008E859F /* PythonKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5D42D7352D91596D0020C215 /* XCRemoteSwiftPackageReference "Open3D-iOS" */;
-			productName = "Open3D-iOS";
+			productName = PythonKit;
+		};
+		5D4D41E42DACD3090044BC81 /* LAPACKE-iOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "LAPACKE-iOS";
+		};
+		5D578D162DACD29400C1F568 /* BLAS-LAPACK-AppStore-Workaround */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "BLAS-LAPACK-AppStore-Workaround";
 		};
 		5D93F3A72D1E8948001D29ED /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5DF60A952CD35C4300C7D189 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
 		};
-		5DC01A0D2D8968700083E2C3 /* PythonKit */ = {
+		5DA848292DACD0EC00430C46 /* NumPy-iOS */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5DC01A0C2D8968700083E2C3 /* XCRemoteSwiftPackageReference "PythonKit" */;
-			productName = PythonKit;
+			productName = "NumPy-iOS";
+		};
+		5DEEA1682DACD5EA000A6E19 /* Python-iOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "Python-iOS";
 		};
 		5DF60A962CD35C4300C7D189 /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -761,6 +805,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5DF60A952CD35C4300C7D189 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseRemoteConfig;
+		};
+		5DF9E3952DACC0BD00C0A37C /* Open3D-iOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "Open3D-iOS";
+		};
+		5DF9E3982DACCB9900C0A37C /* BLAS-LAPACK-AppStore-Workaround */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "BLAS-LAPACK-AppStore-Workaround";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

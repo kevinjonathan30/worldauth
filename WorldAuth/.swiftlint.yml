@@ -4,3 +4,5 @@ disabled_rules:
 - trailing_whitespace
 - large_tuple
 - identifier_name
+- force_try
+- type_name

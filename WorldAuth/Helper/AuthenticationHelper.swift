@@ -15,7 +15,7 @@ import PythonKit
 struct AuthenticationHelper {
     
     // Initialize Python Environment Once
-    static func initializePythonEnvironment() {        
+    static func initializePythonEnvironment() {
         PythonSupport.initialize()
         Open3DSupport.sitePackagesURL.insertPythonPath()
         NumPySupport.sitePackagesURL.insertPythonPath()
@@ -35,8 +35,12 @@ struct AuthenticationHelper {
             return runICPInference(source: source, target: target, isFgr: false, threshold: 0.35)
         case "FGR":
             return runICPInference(source: source, target: target, isFgr: true, threshold: 0.32)
+        case "PNLK":
+            return runPNLKInference(source: source, target: target, threshold: 0.345)
+        case "FMR":
+            return runFMRInference(source: source, target: target, threshold: 0.35)
         case "DGMR":
-            return runDeepGMRInference(source: source, target: target)
+            return runDeepGMRInference(source: source, target: target, threshold: 0.49)
         default:
             return 0.0
         }
@@ -45,24 +49,30 @@ struct AuthenticationHelper {
 
 // MARK: - Registration Evaluation
 extension AuthenticationHelper {
-    static private func evaluateRegistration(source: MLMultiArray, target: MLMultiArray, tMatrix: MLMultiArray) -> Double {
+    static private func evaluateRegistration(source: MLMultiArray, target: MLMultiArray, tMatrix: MLMultiArray, threshold: Double) -> Double {
         let o3d = PythonModules.o3d
+        let np = PythonModules.np
         
         let sourceNp = mlMultiArrayToNumPy(source)[0]
         let targetNp = mlMultiArrayToNumPy(target)[0]
         let t21Np = mlMultiArrayToNumPy(tMatrix)
         
-        let transformedPts2 = transformPoints(pts2: targetNp, t21: t21Np)
-        
         let pcd1 = o3d.geometry.PointCloud()
         let pcd2 = o3d.geometry.PointCloud()
-        let pcd3 = o3d.geometry.PointCloud()
         
         pcd1.points = o3d.utility.Vector3dVector(sourceNp)
         pcd2.points = o3d.utility.Vector3dVector(targetNp)
-        pcd3.points = o3d.utility.Vector3dVector(transformedPts2)
         
-        let evaluation = o3d.pipelines.registration.evaluate_registration(pcd1, pcd3, 0.49)
+        let pcd1Transformed = o3d.geometry.PointCloud()
+        pcd1Transformed.points = o3d.utility.Vector3dVector(np.asarray(pcd1.points))
+        
+        let transformation = np.array(t21Np).reshape(4, 4)
+        
+        // Apply transformation using the copied point cloud
+        pcd1Transformed.transform(transformation)
+        
+        // Evaluate registration between target and transformed source
+        let evaluation = o3d.pipelines.registration.evaluate_registration(pcd2, pcd1Transformed, threshold)
         return Double(evaluation.fitness) ?? 0
     }
 }
@@ -166,25 +176,67 @@ extension AuthenticationHelper {
     }
 }
 
-// MARK: - DeepGMR
+// MARK: - PNLK
+
 extension AuthenticationHelper {
-    static private func loadDeepGMR() -> DeepGMR {
-        guard let model = try? DeepGMR(configuration: MLModelConfiguration()) else {
-            fatalError("Failed to load DeepGMR model.")
+    static private func runPNLKInference(source: String, target: String, threshold: Double) -> Double {
+        return 0
+    }
+}
+
+// MARK: - FMR
+
+extension AuthenticationHelper {
+    static private func loadFMR() -> FMR {
+        guard let model = try? FMR(configuration: MLModelConfiguration()) else {
+            fatalError("Faield to load FMR model.")
         }
         return model
     }
     
-    static private func runDeepGMRInference(source: String, target: String) -> Double {
+    static private func runFMRInference(source: String, target: String, threshold: Double) -> Double {
         guard let source = createMLMultiArray(from: source),
               let target = createMLMultiArray(from: target) else { return 0 }
         
-        let input = DeepGMRInput(pts1_1: source, pts2_1: target)
-        let model = loadDeepGMR()
+        let input = FMRInput(target: target, source: source)
+        let model = loadFMR()
         
         do {
             let prediction = try model.prediction(input: input)
-            return Double(prediction.const_0[0].floatValue)
+            return evaluateRegistration(source: source, target: target, tMatrix: prediction.transformation_matrix, threshold: threshold)
+        } catch {
+            print(error.localizedDescription)
+            return 0
+        }
+    }
+}
+
+// MARK: - DeepGMR
+extension AuthenticationHelper {
+    static private func loadDeepGMR() -> DeepGMR? {
+        do {
+            let config = MLModelConfiguration()
+            // Optional: Adjust configuration settings as needed
+            // config.computeUnits = .cpuAndGPU
+            
+            let model = try DeepGMR(configuration: config)
+            return model
+        } catch {
+            print("Failed to load DeepGMR model: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
+    static private func runDeepGMRInference(source: String, target: String, threshold: Double) -> Double {
+        guard let source = createMLMultiArray(from: source),
+              let target = createMLMultiArray(from: target) else { return 0 }
+        
+        let input = DeepGMRInput(input1: source, input2: target)
+        guard let model = loadDeepGMR() else { return 0 }
+        
+        do {
+            let prediction = try model.prediction(input: input)
+            return evaluateRegistration(source: source, target: target, tMatrix: prediction.transformation, threshold: threshold)
         } catch {
             print(error.localizedDescription)
             return 0
@@ -235,6 +287,33 @@ extension AuthenticationHelper {
         
         return npArray
     }
+
+    static private func numpyToMLMultiArray(_ numpyArray: PythonObject) -> MLMultiArray? {
+        let np = PythonModules.np
+        
+        guard Bool(np.isinstance(numpyArray, np.ndarray)) == true else {
+            print("Input is not a NumPy array.")
+            return nil
+        }
+        
+        let shapeTuple = numpyArray.shape
+        let shape = (0..<(Int(Python.len(shapeTuple)) ?? 0)).map { Int(shapeTuple[$0])! }
+        let flattened = numpyArray.flatten().astype(np.float64)
+        
+        let swiftArray: [Double] = Array(flattened)!
+        
+        guard let mlArray = try? MLMultiArray(shape: shape.map { NSNumber(value: $0) }, dataType: .double) else {
+            print("Failed to initialize MLMultiArray.")
+            return nil
+        }
+
+        for i in 0..<mlArray.count {
+            mlArray[i] = NSNumber(value: swiftArray[i])
+        }
+        
+        return mlArray
+    }
+
     
     static private func transformPoints(pts2: PythonObject, t21: PythonObject) -> PythonObject {
         let R = t21.slice(0, 3, 0, 3).T
