@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import Firebase
+import FirebaseCore
+import FirebaseRemoteConfig
 
 /**
  Use this enum to refer the variables that you need to fetch and control remotely
