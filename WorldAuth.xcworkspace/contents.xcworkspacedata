@@ -5,6 +5,9 @@
       location = "group:WorldAuth.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:WorldAuthCore/WorldAuthCore.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

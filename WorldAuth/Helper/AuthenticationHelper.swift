@@ -5,11 +5,13 @@
 //  Created by Kevin Jonathan on 2025/03/11.
 //
 
+import Foundation
 import CoreML
 import PythonSupport
 import Open3DSupport
 import NumPySupport
 import PythonKit
+import WorldAuthCoreML
 
 struct AuthenticationHelper {
     
@@ -29,8 +31,8 @@ struct AuthenticationHelper {
     }
     
     static func runInference(source: String, target: String) -> Double {
-//        switch RemoteConfigProvider.shared.authenticationMethod() {
-        switch "DGMR" {
+        switch RemoteConfigProvider.shared.authenticationMethod() {
+//                    switch "DGMR" {
         case "ICP":
             return runICPInference(source: source, target: target, isFgr: false, threshold: 0.35)
         case "FGR":
@@ -189,7 +191,7 @@ extension AuthenticationHelper {
 extension AuthenticationHelper {
     static private func loadFMR() -> FMR {
         guard let model = try? FMR(configuration: MLModelConfiguration()) else {
-            fatalError("Faield to load FMR model.")
+            fatalError("Failed to load FMR model.")
         }
         return model
     }
@@ -212,84 +214,17 @@ extension AuthenticationHelper {
 }
 
 // MARK: - DeepGMR with TorchScript (LibTorch)
+
 extension AuthenticationHelper {
-    static private func loadDeepGMRTorchScript() -> TorchModule? {
-        if let filePath = Bundle.main.path(forResource: "deepgmr", ofType: "pt"),
-           let module = TorchModule(fileAtPath: filePath) {
-            return module
-        } else {
-            print("Error loading TorchModule") // TODO: Fix this error cause. https://pytorch.org/mobile/ios/#build-pytorch-ios-libraries-from-source
-            return nil
-        }
-    }
-    
     static private func runDeepGMRInference(source: String, target: String, threshold: Double) -> Double {
-        guard let sourceArray = createMLMultiArray(from: source),
-              let targetArray = createMLMultiArray(from: target) else { return 0 }
+        guard let result = WorldAuthCoreML.runInference(source: source, target: target, method: "DGMR") else { return 0 }
         
-        guard let sourcePoints = mlMultiArrayToFloatArray(sourceArray),
-              let targetPoints = mlMultiArrayToFloatArray(targetArray) else { return 0 }
-
-        // Allocate memory for the source and target points
-        let sourcePointer = UnsafeMutablePointer<Float>.allocate(capacity: sourcePoints.count)
-        let targetPointer = UnsafeMutablePointer<Float>.allocate(capacity: targetPoints.count)
-
-        // Copy the data into the allocated memory
-        sourcePointer.initialize(from: sourcePoints, count: sourcePoints.count)
-        targetPointer.initialize(from: targetPoints, count: targetPoints.count)
-
-        let numPoints1 = Int32(sourcePoints.count / 3) // Assuming 3 coordinates per point
-        let numPoints2 = Int32(targetPoints.count / 3)
-
-        guard let model = loadDeepGMRTorchScript() else {
-            sourcePointer.deallocate()
-            targetPointer.deallocate()
-            return 0
-        }
-
-        let transformationMatrix = model.registerPointCloud(
-            points1: sourcePointer,
-            numPoints1: numPoints1,
-            points2: targetPointer,
-            numPoints2: numPoints2
-        )
-
-        // Deallocate the pointers after the model call
-        sourcePointer.deallocate()
-        targetPointer.deallocate()
-
-        guard let prediction = transformationMatrix,
-              let tMatrix = convertToMatrix4x4(array: prediction) else { return 0 }
-
-        return evaluateRegistration(source: sourceArray, target: targetArray, tMatrix: tMatrix, threshold: threshold)
-    }
-    
-    static private func convertToMatrix4x4(array: [NSNumber]) -> MLMultiArray? {
-        do {
-            // Initialize an MLMultiArray with shape (4, 4) and data type Double
-            let matrix = try MLMultiArray(shape: [4, 4], dataType: .double)
-            
-            // Populate the MLMultiArray
-            for i in 0..<4 {
-                for j in 0..<4 {
-                    let index = i * 4 + j
-                    if index < array.count {
-                        matrix[[NSNumber(value: i), NSNumber(value: j)]] = array[index]
-                    } else {
-                        matrix[[NSNumber(value: i), NSNumber(value: j)]] = 0.0
-                    }
-                }
-            }
-            return matrix
-        } catch {
-            print("Error creating MLMultiArray: \(error)")
-            return nil
-        }
+        return 0
     }
 }
 
-
 // MARK: - Helper Functions
+
 extension AuthenticationHelper {
     
     static private func createMLMultiArray(from string: String) -> MLMultiArray? {
@@ -332,7 +267,7 @@ extension AuthenticationHelper {
         
         return npArray
     }
-
+    
     static private func numpyToMLMultiArray(_ numpyArray: PythonObject) -> MLMultiArray? {
         let np = PythonModules.np
         
@@ -351,14 +286,14 @@ extension AuthenticationHelper {
             print("Failed to initialize MLMultiArray.")
             return nil
         }
-
+        
         for i in 0..<mlArray.count {
             mlArray[i] = NSNumber(value: swiftArray[i])
         }
         
         return mlArray
     }
-
+    
     
     static private func transformPoints(pts2: PythonObject, t21: PythonObject) -> PythonObject {
         let R = t21.slice(0, 3, 0, 3).T
@@ -371,7 +306,7 @@ extension AuthenticationHelper {
         var points: [Float] = []
         let lines = plyString.split(separator: "\n")
         var isHeader = true
-
+        
         for line in lines {
             if isHeader {
                 if line.starts(with: "end_header") {

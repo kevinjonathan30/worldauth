@@ -1,28 +1,20 @@
-# Uncomment the next line to define a global platform for your project
-# platform :ios, '18.0'
+workspace 'WorldAuth.xcworkspace'
+platform :ios, '18.4'
 
-target 'WorldAuth' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+use_frameworks!
+inhibit_all_warnings!
+
+target :WorldAuth do
+  project 'WorldAuth.xcodeproj'
 
   # Pods for WorldAuth
   pod 'FirebaseAnalytics'
   pod 'FirebaseCrashlytics'
   pod 'FirebaseRemoteConfig'
-  pod 'LibTorch-Lite'
-#  pod 'MyLibtorch', :path => 'MyLibtorch.podspec'
+end
 
-  
-  post_install do |installer|
-    installer.pods_project.targets.each do |target|
-      if target.name == 'MyLibtorch'
-        target.build_configurations.each do |config|
-          config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
-          config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
-          config.build_settings['ENABLE_BITCODE'] = 'NO'
-        end
-      end
-    end
-  end
+target :WorldAuthCore do
+  project 'WorldAuthCore/WorldAuthCore.xcodeproj'
 
+  # Add specific pods for WorldAuthCore, if any (leave empty if none)
 end

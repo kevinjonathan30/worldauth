@@ -28,9 +28,7 @@ targets: [
 ]),
 ],
 dependencies: [
-.package(path: "../NumPy-iOS"),
-.package(path: "../LAPACKE-iOS"),
-.package(path: "../BLAS-LAPACK-AppStore-Workaround")
+.package(path: "../NumPy-iOS")
 ],
 targets: [
 .binaryTarget(name: "Assimp", url: "https://github.com/kewlbear/Open3D-iOS/releases/download/0.0.20220804014308/Assimp.xcframework.zip", checksum: "6904cc87d6001158a44caffb854e32b30e29adb606f46472d5f8ce00b9721a24"),
@@ -50,7 +48,6 @@ targets: [
 name: "LinkOpen3D",
 dependencies: [
 "NumPy-iOS",
-"LAPACKE-iOS",
 "Assimp",
 "Faiss",
 "IrrXML",
@@ -63,8 +60,7 @@ dependencies: [
 "libOpen3D",
 "png",
 "pybind",
-"TBB",
-"BLAS-LAPACK-AppStore-Workaround",
+"TBB"
 ],
 linkerSettings: [
 .linkedLibrary("stdc++"),

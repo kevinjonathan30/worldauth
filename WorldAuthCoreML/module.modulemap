@@ -1,0 +1,4 @@
+module WorldAuthCoreML {
+    header "/Users/kevinjonathan/Projects/worldauth/WorldAuthCoreML/TorchModule.h"
+    export *
+}
