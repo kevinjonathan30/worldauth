@@ -41,7 +41,7 @@ struct AuthenticationHelper {
         case "FMR":
             return runFMRInference(source: source, target: target, threshold: 0.35)
         case "DGMR":
-            return runDeepGMRInference(source: source, target: target, threshold: 0.49)
+            return runDeepGMRInference(source: source, target: target, threshold: 0.47)
         default:
             return 0.0
         }
@@ -216,9 +216,12 @@ extension AuthenticationHelper {
 
 extension AuthenticationHelper {
     static private func runDeepGMRInference(source: String, target: String, threshold: Double) -> Double {
-        guard let result = WorldAuthCoreML.runInference(source: source, target: target, method: "DGMR") else { return 0 }
+        guard let sourceTemp = createMLMultiArray(from: source),
+              let targetTemp = createMLMultiArray(from: target) else { return 0 }
         
-        return 0
+        guard let tMatrix = WorldAuthCoreML.runInference(source: source, target: target, method: "DGMR") else { return 0 }
+        
+        return evaluateRegistration(source: sourceTemp, target: targetTemp, tMatrix: tMatrix, threshold: threshold)
     }
 }
 

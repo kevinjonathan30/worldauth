@@ -8363,6 +8363,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/lib/**",
 					"$(inherited)",
+					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/lib",
 				);
 				MARKETING_VERSION = 1.0;
 				MODULEMAP_FILE = "$(SRCROOT)/WorldAuthCoreML/module.modulemap";
@@ -8423,6 +8424,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/lib/**",
 					"$(inherited)",
+					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/lib",
 				);
 				MARKETING_VERSION = 1.0;
 				MODULEMAP_FILE = "$(SRCROOT)/WorldAuthCoreML/module.modulemap";

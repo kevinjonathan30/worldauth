@@ -17,9 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 // Method to register two point clouds and return the transformation matrix
-- (nullable NSArray<NSNumber*>*)registerPointCloud:(float*)pointCloud1
+- (nullable NSArray<NSNumber*>*)registerPointCloud:(const float*)pointCloud1
                                       withNumPoints:(int)numPoints1
-                                     andPointCloud:(float*)pointCloud2
+                                     andPointCloud:(const float*)pointCloud2
                                       withNumPoints:(int)numPoints2
     NS_SWIFT_NAME(registerPointCloud(points1:numPoints1:points2:numPoints2:));
 
