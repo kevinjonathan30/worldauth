@@ -7863,7 +7863,7 @@
 				Model/deepgmr.pt,
 			);
 			publicHeaders = (
-				TorchModule.h,
+				Module/DeepGMR/DGMRModule.h,
 			);
 			target = 5DDF68B62DD3651B0057BA09 /* WorldAuthCoreML */;
 		};

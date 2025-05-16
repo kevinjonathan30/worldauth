@@ -1,4 +1,4 @@
 module WorldAuthCoreML {
-    header "/Users/kevinjonathan/Projects/worldauth/WorldAuthCoreML/TorchModule.h"
+    header "/Users/kevinjonathan/Projects/worldauth/WorldAuthCoreML/Module/DeepGMR/DGMRModule.h"
     export *
 }

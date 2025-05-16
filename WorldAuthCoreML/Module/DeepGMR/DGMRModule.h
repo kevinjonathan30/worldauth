@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TorchModule : NSObject
+@interface DGMRModule : NSObject
 
 - (nullable instancetype)initWithFileAtPath:(NSString*)filePath
     NS_SWIFT_NAME(init(fileAtPath:))NS_DESIGNATED_INITIALIZER;

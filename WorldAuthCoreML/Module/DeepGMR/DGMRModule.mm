@@ -5,12 +5,12 @@
 //  Created by Kevin Jonathan on 2025/05/12.
 //
 
-#import <WorldAuthCoreML/TorchModule.h>
+#import <WorldAuthCoreML/DGMRModule.h>
 #include <torch/csrc/jit/mobile/import.h>
 #include <torch/csrc/jit/mobile/module.h>
 #include <torch/script.h>
 
-@implementation TorchModule {
+@implementation DGMRModule {
  @protected
   torch::jit::mobile::Module _impl;
 }
@@ -42,19 +42,6 @@
         // Create tensors from input data
         at::Tensor tensor1 = torch::from_blob(pointCloud1, {1, numPoints1, 3}, at::kFloat).clone();
         at::Tensor tensor2 = torch::from_blob(pointCloud2, {1, numPoints2, 3}, at::kFloat).clone();
-        
-        // Convert tensor data to an NSString for logging
-//        std::ostringstream oss1;
-//        oss1 << tensor1;
-//        NSString* tensor1Str = [NSString stringWithUTF8String:oss1.str().c_str()];
-//
-//        std::ostringstream oss2;
-//        oss2 << tensor2;
-//        NSString* tensor2Str = [NSString stringWithUTF8String:oss2.str().c_str()];
-//
-//        // Log tensor data
-//        NSLog(@"tensor1 = %@", tensor1Str);
-//        NSLog(@"tensor2 = %@", tensor2Str);
 
         // Validate tensor shapes
         if (tensor1.sizes() != std::vector<int64_t>{1, numPoints1, 3} ||

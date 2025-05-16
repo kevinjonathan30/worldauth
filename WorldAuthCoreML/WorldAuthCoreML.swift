@@ -31,9 +31,9 @@ public struct WorldAuthCoreML {
 // MARK: - DeepGMR with TorchScript (LibTorch)
 
 public extension WorldAuthCoreML {
-    static private func loadDeepGMRTorchScript() -> TorchModule? {
+    static private func loadDeepGMRTorchScript() -> DGMRModule? {
         if let filePath = Bundle.main.path(forResource: "deepgmr", ofType: "pt"),
-           let module = TorchModule(fileAtPath: filePath) {
+           let module = DGMRModule(fileAtPath: filePath) {
             return module
         } else {
             print("Error loading TorchModule")
