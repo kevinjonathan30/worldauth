@@ -32,7 +32,6 @@ struct AuthenticationHelper {
     
     static func runInference(source: String, target: String) -> Double {
         switch RemoteConfigProvider.shared.authenticationMethod() {
-//                    switch "DGMR" {
         case "ICP":
             return runICPInference(source: source, target: target, isFgr: false, threshold: 0.35)
         case "FGR":

@@ -32,7 +32,7 @@ class MeshAnchorGenerator {
                     return entity
                 }()
 
-                let material = SimpleMaterial(color: .cyan.withAlphaComponent(0.8), isMetallic: false)
+                let material = SimpleMaterial(color: .white.withAlphaComponent(0.8), isMetallic: false)
                 guard let mesh = try? await MeshResource(from: update.anchor) else { return }
 
                 await MainActor.run {

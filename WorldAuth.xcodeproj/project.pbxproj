@@ -8363,13 +8363,16 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/lib/**",
 					"$(inherited)",
-					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/lib",
 				);
 				MARKETING_VERSION = 1.0;
 				MODULEMAP_FILE = "$(SRCROOT)/WorldAuthCoreML/module.modulemap";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-Wl,-force_load,$(SRCROOT)/WorldAuthCoreML/Libtorch/lib/libtorch.a",
+					"-Wl,-force_load,$(SRCROOT)/WorldAuthCoreML/Libtorch/lib/libtorch_cpu.a",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = jp.ac.waseda.cs.WorldAuthCoreML;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -8420,13 +8423,16 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/lib/**",
 					"$(inherited)",
-					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/lib",
 				);
 				MARKETING_VERSION = 1.0;
 				MODULEMAP_FILE = "$(SRCROOT)/WorldAuthCoreML/module.modulemap";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-Wl,-force_load,$(SRCROOT)/WorldAuthCoreML/Libtorch/lib/libtorch.a",
+					"-Wl,-force_load,$(SRCROOT)/WorldAuthCoreML/Libtorch/lib/libtorch_cpu.a",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = jp.ac.waseda.cs.WorldAuthCoreML;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
