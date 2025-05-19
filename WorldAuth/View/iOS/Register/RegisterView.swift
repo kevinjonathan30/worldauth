@@ -21,6 +21,7 @@ struct RegisterView: View {
             .alert(article.title, isPresented: $showAlert, presenting: article) { _ in
                 Button("Close", role: .cancel) {
                     showAlert = false
+                    dismiss()
                 }
             } message: { article in
                 Text(article.description)
@@ -42,7 +43,14 @@ private extension RegisterView {
         viewState = .loading
         
         if RemoteConfigProvider.shared.prefersOnDevice() {
-            let url = FileHelper.saveFile(data: Data(plyString.utf8), fileName: "target.ply")
+            guard let fileName = getFileNameToRegister() else {
+                viewState = .loaded
+                article = AlertArticle(title: "An Error Occured", description: "You can only register a maximum of 3 room templates.")
+                showAlert = true
+                return
+            }
+            
+            let url = FileHelper.saveFile(data: Data(plyString.utf8), fileName: fileName)
             if url != nil {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     dismiss()
@@ -75,6 +83,23 @@ private extension RegisterView {
                 }
             }
         }
+    }
+    
+    private func getFileNameToRegister() -> String? {
+        let fileList = FileHelper.getFileList()
+        let roomList = fileList.map { $0.lastPathComponent }
+        
+        guard roomList.count < 3 else { return nil }
+        
+        if !roomList.contains("Room_1.ply") {
+            return "Room_1.ply"
+        } else if !roomList.contains("Room_2.ply") {
+            return "Room_2.ply"
+        } else if !roomList.contains("Room_3.ply") {
+            return "Room_3.ply"
+        }
+        
+        return nil
     }
 }
 

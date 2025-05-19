@@ -8026,13 +8026,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5DC4CD992D5477C70077F66C /* VisionOSViews */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = VisionOSViews;
-			sourceTree = "<group>";
-		};
 		5DC4CDA22D5486370077F66C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -8103,7 +8096,6 @@
 		5DFD7FF02C102DD7009CB20E /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				5DC4CD992D5477C70077F66C /* VisionOSViews */,
 				5D873AA12D2CEDFB00746652 /* ARContainerView.swift */,
 				5D873AB22D2F964400746652 /* CoachingOverlayView.swift */,
 				5DFD7FEE2C102B79009CB20E /* LazyView.swift */,
