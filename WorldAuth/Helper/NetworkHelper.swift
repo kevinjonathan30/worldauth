@@ -10,12 +10,12 @@ import UIKit
 struct NetworkHelper {
     static private var apiUrl: String {
         guard let filePath = Bundle.main.path(forResource: "WorldAuth-Info", ofType: "plist") else {
-          fatalError("Couldn't find file 'WorldAuth-Info.plist'.")
+            fatalError("Couldn't find file 'WorldAuth-Info.plist'.")
         }
-          
+        
         let plist = NSDictionary(contentsOfFile: filePath)
         guard let value = plist?.object(forKey: "API_URL") as? String else {
-          fatalError("Couldn't find key 'API_URL' in 'WorldAuth-Info.plist'.")
+            fatalError("Couldn't find key 'API_URL' in 'WorldAuth-Info.plist'.")
         }
         return value
     }
@@ -26,26 +26,26 @@ struct NetworkHelper {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error getting files: \(error)")
                 completion(nil, error)
                 return
             }
-
+            
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
                 print("Error with response status code")
                 completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
-
+            
             guard let data = data else {
                 print("No data received")
                 completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
-
+            
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                     if let result = jsonResponse["data"] as? [String] {
@@ -60,7 +60,7 @@ struct NetworkHelper {
                 return
             }
         }
-
+        
         task.resume()
     }
     
@@ -69,11 +69,11 @@ struct NetworkHelper {
         guard let url = URL(string: apiUrl + "/api/register/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-
+        
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
-
+        
         var body = Data()
         
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
@@ -83,28 +83,28 @@ struct NetworkHelper {
         body.append("\r\n".data(using: .utf8)!)
         
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-
+        
         request.httpBody = body
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error uploading files: \(error)")
                 completion(nil, error)
                 return
             }
-
+            
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
                 print("Error with response status code")
                 completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
-
+            
             guard let data = data else {
                 print("No data received")
                 completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
-
+            
             do {
                 let networkResponse = try JSONDecoder().decode(AuthenticationResult.self, from: data)
                 completion(networkResponse, nil)
@@ -116,7 +116,7 @@ struct NetworkHelper {
                 return
             }
         }
-
+        
         task.resume()
     }
     
@@ -126,10 +126,11 @@ struct NetworkHelper {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
-
+        request.setValue(RemoteConfigProvider.shared.authenticationMethod(), forHTTPHeaderField: "AuthorizationMethod")
+        
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-
+        
         var body = Data()
         
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
@@ -139,28 +140,28 @@ struct NetworkHelper {
         body.append("\r\n".data(using: .utf8)!)
         
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-
+        
         request.httpBody = body
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error uploading files: \(error)")
                 completion(nil, error)
                 return
             }
-
+            
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
                 print("Error with response status code")
                 completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
-
+            
             guard let data = data else {
                 print("No data received")
                 completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
-
+            
             do {
                 let networkResponse = try JSONDecoder().decode(AuthenticationResult.self, from: data)
                 completion(networkResponse, nil)
@@ -172,7 +173,69 @@ struct NetworkHelper {
                 return
             }
         }
-
+        
+        task.resume()
+    }
+    
+    static func authenticateTwoPointClouds(_ sourceFile: Data, _ targetFile: Data, completion: @escaping (AuthenticationResult?, Error?) -> Void) {
+        guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else {
+            completion(nil, NSError(domain: "Device identifier not available", code: 400))
+            return
+        }
+        guard let url = URL(string: apiUrl + "/api/authenticate_two/") else {
+            completion(nil, NSError(domain: "Invalid URL", code: 400))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
+        request.setValue(RemoteConfigProvider.shared.authenticationMethod(), forHTTPHeaderField: "AuthorizationMethod")
+        
+        let boundary = UUID().uuidString
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        var body = Data()
+        
+        // Add source file under "files"
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"files\"; filename=\"sourceFile.ply\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: application/octet-stream\r\n\r\n".data(using: .utf8)!)
+        body.append(sourceFile)
+        body.append("\r\n".data(using: .utf8)!)
+        
+        // Add target file under "files"
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"files\"; filename=\"targetFile.ply\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: application/octet-stream\r\n\r\n".data(using: .utf8)!)
+        body.append(targetFile)
+        body.append("\r\n".data(using: .utf8)!)
+        
+        // Close the boundary
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        request.httpBody = body
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+                completion(nil, NSError(domain: "Server returned an error", code: httpResponse.statusCode))
+                return
+            }
+            guard let data = data else {
+                completion(nil, NSError(domain: "No data received", code: 400))
+                return
+            }
+            do {
+                let result = try JSONDecoder().decode(AuthenticationResult.self, from: data)
+                completion(result, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }
         task.resume()
     }
     
@@ -183,26 +246,26 @@ struct NetworkHelper {
         request.httpMethod = "DELETE"
         request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
         request.setValue(fileName, forHTTPHeaderField: "FileRequest")
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error deleting files: \(error)")
                 completion(nil, error)
                 return
             }
-
+            
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
                 print("Error with response status code")
                 completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
-
+            
             guard let data = data else {
                 print("No data received")
                 completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
-
+            
             do {
                 let networkResponse = try JSONDecoder().decode(AuthenticationResult.self, from: data)
                 completion(networkResponse, nil)
@@ -214,7 +277,7 @@ struct NetworkHelper {
                 return
             }
         }
-
+        
         task.resume()
     }
 }

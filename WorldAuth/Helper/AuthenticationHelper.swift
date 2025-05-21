@@ -74,6 +74,7 @@ extension AuthenticationHelper {
         
         // Evaluate registration between target and transformed source
         let evaluation = o3d.pipelines.registration.evaluate_registration(pcd2, pcd1Transformed, threshold)
+        print(Double(evaluation.fitness) ?? 0)
         return Double(evaluation.fitness) ?? 0
     }
 }
@@ -108,6 +109,8 @@ extension AuthenticationHelper {
         // Apply point-to-plane ICP
         let regP2l = o3d.pipelines.registration.TransformationEstimationPointToPlane()
         let regP2lResult = o3d.pipelines.registration.registration_icp(preparedDataset.0, preparedDataset.1, threshold, transInit, regP2l)
+        
+        print(Double(regP2lResult.fitness) ?? 0)
         
         return Double(regP2lResult.fitness) ?? 0
     }
@@ -180,7 +183,12 @@ extension AuthenticationHelper {
 // MARK: - PNLK
 
 extension AuthenticationHelper {
-    static private func runPNLKInference(source: String, target: String, threshold: Double) -> Double {
+    static func runPNLKInference(source: String, target: String, threshold: Double) -> Double {
+        let sourceData = Data(source.utf8)
+        let targetData = Data(target.utf8)
+        if let result = authenticateTwoPointCloudsSync(sourceData, targetData) {
+            return result.fitness ?? 0
+        }
         return 0
     }
 }
@@ -188,27 +196,13 @@ extension AuthenticationHelper {
 // MARK: - FMR
 
 extension AuthenticationHelper {
-    static private func loadFMR() -> FMR {
-        guard let model = try? FMR(configuration: MLModelConfiguration()) else {
-            fatalError("Failed to load FMR model.")
+    static func runFMRInference(source: String, target: String, threshold: Double) -> Double {
+        let sourceData = Data(source.utf8)
+        let targetData = Data(target.utf8)
+        if let result = authenticateTwoPointCloudsSync(sourceData, targetData) {
+            return result.fitness ?? 0
         }
-        return model
-    }
-    
-    static private func runFMRInference(source: String, target: String, threshold: Double) -> Double {
-        guard let source = createMLMultiArray(from: source),
-              let target = createMLMultiArray(from: target) else { return 0 }
-        
-        let input = FMRInput(target: target, source: source)
-        let model = loadFMR()
-        
-        do {
-            let prediction = try model.prediction(input: input)
-            return evaluateRegistration(source: source, target: target, tMatrix: prediction.transformation_matrix, threshold: threshold)
-        } catch {
-            print(error.localizedDescription)
-            return 0
-        }
+        return 0
     }
 }
 
@@ -335,5 +329,20 @@ extension AuthenticationHelper {
         var floatArray = [Float](repeating: 0, count: count)
         multiArray.dataPointer.copyMemory(from: &floatArray, byteCount: count * MemoryLayout<Float>.size)
         return floatArray
+    }
+    
+    static func authenticateTwoPointCloudsSync(_ sourceFile: Data, _ targetFile: Data) -> AuthenticationResult? {
+        var result: AuthenticationResult?
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        NetworkHelper.authenticateTwoPointClouds(sourceFile, targetFile) { response, error in
+            if error == nil {
+                result = response
+            }
+            semaphore.signal()
+        }
+        
+        semaphore.wait()
+        return result
     }
 }
