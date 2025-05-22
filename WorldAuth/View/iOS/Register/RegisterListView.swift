@@ -13,6 +13,7 @@ struct RegisterListView: View {
     @State var searchQuery: String = ""
     @State private var showAlert = false
     @State private var article = AlertArticle(title: "", description: "")
+    @State private var canNavigate: Bool = false
     
     var filteredRoomList: [WorldTemplate] {
         guard !searchQuery.isEmpty else { return roomList }
@@ -141,24 +142,34 @@ private extension RegisterListView {
                             .accessibilityElement()
                             .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
                             .accessibilityHint(Text("View to register point clouds", comment: "Accessibility hint for register view"))
-                    )
+                    ),
+                    isActive: $canNavigate
                 ) {
-                    Text("Add New")
-                        .bold()
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(
-                            Capsule(style: .continuous)
-                                .fill(Color.accentColor)
-                        )
-                        .accessibilityElement()
-                        .accessibilityLabel(Text("Add New Floating Button", comment: "Accessibility label for add new button"))
-                        .accessibilityHint(Text("Add a new room template", comment: "Accessibility hint for add new button"))
-                        .accessibilityAddTraits([.isButton])
+                    Button(action: {
+                        if filteredRoomList.count < 3 {
+                            canNavigate = true
+                        } else {
+                            article = AlertArticle(title: "Adding a new room template not allowed", description: "You can only register a maximum of 3 room templates.")
+                            showAlert = true
+                        }
+                    }) {
+                        Text("Add New")
+                            .bold()
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(
+                                Capsule(style: .continuous)
+                                    .fill(filteredRoomList.count < 3 ? Color.accentColor : Color.gray)
+                            )
+                            .accessibilityElement()
+                            .accessibilityLabel(Text("Add New Floating Button", comment: "Accessibility label for add new button"))
+                            .accessibilityHint(Text("Add a new room template", comment: "Accessibility hint for add new button"))
+                            .accessibilityAddTraits([.isButton])
+                    }
                 }
-            }
-            .transaction { transaction in
-                transaction.animation = .none
+                .transaction { transaction in
+                    transaction.animation = .none
+                }
             }
         }
     }
