@@ -48,7 +48,11 @@ class MeshAnchorGenerator {
     #else
     func run(_ sceneRec: Any) async {
         // VisionOS logic not supported on iOS.
-        print("Scene reconstruction is not available on this platform.")
+        LoggerHelper.logInfo(
+            parameters: [
+                .message: "Scene reconstruction is not available on this platform.",
+            ]
+        )
     }
     #endif
 }

@@ -21,16 +21,28 @@ struct SceneReconstructionView: View {
                 let generator = MeshAnchorGenerator(root: root)
 
                 guard SceneReconstructionProvider.isSupported else {
-                    print("SceneReconstructionProvider is not supported on this device.")
+                    LoggerHelper.logInfo(
+                        parameters: [
+                            .message: "SceneReconstructionProvider is not supported on this device.",
+                        ]
+                    )
                     return
                 }
 
                 do {
                     try await arSession.run([sceneReconstruction])
                 } catch let error as ARKitSession.Error {
-                    print("Encountered an error while running providers: \(error.localizedDescription)")
+                    LoggerHelper.logError(
+                        parameters: [
+                            .message: "Encountered an error while running providers: \(error.localizedDescription)",
+                        ]
+                    )
                 } catch {
-                    print("Unexpected error: \(error.localizedDescription)")
+                    LoggerHelper.logError(
+                        parameters: [
+                            .message: "Unexpected error: \(error.localizedDescription)",
+                        ]
+                    )
                 }
 
                 await generator.run(sceneReconstruction)

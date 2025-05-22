@@ -12,10 +12,6 @@ public struct WorldAuthCoreML {
 
     public static func runInference(source: String, target: String, method: String = "ICP") -> MLMultiArray? {
         switch method {
-        case "ICP":
-            return nil
-        case "FGR":
-            return nil
         case "PNLK":
             return nil
         case "FMR":
@@ -32,7 +28,7 @@ public struct WorldAuthCoreML {
 
 public extension WorldAuthCoreML {
     static private func loadDeepGMRTorchScript() -> DGMRModule? {
-        if let filePath = Bundle.main.path(forResource: "deepgmr", ofType: "pt"),
+        if let filePath = Bundle(identifier: "jp.ac.waseda.cs.WorldAuthCoreML")?.path(forResource: "deepgmr", ofType: "pt"),
            let module = DGMRModule(fileAtPath: filePath) {
             return module
         } else {

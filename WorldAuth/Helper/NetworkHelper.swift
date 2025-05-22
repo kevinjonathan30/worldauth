@@ -29,19 +29,31 @@ struct NetworkHelper {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("Error getting files: \(error)")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Error getting files: \(error)",
+                    ]
+                )
                 completion(nil, error)
                 return
             }
             
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-                print("Error with response status code")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Error with response status code",
+                    ]
+                )
                 completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
             
             guard let data = data else {
-                print("No data received")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "No data received",
+                    ]
+                )
                 completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
@@ -55,7 +67,11 @@ struct NetworkHelper {
                     }
                 }
             } catch let parseError {
-                print("JSON parsing error: \(parseError)")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "JSON parsing error: \(parseError)",
+                    ]
+                )
                 completion(nil, parseError)
                 return
             }
@@ -88,19 +104,31 @@ struct NetworkHelper {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("Error uploading files: \(error)")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Error uploading files: \(error)",
+                    ]
+                )
                 completion(nil, error)
                 return
             }
             
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-                print("Error with response status code")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Error with response status code",
+                    ]
+                )
                 completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
             
             guard let data = data else {
-                print("No data received")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "No data received",
+                    ]
+                )
                 completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
@@ -108,10 +136,18 @@ struct NetworkHelper {
             do {
                 let networkResponse = try JSONDecoder().decode(AuthenticationResult.self, from: data)
                 completion(networkResponse, nil)
-                print("Files uploaded successfully!")
+                LoggerHelper.logInfo(
+                    parameters: [
+                        .message: "Files uploaded successfully!",
+                    ]
+                )
                 return
             } catch let parseError {
-                print("JSON parsing error: \(parseError)")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "JSON parsing error: \(parseError)",
+                    ]
+                )
                 completion(nil, parseError)
                 return
             }
@@ -145,19 +181,31 @@ struct NetworkHelper {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("Error uploading files: \(error)")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Error uploading files: \(error)",
+                    ]
+                )
                 completion(nil, error)
                 return
             }
             
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-                print("Error with response status code")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Error with response status code",
+                    ]
+                )
                 completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
             
             guard let data = data else {
-                print("No data received")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "No data received",
+                    ]
+                )
                 completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
@@ -165,10 +213,18 @@ struct NetworkHelper {
             do {
                 let networkResponse = try JSONDecoder().decode(AuthenticationResult.self, from: data)
                 completion(networkResponse, nil)
-                print("Files uploaded successfully!")
+                LoggerHelper.logInfo(
+                    parameters: [
+                        .message: "Files uploaded successfully!",
+                    ]
+                )
                 return
             } catch let parseError {
-                print("JSON parsing error: \(parseError)")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "JSON parsing error: \(parseError)",
+                    ]
+                )
                 completion(nil, parseError)
                 return
             }
@@ -249,19 +305,31 @@ struct NetworkHelper {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("Error deleting files: \(error)")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Error deleting files: \(error)",
+                    ]
+                )
                 completion(nil, error)
                 return
             }
             
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-                print("Error with response status code")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Error with response status code",
+                    ]
+                )
                 completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
                 return
             }
             
             guard let data = data else {
-                print("No data received")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "No data received",
+                    ]
+                )
                 completion(nil, NSError(domain: "No data received", code: 400))
                 return
             }
@@ -269,10 +337,18 @@ struct NetworkHelper {
             do {
                 let networkResponse = try JSONDecoder().decode(AuthenticationResult.self, from: data)
                 completion(networkResponse, nil)
-                print("Files deleted successfully!")
+                LoggerHelper.logInfo(
+                    parameters: [
+                        .message: "Files deleted successfully!",
+                    ]
+                )
                 return
             } catch let parseError {
-                print("JSON parsing error: \(parseError)")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "JSON parsing error: \(parseError)",
+                    ]
+                )
                 completion(nil, parseError)
                 return
             }

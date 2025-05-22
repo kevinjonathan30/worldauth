@@ -20,7 +20,11 @@ struct FileHelper {
             try data.write(to: fileNameURL, options: [.atomic, .completeFileProtection])
             return fileNameURL
         } catch {
-            print(error.localizedDescription)
+            LoggerHelper.logError(
+                parameters: [
+                    .message: error.localizedDescription,
+                ]
+            )
             return nil
         }
     }
@@ -36,7 +40,11 @@ struct FileHelper {
             let fileURLs = try fileManager.contentsOfDirectory(at: filePathURL, includingPropertiesForKeys: nil)
             return fileURLs
         } catch {
-            print(error.localizedDescription)
+            LoggerHelper.logError(
+                parameters: [
+                    .message: error.localizedDescription,
+                ]
+            )
             return []
         }
     }
@@ -53,7 +61,11 @@ struct FileHelper {
             let data = try Data(contentsOf: fileNameURL)
             return data
         } catch {
-            print(error.localizedDescription)
+            LoggerHelper.logError(
+                parameters: [
+                    .message: error.localizedDescription,
+                ]
+            )
             return nil
         }
     }
@@ -63,10 +75,18 @@ struct FileHelper {
             if let content = String(data: data, encoding: .utf8) {
                 return content
             } else {
-                print("Failed to decode data into a string.")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Failed to decode data into a string.",
+                    ]
+                )
             }
         } else {
-            print("Failed to retrieve data.")
+            LoggerHelper.logError(
+                parameters: [
+                    .message: "Failed to retrieve data.",
+                ]
+            )
         }
         return ""
     }
@@ -82,7 +102,11 @@ struct FileHelper {
             try fileManager.removeItem(at: fileNameURL)
             return true
         } catch {
-            print(error.localizedDescription)
+            LoggerHelper.logError(
+                parameters: [
+                    .message: error.localizedDescription,
+                ]
+            )
             return false
         }
     }

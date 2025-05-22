@@ -78,7 +78,11 @@ private extension RegisterView {
                         }
                     } else {
                         viewState = .loaded
-                        print(data.error ?? "")
+                        LoggerHelper.logError(
+                            parameters: [
+                                .message: data.error ?? "",
+                            ]
+                        )
                     }
                 }
             }

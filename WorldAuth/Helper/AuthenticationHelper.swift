@@ -31,20 +31,46 @@ struct AuthenticationHelper {
     }
     
     static func runInference(source: String, target: String) -> Double {
-        switch RemoteConfigProvider.shared.authenticationMethod() {
+        var threshold: Double = 0.0
+        var authTime: Double = 0.0
+        var fitness: Double = 0.0
+        let method: String = RemoteConfigProvider.shared.authenticationMethod()
+        
+        let startTime = Date()
+        
+        switch method {
         case "ICP":
-            return runICPInference(source: source, target: target, isFgr: false, threshold: 0.35)
+            threshold = 0.35
+            fitness = runICPInference(source: source, target: target, isFgr: false, threshold: threshold)
         case "FGR":
-            return runICPInference(source: source, target: target, isFgr: true, threshold: 0.32)
+            threshold = 0.32
+            fitness = runICPInference(source: source, target: target, isFgr: true, threshold: threshold)
         case "PNLK":
-            return runPNLKInference(source: source, target: target, threshold: 0.345)
+            threshold = 0.345
+            fitness = runPNLKInference(source: source, target: target, threshold: threshold)
         case "FMR":
-            return runFMRInference(source: source, target: target, threshold: 0.35)
+            threshold = 0.35
+            fitness = runFMRInference(source: source, target: target, threshold: 0.35)
         case "DGMR":
-            return runDeepGMRInference(source: source, target: target, threshold: 0.47)
+            threshold = 0.47
+            fitness = runDeepGMRInference(source: source, target: target, threshold: 0.47)
         default:
-            return 0.0
+            break
         }
+        
+        let endTime = Date()
+        authTime = endTime.timeIntervalSince(startTime)
+        
+        LoggerHelper.logInfo(
+            parameters: [
+                .method: method,
+                .fitness: fitness,
+                .threshold: threshold,
+                .authTime: authTime
+            ]
+        )
+        
+        return fitness
     }
 }
 
@@ -74,7 +100,7 @@ extension AuthenticationHelper {
         
         // Evaluate registration between target and transformed source
         let evaluation = o3d.pipelines.registration.evaluate_registration(pcd2, pcd1Transformed, threshold)
-        print(Double(evaluation.fitness) ?? 0)
+
         return Double(evaluation.fitness) ?? 0
     }
 }
@@ -109,8 +135,6 @@ extension AuthenticationHelper {
         // Apply point-to-plane ICP
         let regP2l = o3d.pipelines.registration.TransformationEstimationPointToPlane()
         let regP2lResult = o3d.pipelines.registration.registration_icp(preparedDataset.0, preparedDataset.1, threshold, transInit, regP2l)
-        
-        print(Double(regP2lResult.fitness) ?? 0)
         
         return Double(regP2lResult.fitness) ?? 0
     }
@@ -245,7 +269,11 @@ extension AuthenticationHelper {
             
             return mlArray
         } catch {
-            print("Error creating MLMultiArray: \(error)")
+            LoggerHelper.logError(
+                parameters: [
+                    .message: "Error creating MLMultiArray: \(error)",
+                ]
+            )
             return nil
         }
     }
@@ -268,7 +296,11 @@ extension AuthenticationHelper {
         let np = PythonModules.np
         
         guard Bool(np.isinstance(numpyArray, np.ndarray)) == true else {
-            print("Input is not a NumPy array.")
+            LoggerHelper.logError(
+                parameters: [
+                    .message: "Input is not a NumPy array.",
+                ]
+            )
             return nil
         }
         
@@ -279,7 +311,11 @@ extension AuthenticationHelper {
         let swiftArray: [Double] = Array(flattened)!
         
         guard let mlArray = try? MLMultiArray(shape: shape.map { NSNumber(value: $0) }, dataType: .double) else {
-            print("Failed to initialize MLMultiArray.")
+            LoggerHelper.logError(
+                parameters: [
+                    .message: "Failed to initialize MLMultiArray.",
+                ]
+            )
             return nil
         }
         
@@ -321,7 +357,11 @@ extension AuthenticationHelper {
     
     static private func mlMultiArrayToFloatArray(_ multiArray: MLMultiArray) -> [Float]? {
         guard multiArray.dataType == .float32 else {
-            print("MLMultiArray data type must be Float32")
+            LoggerHelper.logError(
+                parameters: [
+                    .message: "MLMultiArray data type must be Float32",
+                ]
+            )
             return nil
         }
         

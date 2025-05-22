@@ -13,14 +13,12 @@
 		5D07FF742D80371800E84F4A /* RemoteConfigProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D07FF732D80371400E84F4A /* RemoteConfigProvider.swift */; };
 		5D15EE542C0D9D5700673052 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE532C0D9D5700673052 /* ContentView.swift */; };
 		5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */; };
-		5D457A332D9FDA4A007A1C90 /* FMR.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = 5D457A322D9FDA4A007A1C90 /* FMR.mlpackage */; };
 		5D4655F02C22A6F90013CB78 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */; };
 		5D5D8E372DD19BDE00FE7D33 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5D8E362DD19BDE00FE7D33 /* PythonKit */; };
 		5D5D8E642DD19F7100FE7D33 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5D7FD8D82DCDED26005D3F96 /* PythonKit */; };
 		5D5D8E982DD1C80700FE7D33 /* Open3D-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5D8E972DD1C80700FE7D33 /* Open3D-iOS */; };
 		5D5D8E9A2DD1C80C00FE7D33 /* LAPACKE-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5D8E992DD1C80C00FE7D33 /* LAPACKE-iOS */; };
 		5D5D8E9C2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5D8E9B2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround */; };
-		5D7FD8CD2DCDEC4C005D3F96 /* deepgmr.pt in Resources */ = {isa = PBXBuildFile; fileRef = 5D7FD8CC2DCDEC4C005D3F96 /* deepgmr.pt */; };
 		5D7FD8E82DCDF406005D3F96 /* NumPy-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5D7FD8E72DCDF406005D3F96 /* NumPy-iOS */; };
 		5D7FD8EB2DCDF411005D3F96 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5D7FD8EA2DCDF411005D3F96 /* Python-iOS */; };
 		5D835E1F2C29346500352304 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E1E2C29346500352304 /* ResultView.swift */; };
@@ -37,8 +35,9 @@
 		5D873AAF2D2D02B600746652 /* AlertArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AAE2D2D02B600746652 /* AlertArticle.swift */; };
 		5D873AB32D2F964400746652 /* CoachingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AB22D2F964400746652 /* CoachingOverlayView.swift */; };
 		5DA0256D2D1E806E0009C95C /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA0256C2D1E80670009C95C /* FileHelper.swift */; };
+		5DA63E6A2DDDBFEF0025509B /* LoggerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA63E692DDDBFEA0025509B /* LoggerHelper.swift */; };
+		5DA63E6C2DDDC9F80025509B /* LoggerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA63E6B2DDDC9F20025509B /* LoggerCategory.swift */; };
 		5DAEA23B2C3296EB00644088 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 5DAEA23A2C3296EB00644088 /* .swiftlint.yml */; };
-		5DC306572DB78A4100178332 /* DeepGMR.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = 5DC306562DB78A4100178332 /* DeepGMR.mlpackage */; };
 		5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */; };
 		5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9C2D5479090077F66C /* MainView.swift */; };
 		5DC4CD9F2D547CBC0077F66C /* MeshAnchorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9E2D547CBC0077F66C /* MeshAnchorGenerator.swift */; };
@@ -92,9 +91,7 @@
 		5D07FF732D80371400E84F4A /* RemoteConfigProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigProvider.swift; sourceTree = "<group>"; };
 		5D15EE532C0D9D5700673052 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
-		5D457A322D9FDA4A007A1C90 /* FMR.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = FMR.mlpackage; sourceTree = "<group>"; };
 		5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
-		5D7FD8CC2DCDEC4C005D3F96 /* deepgmr.pt */ = {isa = PBXFileReference; lastKnownFileType = file; path = deepgmr.pt; sourceTree = "<group>"; };
 		5D835E1E2C29346500352304 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		5D835E212C29416500352304 /* AuthenticationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationResponse.swift; sourceTree = "<group>"; };
 		5D835E232C29653B00352304 /* TabState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabState.swift; sourceTree = "<group>"; };
@@ -109,8 +106,9 @@
 		5D873AAE2D2D02B600746652 /* AlertArticle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertArticle.swift; sourceTree = "<group>"; };
 		5D873AB22D2F964400746652 /* CoachingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachingOverlayView.swift; sourceTree = "<group>"; };
 		5DA0256C2D1E80670009C95C /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
+		5DA63E692DDDBFEA0025509B /* LoggerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerHelper.swift; sourceTree = "<group>"; };
+		5DA63E6B2DDDC9F20025509B /* LoggerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerCategory.swift; sourceTree = "<group>"; };
 		5DAEA23A2C3296EB00644088 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		5DC306562DB78A4100178332 /* DeepGMR.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = DeepGMR.mlpackage; sourceTree = "<group>"; };
 		5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneReconstructionView.swift; sourceTree = "<group>"; };
 		5DC4CD9C2D5479090077F66C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		5DC4CD9E2D547CBC0077F66C /* MeshAnchorGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshAnchorGenerator.swift; sourceTree = "<group>"; };
@@ -7860,7 +7858,6 @@
 				"Libtorch/share/cpuinfo/cpuinfo-config.cmake",
 				"Libtorch/share/cpuinfo/cpuinfo-targets-minsizerel.cmake",
 				"Libtorch/share/cpuinfo/cpuinfo-targets.cmake",
-				Model/deepgmr.pt,
 			);
 			publicHeaders = (
 				Module/DeepGMR/DGMRModule.h,
@@ -7910,16 +7907,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5D07FF6E2D80264E00E84F4A /* ML */ = {
-			isa = PBXGroup;
-			children = (
-				5D457A322D9FDA4A007A1C90 /* FMR.mlpackage */,
-				5DC306562DB78A4100178332 /* DeepGMR.mlpackage */,
-				5D7FD8CC2DCDEC4C005D3F96 /* deepgmr.pt */,
-			);
-			path = ML;
-			sourceTree = "<group>";
-		};
 		5D15EE4E2C0D88F600673052 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -7954,6 +7941,7 @@
 			children = (
 				5D07FF712D8026D100E84F4A /* AuthenticationHelper.swift */,
 				5DA0256C2D1E80670009C95C /* FileHelper.swift */,
+				5DA63E692DDDBFEA0025509B /* LoggerHelper.swift */,
 				5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */,
 			);
 			path = Helper;
@@ -8003,6 +7991,7 @@
 		5D835E192C26A58C00352304 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				5DA63E6B2DDDC9F20025509B /* LoggerCategory.swift */,
 				5D835E232C29653B00352304 /* TabState.swift */,
 				5D05D5A92C2BFA4A00F9A742 /* ViewState.swift */,
 			);
@@ -8070,7 +8059,6 @@
 		5DE2AB062C0AE22B000C7346 /* WorldAuth */ = {
 			isa = PBXGroup;
 			children = (
-				5D07FF6E2D80264E00E84F4A /* ML */,
 				5DAEA23A2C3296EB00644088 /* .swiftlint.yml */,
 				5D15EE4F2C0D890500673052 /* App */,
 				5D835E192C26A58C00352304 /* Enum */,
@@ -8231,7 +8219,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D7FD8CD2DCDEC4C005D3F96 /* deepgmr.pt in Resources */,
 				5DAEA23B2C3296EB00644088 /* .swiftlint.yml in Resources */,
 				5D05D5AC2C2D02EB00F9A742 /* WorldAuth-Info.plist in Resources */,
 				5DF60A942CD35B7800C7D189 /* GoogleService-Info.plist in Resources */,
@@ -8294,17 +8281,17 @@
 				5D15EE542C0D9D5700673052 /* ContentView.swift in Sources */,
 				5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */,
 				5D873AB32D2F964400746652 /* CoachingOverlayView.swift in Sources */,
+				5DA63E6C2DDDC9F80025509B /* LoggerCategory.swift in Sources */,
 				5DEA68922C141C68008CD7A9 /* OnboardingView.swift in Sources */,
 				5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */,
 				5D4655F02C22A6F90013CB78 /* NetworkHelper.swift in Sources */,
 				5D873A992D2CEAE700746652 /* YCBCRBuffer.swift in Sources */,
-				5D457A332D9FDA4A007A1C90 /* FMR.mlpackage in Sources */,
 				5D873A972D2CEAD900746652 /* PixelBuffer.swift in Sources */,
 				5D873A9B2D2CEB4900746652 /* ARManager.swift in Sources */,
 				5D835E242C29653B00352304 /* TabState.swift in Sources */,
-				5DC306572DB78A4100178332 /* DeepGMR.mlpackage in Sources */,
 				5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */,
 				5D873AA22D2CEDFE00746652 /* ARContainerView.swift in Sources */,
+				5DA63E6A2DDDBFEF0025509B /* LoggerHelper.swift in Sources */,
 				5DC4CD9F2D547CBC0077F66C /* MeshAnchorGenerator.swift in Sources */,
 				5D07FF722D8026D400E84F4A /* AuthenticationHelper.swift in Sources */,
 				5DA0256D2D1E806E0009C95C /* FileHelper.swift in Sources */,

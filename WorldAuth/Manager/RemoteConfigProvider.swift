@@ -63,20 +63,36 @@ final class RemoteConfigProvider {
     func setupListener() {
         remoteConfig.addOnConfigUpdateListener { configUpdate, error in
             if let error = error {
-                print(error.localizedDescription)
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: error.localizedDescription,
+                    ]
+                )
                 return
             }
             
             guard configUpdate != nil else {
-                print("REMOTE CONFIG ERROR")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "REMOTE CONFIG ERROR",
+                    ]
+                )
                 return
             }
             
             self.remoteConfig.activate { changed, error in
                 if let error = error {
-                    print(error.localizedDescription)
+                    LoggerHelper.logError(
+                        parameters: [
+                            .message: error.localizedDescription,
+                        ]
+                    )
                 } else {
-                    print("REMOTE CONFIG activation state change \(changed)")
+                    LoggerHelper.logInfo(
+                        parameters: [
+                            .message: "REMOTE CONFIG activation state change \(changed)",
+                        ]
+                    )
                 }
             }
         }
@@ -92,17 +108,29 @@ final class RemoteConfigProvider {
             if status == .success {
                 self.remoteConfig.activate { _, error in
                     if let error = error {
-                        print(error.localizedDescription)
+                        LoggerHelper.logError(
+                            parameters: [
+                                .message: error.localizedDescription,
+                            ]
+                        )
                         return
                     }
                     self.fetchComplete = true
-                    print("Remote config fetch success")
+                    LoggerHelper.logInfo(
+                        parameters: [
+                            .message: "Remote config fetch success",
+                        ]
+                    )
                     DispatchQueue.main.async {
                         self.loadingDoneCallback?()
                     }
                 }
             } else {
-                print("Remote config fetch failed")
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Remote config fetch failed",
+                    ]
+                )
                 DispatchQueue.main.async {
                     self.loadingDoneCallback?()
                 }
