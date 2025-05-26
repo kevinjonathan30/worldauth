@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         RemoteConfigProvider.shared.fetchCloudValues()
+        
+        #if os(iOS)
         AuthenticationHelper.initializePythonEnvironment()
         
         guard ARWorldTrackingConfiguration.isSupported else {
@@ -42,7 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Unsupported Device: This app requires the LiDAR Scanner to access the scene's depth.
             """)
         }
-        
+        #endif
+
         return true
     }
 }

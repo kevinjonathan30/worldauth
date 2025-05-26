@@ -41,16 +41,16 @@ public extension WorldAuthCoreML {
         guard let sourceArray = createMLMultiArray(from: source),
               let targetArray = createMLMultiArray(from: target) else { return nil }
 
-        guard let sourcePoints = mlMultiArrayToFloatArray(sourceArray),
-              let targetPoints = mlMultiArrayToFloatArray(targetArray) else { return nil }
+        guard var sourcePoints = mlMultiArrayToFloatArray(sourceArray),
+              var targetPoints = mlMultiArrayToFloatArray(targetArray) else { return nil }
 
         let numPoints1 = Int32(sourcePoints.count / 3) // Assuming 3 coordinates per point
         let numPoints2 = Int32(targetPoints.count / 3)
 
         guard let model = loadDeepGMRTorchScript() else { return nil }
 
-        let transformationMatrix = sourcePoints.withUnsafeBufferPointer { sourceBuffer in
-            targetPoints.withUnsafeBufferPointer { targetBuffer in
+        let transformationMatrix = sourcePoints.withUnsafeMutableBufferPointer { sourceBuffer in
+            targetPoints.withUnsafeMutableBufferPointer { targetBuffer in
                 model.registerPointCloud(
                     points1: sourceBuffer.baseAddress!,
                     numPoints1: numPoints1,

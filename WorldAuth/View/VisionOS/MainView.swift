@@ -9,28 +9,22 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        Text("Scene Reconstruction")
+        Text("Please look around to scan your surroundings.")
             .onAppear {
-                #if os(visionOS)
                 Task {
                     await openSceneReconstruction()
                 }
-                #endif
             }
     }
 
-    #if os(visionOS)
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
 
     private func openSceneReconstruction() async {
         await openImmersiveSpace(id: "SceneReconstruction")
     }
-    #endif
 }
 
-#if os(visionOS)
 #Preview(windowStyle: .automatic) {
     MainView()
 }
-#endif
 

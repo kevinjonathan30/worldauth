@@ -50,10 +50,10 @@ struct AuthenticationHelper {
             fitness = runPNLKInference(source: source, target: target, threshold: threshold)
         case "FMR":
             threshold = 0.35
-            fitness = runFMRInference(source: source, target: target, threshold: 0.35)
+            fitness = runFMRInference(source: source, target: target, threshold: threshold)
         case "DGMR":
             threshold = 0.47
-            fitness = runDeepGMRInference(source: source, target: target, threshold: 0.47)
+            fitness = runDeepGMRInference(source: source, target: target, threshold: threshold)
         default:
             break
         }
@@ -75,6 +75,7 @@ struct AuthenticationHelper {
 }
 
 // MARK: - Registration Evaluation
+
 extension AuthenticationHelper {
     static private func evaluateRegistration(source: MLMultiArray, target: MLMultiArray, tMatrix: MLMultiArray, threshold: Double) -> Double {
         let o3d = PythonModules.o3d
@@ -106,6 +107,7 @@ extension AuthenticationHelper {
 }
 
 // MARK: - ICP & FGR
+
 extension AuthenticationHelper {
     static private func runICPInference(source: String, target: String, isFgr: Bool, threshold: Double) -> Double {
         let o3d = PythonModules.o3d
@@ -290,85 +292,6 @@ extension AuthenticationHelper {
         let npArray = np.array(arrayData).reshape(shape)
         
         return npArray
-    }
-    
-    static private func numpyToMLMultiArray(_ numpyArray: PythonObject) -> MLMultiArray? {
-        let np = PythonModules.np
-        
-        guard Bool(np.isinstance(numpyArray, np.ndarray)) == true else {
-            LoggerHelper.logError(
-                parameters: [
-                    .message: "Input is not a NumPy array.",
-                ]
-            )
-            return nil
-        }
-        
-        let shapeTuple = numpyArray.shape
-        let shape = (0..<(Int(Python.len(shapeTuple)) ?? 0)).map { Int(shapeTuple[$0])! }
-        let flattened = numpyArray.flatten().astype(np.float64)
-        
-        let swiftArray: [Double] = Array(flattened)!
-        
-        guard let mlArray = try? MLMultiArray(shape: shape.map { NSNumber(value: $0) }, dataType: .double) else {
-            LoggerHelper.logError(
-                parameters: [
-                    .message: "Failed to initialize MLMultiArray.",
-                ]
-            )
-            return nil
-        }
-        
-        for i in 0..<mlArray.count {
-            mlArray[i] = NSNumber(value: swiftArray[i])
-        }
-        
-        return mlArray
-    }
-    
-    
-    static private func transformPoints(pts2: PythonObject, t21: PythonObject) -> PythonObject {
-        let R = t21.slice(0, 3, 0, 3).T
-        let t = t21.slice(0, 3, 3)
-        
-        return (pts2.dot(R)) + t
-    }
-    
-    static private func parsePLYString(_ plyString: String) -> [Float]? {
-        var points: [Float] = []
-        let lines = plyString.split(separator: "\n")
-        var isHeader = true
-        
-        for line in lines {
-            if isHeader {
-                if line.starts(with: "end_header") {
-                    isHeader = false
-                }
-                continue
-            }
-            
-            let components = line.split(separator: " ").compactMap { Float($0) }
-            if components.count >= 3 { // Ensure we have at least x, y, z
-                points.append(contentsOf: components.prefix(3)) // Add x, y, z only
-            }
-        }
-        return points.isEmpty ? nil : points
-    }
-    
-    static private func mlMultiArrayToFloatArray(_ multiArray: MLMultiArray) -> [Float]? {
-        guard multiArray.dataType == .float32 else {
-            LoggerHelper.logError(
-                parameters: [
-                    .message: "MLMultiArray data type must be Float32",
-                ]
-            )
-            return nil
-        }
-        
-        let count = multiArray.count
-        var floatArray = [Float](repeating: 0, count: count)
-        multiArray.dataPointer.copyMemory(from: &floatArray, byteCount: count * MemoryLayout<Float>.size)
-        return floatArray
     }
     
     static func authenticateTwoPointCloudsSync(_ sourceFile: Data, _ targetFile: Data) -> AuthenticationResult? {

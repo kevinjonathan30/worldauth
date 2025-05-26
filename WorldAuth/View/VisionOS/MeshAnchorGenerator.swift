@@ -7,6 +7,7 @@
 
 import RealityKit
 import ARKit
+import SwiftUI
 
 /// Handles anchors from `SceneReconstructionProvider` and creates entities on these anchors.
 class MeshAnchorGenerator {
@@ -17,7 +18,6 @@ class MeshAnchorGenerator {
         self.root = root
     }
 
-    #if os(visionOS)
     /// Handle anchor update events by adding, updating, or removing anchors.
     @MainActor
     func run(_ sceneRec: SceneReconstructionProvider) async {
@@ -45,14 +45,52 @@ class MeshAnchorGenerator {
             }
         }
     }
-    #else
-    func run(_ sceneRec: Any) async {
-        // VisionOS logic not supported on iOS.
-        LoggerHelper.logInfo(
-            parameters: [
-                .message: "Scene reconstruction is not available on this platform.",
-            ]
-        )
+    
+    /// Export all anchor meshes as a point cloud in PLY format to the given URL.
+    func exportAnchorsToPLY() -> URL? {
+        var points: [SIMD3<Float>] = []
+
+        for (_, entity) in anchors {
+            guard let model = entity.components[ModelComponent.self] else { continue }
+            let transform = entity.transformMatrix(relativeTo: nil)
+            
+            // Use the bounding box or similar structure to estimate the point positions
+            let bounds = model.mesh.bounds
+            let min = bounds.min
+            let max = bounds.max
+            
+            // Generate points within the bounding box
+            let resolution: Float = 0.05 // Adjust for finer details
+            for x in stride(from: min.x, through: max.x, by: resolution) {
+                for y in stride(from: min.y, through: max.y, by: resolution) {
+                    for z in stride(from: min.z, through: max.z, by: resolution) {
+                        let point = SIMD3<Float>(x, y, z)
+                        let worldPoint = transform * SIMD4<Float>(point, 1.0)
+                        points.append(SIMD3<Float>(worldPoint.x, worldPoint.y, worldPoint.z))
+                    }
+                }
+            }
+        }
+
+        // Write points to a PLY file in a temporary location
+        var ply = "ply\nformat ascii 1.0\n"
+        ply += "element vertex \(points.count)\n"
+        ply += "property float x\nproperty float y\nproperty float z\n"
+        ply += "end_header\n"
+        for point in points {
+            ply += "\(point.x) \(point.y) \(point.z)\n"
+        }
+
+        let fileName = "exported_mesh.ply"
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+
+        do {
+            try ply.write(to: tempURL, atomically: true, encoding: .utf8)
+            print("PLY file written successfully to \(tempURL)")
+            return tempURL
+        } catch {
+            print("Error writing PLY file: \(error)")
+            return nil
+        }
     }
-    #endif
 }

@@ -11,7 +11,6 @@ import ARKit
 
 struct SceneReconstructionView: View {
     var body: some View {
-        #if os(visionOS)
         RealityView { content in
             let root = Entity()
             let arSession = ARKitSession()
@@ -50,9 +49,6 @@ struct SceneReconstructionView: View {
 
             content.add(root)
         }
-        #else
-        Text("Scene reconstruction is not available on this platform.")
-        #endif
     }
 }
 
