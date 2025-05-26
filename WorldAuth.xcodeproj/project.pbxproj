@@ -15,12 +15,13 @@
 		5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */; };
 		5D4655F02C22A6F90013CB78 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */; };
 		5D5D8E372DD19BDE00FE7D33 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5D8E362DD19BDE00FE7D33 /* PythonKit */; };
-		5D5D8E642DD19F7100FE7D33 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5D7FD8D82DCDED26005D3F96 /* PythonKit */; };
-		5D5D8E982DD1C80700FE7D33 /* Open3D-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5D8E972DD1C80700FE7D33 /* Open3D-iOS */; };
-		5D5D8E9A2DD1C80C00FE7D33 /* LAPACKE-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5D8E992DD1C80C00FE7D33 /* LAPACKE-iOS */; };
-		5D5D8E9C2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5D8E9B2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround */; };
-		5D7FD8E82DCDF406005D3F96 /* NumPy-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5D7FD8E72DCDF406005D3F96 /* NumPy-iOS */; };
-		5D7FD8EB2DCDF411005D3F96 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 5D7FD8EA2DCDF411005D3F96 /* Python-iOS */; };
+		5D5D8E642DD19F7100FE7D33 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8D82DCDED26005D3F96 /* PythonKit */; };
+		5D5D8E982DD1C80700FE7D33 /* Open3D-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D5D8E972DD1C80700FE7D33 /* Open3D-iOS */; };
+		5D5D8E9A2DD1C80C00FE7D33 /* LAPACKE-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D5D8E992DD1C80C00FE7D33 /* LAPACKE-iOS */; };
+		5D5D8E9C2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D5D8E9B2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround */; };
+		5D664CD62DE433AE008A0AFF /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDFA6302DD378500057BA09 /* Accelerate.framework */; };
+		5D7FD8E82DCDF406005D3F96 /* NumPy-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8E72DCDF406005D3F96 /* NumPy-iOS */; };
+		5D7FD8EB2DCDF411005D3F96 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8EA2DCDF411005D3F96 /* Python-iOS */; };
 		5D835E1F2C29346500352304 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E1E2C29346500352304 /* ResultView.swift */; };
 		5D835E222C29416500352304 /* AuthenticationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E212C29416500352304 /* AuthenticationResponse.swift */; };
 		5D835E242C29653B00352304 /* TabState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E232C29653B00352304 /* TabState.swift */; };
@@ -41,9 +42,8 @@
 		5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */; };
 		5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9C2D5479090077F66C /* MainView.swift */; };
 		5DC4CD9F2D547CBC0077F66C /* MeshAnchorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9E2D547CBC0077F66C /* MeshAnchorGenerator.swift */; };
-		5DDF68C02DD3671A0057BA09 /* WorldAuthCoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; };
-		5DDF68C12DD3671A0057BA09 /* WorldAuthCoreML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5DDFA6312DD378500057BA09 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDFA6302DD378500057BA09 /* Accelerate.framework */; };
+		5DDF68C02DD3671A0057BA09 /* WorldAuthCoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; };
+		5DDF68C12DD3671A0057BA09 /* WorldAuthCoreML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */; };
 		5DE2AB0A2C0AE22B000C7346 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB092C0AE22B000C7346 /* RegisterView.swift */; };
 		5DE2AB0C2C0AE22D000C7346 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE2AB0B2C0AE22D000C7346 /* Assets.xcassets */; };
@@ -52,8 +52,8 @@
 		5DEA68752C119C70008CD7A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68742C119C70008CD7A9 /* AppDelegate.swift */; };
 		5DEA688C2C12F426008CD7A9 /* WorldTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA688B2C12F426008CD7A9 /* WorldTemplate.swift */; };
 		5DEA68922C141C68008CD7A9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68912C141C68008CD7A9 /* OnboardingView.swift */; };
-		5DEED16C2DD32307002AEFB3 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5DEED16B2DD32307002AEFB3 /* FirebaseAnalytics */; };
-		5DEED16E2DD32307002AEFB3 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5DEED16D2DD32307002AEFB3 /* FirebaseCrashlytics */; };
+		5DEED16C2DD32307002AEFB3 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5DEED16B2DD32307002AEFB3 /* FirebaseAnalytics */; };
+		5DEED16E2DD32307002AEFB3 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5DEED16D2DD32307002AEFB3 /* FirebaseCrashlytics */; };
 		5DEED1702DD32307002AEFB3 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 5DEED16F2DD32307002AEFB3 /* FirebaseRemoteConfig */; };
 		5DF60A942CD35B7800C7D189 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DF60A932CD35B7800C7D189 /* GoogleService-Info.plist */; };
 		5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFD7FEE2C102B79009CB20E /* LazyView.swift */; };
@@ -7882,7 +7882,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DDFA6312DD378500057BA09 /* Accelerate.framework in Frameworks */,
+				5D664CD62DE433AE008A0AFF /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8304,6 +8304,7 @@
 /* Begin PBXTargetDependency section */
 		5DDF68C32DD3671A0057BA09 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 5DDF68B62DD3651B0057BA09 /* WorldAuthCoreML */;
 			targetProxy = 5DDF68C22DD3671A0057BA09 /* PBXContainerItemProxy */;
 		};
@@ -8324,12 +8325,14 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/include/**",
 					"$(SRCROOT)/WorldAuthCoreML",
+					"$(SRCROOT)/WorldAuthCoreML/Module/DeepGMR/**",
 				);
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -8366,6 +8369,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,7";
+				USE_HEADERMAP = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				XROS_DEPLOYMENT_TARGET = 2.0;
@@ -8377,20 +8381,25 @@
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_STANDARD_LIBRARY_HARDENING = none;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3USSPQR589;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/include/**",
 					"$(SRCROOT)/WorldAuthCoreML",
+					"$(SRCROOT)/WorldAuthCoreML/Module/DeepGMR/**",
 				);
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -8409,6 +8418,8 @@
 				MODULEMAP_FILE = "$(SRCROOT)/WorldAuthCoreML/module.modulemap";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				"MTL_ENABLE_DEBUG_INFO[arch=*]" = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-Wl,-force_load,$(SRCROOT)/WorldAuthCoreML/Libtorch/lib/libtorch.a",
@@ -8425,8 +8436,11 @@
 				SWIFT_INSTALL_MODULE = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,7";
+				USE_HEADERMAP = NO;
+				VALIDATE_PRODUCT = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				XROS_DEPLOYMENT_TARGET = 2.0;
@@ -8569,53 +8583,15 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_ASSET_PATHS = "\"WorldAuth/Preview Content\"";
 				DEVELOPMENT_TEAM = 3USSPQR589;
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseABTesting\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseRemoteConfig\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseRemoteConfigInterop\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSessions\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSharedSwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb\"",
-					"\"${PODS_ROOT}/FirebaseAnalytics/Frameworks\"",
-					"\"${PODS_ROOT}/GoogleAppMeasurement/Frameworks\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/FirebaseAnalytics/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/AdIdSupport\"",
-					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/GoogleAppMeasurement/WithoutAdIdSupport\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseABTesting/FirebaseABTesting.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore/FirebaseCore.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension/FirebaseCoreExtension.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics/FirebaseCrashlytics.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations/FirebaseInstallations.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseRemoteConfig/FirebaseRemoteConfig.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSessions/FirebaseSessions.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSharedSwift/FirebaseSharedSwift.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport/GoogleDataTransport.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities/GoogleUtilities.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC/FBLPromises.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift/Promises.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb/nanopb.framework/Headers\"",
-					"\"${PODS_ROOT}/Headers/Public\"",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = WorldAuth/App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WorldAuth;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses camera for authentication purpose.";
@@ -8666,30 +8642,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_ASSET_PATHS = "\"WorldAuth/Preview Content\"";
 				DEVELOPMENT_TEAM = 3USSPQR589;
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseABTesting/FirebaseABTesting.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore/FirebaseCore.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension/FirebaseCoreExtension.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics/FirebaseCrashlytics.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations/FirebaseInstallations.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseRemoteConfig/FirebaseRemoteConfig.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSessions/FirebaseSessions.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseSharedSwift/FirebaseSharedSwift.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport/GoogleDataTransport.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities/GoogleUtilities.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC/FBLPromises.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift/Promises.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb/nanopb.framework/Headers\"",
-					"\"${PODS_ROOT}/Headers/Public\"",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = WorldAuth/App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WorldAuth;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses camera for authentication purpose.";

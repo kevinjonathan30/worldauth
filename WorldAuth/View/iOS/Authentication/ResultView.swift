@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import FirebaseRemoteConfig
 
 struct ResultView: View {
     @Environment(\.dismiss) private var dismiss
