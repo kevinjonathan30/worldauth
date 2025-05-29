@@ -20,6 +20,8 @@
 		5D5D8E9A2DD1C80C00FE7D33 /* LAPACKE-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D5D8E992DD1C80C00FE7D33 /* LAPACKE-iOS */; };
 		5D5D8E9C2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D5D8E9B2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround */; };
 		5D664CD62DE433AE008A0AFF /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDFA6302DD378500057BA09 /* Accelerate.framework */; };
+		5D66BD0C2DE818C2008A0AFF /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66BD0B2DE818C2008A0AFF /* Array+Ext.swift */; };
+		5D66BD0E2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66BD0D2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift */; platformFilters = (xros, ); };
 		5D7FD8E82DCDF406005D3F96 /* NumPy-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8E72DCDF406005D3F96 /* NumPy-iOS */; };
 		5D7FD8EB2DCDF411005D3F96 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8EA2DCDF411005D3F96 /* Python-iOS */; };
 		5D835E1F2C29346500352304 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E1E2C29346500352304 /* ResultView.swift */; platformFilter = ios; };
@@ -41,7 +43,6 @@
 		5DAEA23B2C3296EB00644088 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 5DAEA23A2C3296EB00644088 /* .swiftlint.yml */; };
 		5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */; platformFilters = (xros, ); };
 		5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9C2D5479090077F66C /* MainView.swift */; platformFilters = (xros, ); };
-		5DC4CD9F2D547CBC0077F66C /* MeshAnchorGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9E2D547CBC0077F66C /* MeshAnchorGenerator.swift */; platformFilters = (xros, ); };
 		5DDF68C02DD3671A0057BA09 /* WorldAuthCoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; };
 		5DDF68C12DD3671A0057BA09 /* WorldAuthCoreML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */; };
@@ -92,6 +93,8 @@
 		5D15EE532C0D9D5700673052 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
+		5D66BD0B2DE818C2008A0AFF /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
+		5D66BD0D2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneReconstructionPointCloudGenerator.swift; sourceTree = "<group>"; };
 		5D835E1E2C29346500352304 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		5D835E212C29416500352304 /* AuthenticationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationResponse.swift; sourceTree = "<group>"; };
 		5D835E232C29653B00352304 /* TabState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabState.swift; sourceTree = "<group>"; };
@@ -111,7 +114,6 @@
 		5DAEA23A2C3296EB00644088 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneReconstructionView.swift; sourceTree = "<group>"; };
 		5DC4CD9C2D5479090077F66C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		5DC4CD9E2D547CBC0077F66C /* MeshAnchorGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshAnchorGenerator.swift; sourceTree = "<group>"; };
 		5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WorldAuthCoreML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DDFA6302DD378500057BA09 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		5DE2AB042C0AE22B000C7346 /* WorldAuth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorldAuth.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -7931,6 +7933,7 @@
 		5D15EE512C0D892900673052 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				5D66BD0B2DE818C2008A0AFF /* Array+Ext.swift */,
 				5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */,
 			);
 			path = Extension;
@@ -8030,8 +8033,8 @@
 		5DC4CDA32D5486410077F66C /* VisionOS */ = {
 			isa = PBXGroup;
 			children = (
+				5D66BD0D2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift */,
 				5DC4CD9C2D5479090077F66C /* MainView.swift */,
-				5DC4CD9E2D547CBC0077F66C /* MeshAnchorGenerator.swift */,
 				5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */,
 			);
 			path = VisionOS;
@@ -8266,6 +8269,7 @@
 				5DE2AB0A2C0AE22B000C7346 /* RegisterView.swift in Sources */,
 				5D05D5AA2C2BFA4A00F9A742 /* ViewState.swift in Sources */,
 				5D07FF742D80371800E84F4A /* RemoteConfigProvider.swift in Sources */,
+				5D66BD0C2DE818C2008A0AFF /* Array+Ext.swift in Sources */,
 				5D835E1F2C29346500352304 /* ResultView.swift in Sources */,
 				5DEA688C2C12F426008CD7A9 /* WorldTemplate.swift in Sources */,
 				5DEA68712C11765A008CD7A9 /* RegisterListView.swift in Sources */,
@@ -8281,6 +8285,7 @@
 				5D15EE542C0D9D5700673052 /* ContentView.swift in Sources */,
 				5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */,
 				5D873AB32D2F964400746652 /* CoachingOverlayView.swift in Sources */,
+				5D66BD0E2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift in Sources */,
 				5DA63E6C2DDDC9F80025509B /* LoggerCategory.swift in Sources */,
 				5DEA68922C141C68008CD7A9 /* OnboardingView.swift in Sources */,
 				5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */,
@@ -8292,7 +8297,6 @@
 				5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */,
 				5D873AA22D2CEDFE00746652 /* ARContainerView.swift in Sources */,
 				5DA63E6A2DDDBFEF0025509B /* LoggerHelper.swift in Sources */,
-				5DC4CD9F2D547CBC0077F66C /* MeshAnchorGenerator.swift in Sources */,
 				5D07FF722D8026D400E84F4A /* AuthenticationHelper.swift in Sources */,
 				5DA0256D2D1E806E0009C95C /* FileHelper.swift in Sources */,
 				5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */,
