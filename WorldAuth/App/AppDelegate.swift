@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         RemoteConfigProvider.shared.fetchCloudValues()
         
         #if os(iOS)
-        AuthenticationHelper.initializePythonEnvironment()
+        PythonHelper.initializePythonEnvironment()
         
         guard ARWorldTrackingConfiguration.isSupported else {
             fatalError("""

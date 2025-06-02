@@ -74,8 +74,9 @@ class SceneReconstructionPointCloudGenerator {
         }
         
         // Sample points if there are too many (for performance)
-        // TODO: evaluate if this is necessary
-        let maxPointsPerMesh = 500
+        // TODO: test this
+        let maxPointsPerMesh = 2000
+        
         if newPoints.count > maxPointsPerMesh {
             let step = newPoints.count / maxPointsPerMesh
             newPoints = stride(from: 0, to: newPoints.count, by: step).map { newPoints[$0] }
@@ -92,31 +93,12 @@ class SceneReconstructionPointCloudGenerator {
     
     /// Export point cloud data as PLY format string
     func exportPointCloudAsPLY() -> String {
-        let pointCount = pointCloudData.count
-        
-        let plyHeader = """
-        ply
-        format ascii 1.0
-        comment Point cloud exported from Apple Vision Pro Scene Reconstruction
-        element vertex \(pointCount)
-        property float x
-        property float y
-        property float z
-        
-        property uchar red
-        property uchar green
-        property uchar blue
-        end_header
-        
-        """
-        
-        // Add vertex data with cyan color (0, 255, 255)
         var vertexData = ""
         for point in pointCloudData {
-            vertexData += "\(point.x) \(point.y) \(point.z) 0 255 255\n"
+            vertexData += "\(point.x) \(point.y) \(point.z)\n"
         }
         
-        return plyHeader + vertexData
+        return vertexData
     }
     
     /// Clear all point cloud data

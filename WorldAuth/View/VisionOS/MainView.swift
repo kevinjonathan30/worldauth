@@ -64,7 +64,7 @@ class PointCloudManager: ObservableObject {
                     url: fileURL,
                     pointCount: points.count,
                     dateCreated: Date(),
-                    fileSize: getFileSize(url: fileURL)
+                    fileSize: FileHelper.getFileSize(url: fileURL)
                 )
                 savedFiles.append(savedFile)
                 
@@ -73,6 +73,18 @@ class PointCloudManager: ObservableObject {
                 print("Error saving to Documents: \(error.localizedDescription)")
                 debugText = "❌ Failed to export point cloud: \(error.localizedDescription)"
             }
+        }
+    }
+    
+    func authenticatePointCloud(plyString: String) {
+        // TODO: Process the PLY online, combine some point cloud helper functions for both iOS and VisionOS
+        var highestResult: Double = 0
+        
+        for file in FileHelper.getFileList() {
+            let targetString = FileHelper.getDataStringByName(fileName: file.lastPathComponent)
+            
+            let result = AuthenticationHelper.runInference(source: plyString, target: targetString)
+            highestResult = max(highestResult, result)
         }
     }
     
@@ -87,10 +99,10 @@ class PointCloudManager: ObservableObject {
                 
                 let attributes = try? FileManager.default.attributesOfItem(atPath: url.path)
                 let creationDate = attributes?[.creationDate] as? Date ?? Date()
-                let fileSize = getFileSize(url: url)
+                let fileSize = FileHelper.getFileSize(url: url)
                 
                 // Try to extract point count from filename or file content
-                let pointCount = extractPointCountFromFile(url: url)
+                let pointCount = PointCloudHelper.extractPointCountFromFile(url: url)
                 
                 return SavedPointCloudFile(
                     name: url.lastPathComponent,
@@ -99,36 +111,16 @@ class PointCloudManager: ObservableObject {
                     dateCreated: creationDate,
                     fileSize: fileSize
                 )
-            }.sorted { $0.dateCreated > $1.dateCreated }
+            }.sorted { $0.dateCreated ?? Date() > $1.dateCreated ?? Date() }
             
         } catch {
             print("Error loading saved files: \(error.localizedDescription)")
         }
     }
     
-    private func extractPointCountFromFile(url: URL) -> Int {
-        do {
-            let content = try String(contentsOf: url, encoding: .utf8)
-            let lines = content.components(separatedBy: .newlines)
-            
-            // Look for the vertex count in PLY header
-            for line in lines {
-                if line.hasPrefix("element vertex ") {
-                    let components = line.components(separatedBy: " ")
-                    if components.count >= 3, let count = Int(components[2]) {
-                        return count
-                    }
-                }
-            }
-        } catch {
-            print("Error reading file for point count: \(error.localizedDescription)")
-        }
-        return 0
-    }
-    
     func deleteFile(_ file: SavedPointCloudFile) {
         do {
-            try FileManager.default.removeItem(at: file.url)
+            try FileManager.default.removeItem(at: file.url!)
             savedFiles.removeAll { $0.id == file.id }
             debugText = "File deleted: \(file.name)"
         } catch {
@@ -146,30 +138,6 @@ class PointCloudManager: ObservableObject {
             }
         }
     }
-    
-    private func getFileSize(url: URL) -> String? {
-        do {
-            let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
-            if let fileSize = attributes[.size] as? Int64 {
-                let formatter = ByteCountFormatter()
-                formatter.countStyle = .file
-                return formatter.string(fromByteCount: fileSize)
-            }
-        } catch {
-            print("Error getting file size: \(error.localizedDescription)")
-        }
-        return nil
-    }
-}
-
-// Struct to represent saved point cloud files
-struct SavedPointCloudFile: Identifiable {
-    let id = UUID()
-    let name: String
-    let url: URL
-    let pointCount: Int
-    let dateCreated: Date
-    let fileSize: String?
 }
 
 struct MainView: View {
@@ -332,7 +300,7 @@ struct MainView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
-                        Text("Saved Files")
+                        Text("My Room Template")
                             .font(.title3)
                             .fontWeight(.semibold)
                         
@@ -414,56 +382,57 @@ struct MainView: View {
     }
 }
 
-// Compact file row component for sidebar
 struct CompactFileRow: View {
     let file: SavedPointCloudFile
     let onDelete: () -> Void
     @State private var showingShareSheet = false
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 8) {
             HStack {
-                VStack(alignment: .leading, spacing: 2) {
+                // File details
+                VStack(alignment: .leading, spacing: 4) {
                     Text(shortenFileName(file.name))
-                        .font(.caption)
-                        .fontWeight(.medium)
+                        .font(.headline)
                         .lineLimit(1)
+                        .foregroundStyle(.primary)
                     
-                    Text(formatDate(file.dateCreated))
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
+                    Text(formatDate(file.dateCreated ?? Date()))
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
                     
-                    Text("\(file.pointCount) pts")
-                        .font(.caption2)
-                        .foregroundColor(.blue)
+                    Text("\(file.pointCount ?? 0) pts")
+                        .font(.caption)
                 }
-                
                 Spacer()
                 
-                HStack(spacing: 2) {
+                // Action buttons
+                HStack(spacing: 12) {
                     Button(action: {
                         showingShareSheet = true
                     }) {
                         Image(systemName: "square.and.arrow.up")
-                            .font(.system(size: 12))
+                            .font(.title3)
+                            .foregroundStyle(.primary)
                     }
-                    .buttonStyle(.borderless)
+                    .buttonStyle(.plain)
                     
                     Button(action: onDelete) {
                         Image(systemName: "trash")
-                            .font(.system(size: 12))
-                            .foregroundColor(.red)
+                            .font(.title3)
+                            .foregroundStyle(.red)
                     }
-                    .buttonStyle(.borderless)
+                    .buttonStyle(.plain)
                 }
             }
         }
-        .padding(8)
-        .background(Color.white.opacity(0.8))
-        .cornerRadius(6)
+        .padding(12)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10))
+        .shadow(radius: 2, y: 2)
+        .hoverEffect(.highlight)
         .fileExporter(
             isPresented: $showingShareSheet,
-            document: PLYDocument(url: file.url),
+            document: PLYDocument(url: file.url!),
             contentType: .ply,
             defaultFilename: file.name
         ) { result in
@@ -479,7 +448,6 @@ struct CompactFileRow: View {
     private func shortenFileName(_ name: String) -> String {
         let components = name.components(separatedBy: "_")
         if components.count >= 3 {
-            // Return just the date and time part
             return components.dropFirst().joined(separator: "_").replacingOccurrences(of: ".ply", with: "")
         }
         return name.replacingOccurrences(of: ".ply", with: "")

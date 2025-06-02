@@ -120,4 +120,18 @@ struct FileHelper {
             }
         }
     }
+    
+    static func getFileSize(url: URL) -> String? {
+        do {
+            let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
+            if let fileSize = attributes[.size] as? Int64 {
+                let formatter = ByteCountFormatter()
+                formatter.countStyle = .file
+                return formatter.string(fromByteCount: fileSize)
+            }
+        } catch {
+            print("Error getting file size: \(error.localizedDescription)")
+        }
+        return nil
+    }
 }

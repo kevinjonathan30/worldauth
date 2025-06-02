@@ -20,7 +20,7 @@ struct NetworkHelper {
         return value
     }
     
-    static func getPointCloud(completion: @escaping ([WorldTemplate]?, Error?) -> Void) {
+    static func getPointCloud(completion: @escaping ([SavedPointCloudFile]?, Error?) -> Void) {
         guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
         guard let url = URL(string: apiUrl + "/api/get_point_cloud/") else { return }
         var request = URLRequest(url: url)
@@ -61,7 +61,7 @@ struct NetworkHelper {
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                     if let result = jsonResponse["data"] as? [String] {
-                        let data = result.map { WorldTemplate(pcdName: $0) }
+                        let data = result.map { SavedPointCloudFile(name: $0) }
                         completion(data, nil)
                         return
                     }
@@ -355,5 +355,24 @@ struct NetworkHelper {
         }
         
         task.resume()
+    }
+}
+
+// MARK: Helper
+
+extension NetworkHelper {
+    static func authenticateTwoPointCloudsSync(_ sourceFile: Data, _ targetFile: Data) -> AuthenticationResult? {
+        var result: AuthenticationResult?
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        NetworkHelper.authenticateTwoPointClouds(sourceFile, targetFile) { response, error in
+            if error == nil {
+                result = response
+            }
+            semaphore.signal()
+        }
+        
+        semaphore.wait()
+        return result
     }
 }
