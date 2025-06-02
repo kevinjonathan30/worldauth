@@ -1,5 +1,5 @@
 //
-//  SceneReconstructionPointCloud.swift
+//  SceneReconstructionPointCloudGenerator.swift
 //  WorldAuth
 //
 //  Created by Kevin Jonathan on 2025/05/29.
@@ -9,7 +9,7 @@ import RealityKit
 import ARKit
 import SwiftUI
 
-/// Handles anchors from SceneReconstructionProvider and extracts point clouds
+/// Handles anchors and extracts point clouds
 class SceneReconstructionPointCloudGenerator {
     var root: Entity
     private var meshAnchors: [UUID: Entity] = [:]
@@ -33,7 +33,7 @@ class SceneReconstructionPointCloudGenerator {
                     return entity
                 }()
                 
-                // Create mesh visualization (optional - you can disable this if you only want points)
+                // Create mesh visualization
                 let material = SimpleMaterial(color: .white.withAlphaComponent(0.3), isMetallic: false)
                 guard let mesh = try? await MeshResource(from: update.anchor) else { return }
                 
@@ -74,6 +74,7 @@ class SceneReconstructionPointCloudGenerator {
         }
         
         // Sample points if there are too many (for performance)
+        // TODO: evaluate if this is necessary
         let maxPointsPerMesh = 500
         if newPoints.count > maxPointsPerMesh {
             let step = newPoints.count / maxPointsPerMesh
