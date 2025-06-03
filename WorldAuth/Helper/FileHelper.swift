@@ -29,6 +29,43 @@ struct FileHelper {
         }
     }
     
+    static func renameFile(atDirectory: String = "", oldName: String, newName: String) -> Bool {
+        let fileManager = FileManager.default
+        
+        // Get the directory URL
+        guard let directoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            LoggerHelper.logError(parameters: [.message: "Failed to get document directory URL."])
+            return false
+        }
+        
+        let directoryPathURL = directoryURL.appendingPathComponent(atDirectory)
+        
+        // Get the full URL for old and new file names
+        let oldFileURL = directoryPathURL.appendingPathComponent(oldName)
+        let newFileURL = directoryPathURL.appendingPathComponent(newName)
+        
+        do {
+            // Check if the old file exists
+            guard fileManager.fileExists(atPath: oldFileURL.path) else {
+                LoggerHelper.logError(parameters: [.message: "Old file does not exist."])
+                return false
+            }
+            
+            // Check if the new file name already exists
+            if fileManager.fileExists(atPath: newFileURL.path) {
+                LoggerHelper.logError(parameters: [.message: "A file with the new name already exists."])
+                return false
+            }
+            
+            // Perform the rename operation
+            try fileManager.moveItem(at: oldFileURL, to: newFileURL)
+            return true
+        } catch {
+            LoggerHelper.logError(parameters: [.message: error.localizedDescription])
+            return false
+        }
+    }
+    
     static func getFileList(atDirectory: String = "") -> [URL] {
         let fileManager = FileManager.default
         

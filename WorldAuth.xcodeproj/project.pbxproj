@@ -25,6 +25,7 @@
 		5D66B2882DED685F008A0AFF /* PointCloudHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66B2872DED685A008A0AFF /* PointCloudHelper.swift */; };
 		5D66BD0C2DE818C2008A0AFF /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66BD0B2DE818C2008A0AFF /* Array+Ext.swift */; };
 		5D66BD0E2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66BD0D2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift */; platformFilters = (xros, ); };
+		5D66EFE72DEEBA1A008A0AFF /* TextFieldAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66EFE62DEEBA1A008A0AFF /* TextFieldAlertModifier.swift */; };
 		5D7FD8E82DCDF406005D3F96 /* NumPy-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8E72DCDF406005D3F96 /* NumPy-iOS */; };
 		5D7FD8EB2DCDF411005D3F96 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8EA2DCDF411005D3F96 /* Python-iOS */; };
 		5D835E1F2C29346500352304 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E1E2C29346500352304 /* ResultView.swift */; platformFilter = ios; };
@@ -49,10 +50,10 @@
 		5DDF68C02DD3671A0057BA09 /* WorldAuthCoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; };
 		5DDF68C12DD3671A0057BA09 /* WorldAuthCoreML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */; };
-		5DE2AB0A2C0AE22B000C7346 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB092C0AE22B000C7346 /* RegisterView.swift */; platformFilter = ios; };
+		5DE2AB0A2C0AE22B000C7346 /* AddTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB092C0AE22B000C7346 /* AddTemplateView.swift */; platformFilter = ios; };
 		5DE2AB0C2C0AE22D000C7346 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE2AB0B2C0AE22D000C7346 /* Assets.xcassets */; };
 		5DE2AB0F2C0AE22D000C7346 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE2AB0E2C0AE22D000C7346 /* Preview Assets.xcassets */; };
-		5DEA68712C11765A008CD7A9 /* RegisterListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68702C11765A008CD7A9 /* RegisterListView.swift */; platformFilter = ios; };
+		5DEA68712C11765A008CD7A9 /* RoomTemplateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68702C11765A008CD7A9 /* RoomTemplateListView.swift */; platformFilter = ios; };
 		5DEA68752C119C70008CD7A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68742C119C70008CD7A9 /* AppDelegate.swift */; };
 		5DEA68922C141C68008CD7A9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA68912C141C68008CD7A9 /* OnboardingView.swift */; platformFilter = ios; };
 		5DEED16C2DD32307002AEFB3 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5DEED16B2DD32307002AEFB3 /* FirebaseAnalytics */; };
@@ -100,6 +101,7 @@
 		5D66B2872DED685A008A0AFF /* PointCloudHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudHelper.swift; sourceTree = "<group>"; };
 		5D66BD0B2DE818C2008A0AFF /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
 		5D66BD0D2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneReconstructionPointCloudGenerator.swift; sourceTree = "<group>"; };
+		5D66EFE62DEEBA1A008A0AFF /* TextFieldAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAlertModifier.swift; sourceTree = "<group>"; };
 		5D835E1E2C29346500352304 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		5D835E212C29416500352304 /* AuthenticationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationResponse.swift; sourceTree = "<group>"; };
 		5D835E232C29653B00352304 /* TabState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabState.swift; sourceTree = "<group>"; };
@@ -123,11 +125,11 @@
 		5DDFA6302DD378500057BA09 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		5DE2AB042C0AE22B000C7346 /* WorldAuth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorldAuth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldAuthApp.swift; sourceTree = "<group>"; };
-		5DE2AB092C0AE22B000C7346 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		5DE2AB092C0AE22B000C7346 /* AddTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTemplateView.swift; sourceTree = "<group>"; };
 		5DE2AB0B2C0AE22D000C7346 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5DE2AB0E2C0AE22D000C7346 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5DE2AB1C2C0AE329000C7346 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5DEA68702C11765A008CD7A9 /* RegisterListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterListView.swift; sourceTree = "<group>"; };
+		5DEA68702C11765A008CD7A9 /* RoomTemplateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomTemplateListView.swift; sourceTree = "<group>"; };
 		5DEA68742C119C70008CD7A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5DEA68912C141C68008CD7A9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		5DF60A932CD35B7800C7D189 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -7979,13 +7981,13 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
-		5D57D1782C1AE8CA007CD6AD /* Register */ = {
+		5D57D1782C1AE8CA007CD6AD /* Template */ = {
 			isa = PBXGroup;
 			children = (
-				5DEA68702C11765A008CD7A9 /* RegisterListView.swift */,
-				5DE2AB092C0AE22B000C7346 /* RegisterView.swift */,
+				5DEA68702C11765A008CD7A9 /* RoomTemplateListView.swift */,
+				5DE2AB092C0AE22B000C7346 /* AddTemplateView.swift */,
 			);
-			path = Register;
+			path = Template;
 			sourceTree = "<group>";
 		};
 		5D57D1792C1AE8D5007CD6AD /* Authentication */ = {
@@ -7995,6 +7997,14 @@
 				5D835E1E2C29346500352304 /* ResultView.swift */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		5D66EFE82DEEC07C008A0AFF /* ViewModifier */ = {
+			isa = PBXGroup;
+			children = (
+				5D66EFE62DEEBA1A008A0AFF /* TextFieldAlertModifier.swift */,
+			);
+			path = ViewModifier;
 			sourceTree = "<group>";
 		};
 		5D835E192C26A58C00352304 /* Enum */ = {
@@ -8031,7 +8041,7 @@
 				5D57D1792C1AE8D5007CD6AD /* Authentication */,
 				5DFD7FF02C102DD7009CB20E /* Common */,
 				5D57D1772C1AE8B3007CD6AD /* Onboarding */,
-				5D57D1782C1AE8CA007CD6AD /* Register */,
+				5D57D1782C1AE8CA007CD6AD /* Template */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -8072,6 +8082,7 @@
 				5D15EE4F2C0D890500673052 /* App */,
 				5D835E192C26A58C00352304 /* Enum */,
 				5D15EE512C0D892900673052 /* Extension */,
+				5D66EFE82DEEC07C008A0AFF /* ViewModifier */,
 				5DF60A932CD35B7800C7D189 /* GoogleService-Info.plist */,
 				5D15EE522C0D893500673052 /* Helper */,
 				5D873A9E2D2CED5600746652 /* Manager */,
@@ -8272,12 +8283,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DE2AB0A2C0AE22B000C7346 /* RegisterView.swift in Sources */,
+				5DE2AB0A2C0AE22B000C7346 /* AddTemplateView.swift in Sources */,
 				5D05D5AA2C2BFA4A00F9A742 /* ViewState.swift in Sources */,
 				5D07FF742D80371800E84F4A /* RemoteConfigProvider.swift in Sources */,
 				5D66BD0C2DE818C2008A0AFF /* Array+Ext.swift in Sources */,
 				5D835E1F2C29346500352304 /* ResultView.swift in Sources */,
-				5DEA68712C11765A008CD7A9 /* RegisterListView.swift in Sources */,
+				5DEA68712C11765A008CD7A9 /* RoomTemplateListView.swift in Sources */,
 				5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */,
 				5D835E222C29416500352304 /* AuthenticationResponse.swift in Sources */,
 				5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */,
@@ -8302,6 +8313,7 @@
 				5D873A9B2D2CEB4900746652 /* ARManager.swift in Sources */,
 				5D835E242C29653B00352304 /* TabState.swift in Sources */,
 				5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */,
+				5D66EFE72DEEBA1A008A0AFF /* TextFieldAlertModifier.swift in Sources */,
 				5D873AA22D2CEDFE00746652 /* ARContainerView.swift in Sources */,
 				5DA63E6A2DDDBFEF0025509B /* LoggerHelper.swift in Sources */,
 				5D6675272DED5E42008A0AFF /* PythonHelper.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  RegisterView.swift
+//  AddTemplateView.swift
 //  WorldAuth
 //
 //  Created by Kevin Jonathan on 2024/06/01.
@@ -9,11 +9,14 @@ import SwiftUI
 import Combine
 import AudioToolbox
 
-struct RegisterView: View {
+struct AddTemplateView: View {
     @Environment(\.dismiss) private var dismiss
     @State var viewState: ViewState = .loaded
     @State private var showAlert = false
+    @State private var showInputAlert = false
     @State private var article = AlertArticle(title: "", description: "")
+    @State private var roomName: String = ""
+    @State private var tempPlyString: String = ""
     
     var body: some View {
         ARContainerView(viewState: $viewState)
@@ -26,44 +29,39 @@ struct RegisterView: View {
             } message: { article in
                 Text(article.description)
             }
-            .navigationTitle("Register")
-            .navigationBarTitleDisplayMode(.inline)
+            .textFieldAlert(isPresented: $showInputAlert, title: "Enter Room Name", message: "Leave blank to save with today's date") { name in
+                saveTemplate(named: name) // Pass the user input to saveTemplate
+            }
+            .navigationTitle("Add New Template")
             .toolbar(.hidden, for: .tabBar)
             .accessibilityElement()
-            .accessibilityLabel(Text("Register View", comment: "Accessibility label for Register view"))
-            .accessibilityHint(Text("Register a new room template using AR", comment: "Accessibility hint for Register view"))
+            .accessibilityLabel(Text("Add New Template View", comment: "Accessibility label for Add New Template view"))
+            .accessibilityHint(Text("Add New Template using AR", comment: "Accessibility hint for Add New Template view"))
     }
 }
 
 // MARK: Handler
 
-private extension RegisterView {
+private extension AddTemplateView {
     private func register(plyString: String) {
         guard !plyString.isEmpty else { return }
         viewState = .loading
         
         if RemoteConfigProvider.shared.prefersOnDevice() {
-            guard let fileName = getFileNameToRegister() else {
+            guard FileHelper.getFileList().count < 3 else {
                 viewState = .loaded
-                article = AlertArticle(title: "An Error Occured", description: "You can only register a maximum of 3 room templates.")
+                article = AlertArticle(title: "An Error Occurred", description: "You can only add a maximum of 3 room templates.")
                 showAlert = true
                 return
             }
             
-            let url = FileHelper.saveFile(data: Data(plyString.utf8), fileName: fileName)
-            if url != nil {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    dismiss()
-                    viewState = .loaded
-                }
-            } else {
-                viewState = .loaded
-            }
+            showInputAlert = true
+            tempPlyString = plyString
         } else {
             NetworkHelper.registerPointCloud(Data(plyString.utf8)) { data, error in
                 if let error = error {
                     viewState = .loaded
-                    article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
+                    article = AlertArticle(title: "An Error Occurred", description: error.localizedDescription)
                     showAlert = true
                 } else {
                     guard let data = data else {
@@ -89,24 +87,32 @@ private extension RegisterView {
         }
     }
     
-    private func getFileNameToRegister() -> String? {
-        let fileList = FileHelper.getFileList()
-        let roomList = fileList.map { $0.lastPathComponent }
+    private func saveTemplate(named name: String?) {
+        let fallbackName = DateFormatter.localizedString(
+            from: Date(),
+            dateStyle: .short,
+            timeStyle: .medium
+        ).replacingOccurrences(of: "/", with: "-")
+         .replacingOccurrences(of: ":", with: "-")
         
-        guard roomList.count < 3 else { return nil }
+        let fileName = (name?.isEmpty ?? true)
+            ? "\(fallbackName).ply"
+            : "\(name ?? "").ply"
         
-        if !roomList.contains("Room_1.ply") {
-            return "Room_1.ply"
-        } else if !roomList.contains("Room_2.ply") {
-            return "Room_2.ply"
-        } else if !roomList.contains("Room_3.ply") {
-            return "Room_3.ply"
+        // Save the PLY file
+        let url = FileHelper.saveFile(data: Data(tempPlyString.utf8), fileName: fileName)
+        if url != nil {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                dismiss()
+                viewState = .loaded
+            }
+        } else {
+            viewState = .loaded
         }
-        
-        return nil
+        tempPlyString = "" // Reset the temp string
     }
 }
 
 #Preview {
-    RegisterView()
+    AddTemplateView()
 }

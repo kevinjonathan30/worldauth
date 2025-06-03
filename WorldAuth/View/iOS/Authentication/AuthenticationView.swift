@@ -22,8 +22,7 @@ struct AuthenticationView: View {
             VStack {
                 ARContainerView(viewState: $viewState)
                     .onFinishRecording(authenticate(plyString:))
-                    .navigationTitle("WorldAuth")
-                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle("Authenticate")
                     .onAppear {
                         getPointCloudList()
                     }
@@ -54,7 +53,7 @@ struct AuthenticationView: View {
                     EmptyView()
                 }
                 .navigationDestination(for: String.self) { _ in
-                    RegisterView()
+                    AddTemplateView()
                         .accessibilityElement()
                         .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
                         .accessibilityHint(Text("View to register new users", comment: "Accessibility hint for register view"))
@@ -71,7 +70,7 @@ struct AuthenticationView: View {
                 }
             }
             .navigationDestination(isPresented: $navigateToRegister) {
-                RegisterView()
+                AddTemplateView()
                     .accessibilityElement()
                     .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
                     .accessibilityHint(Text("View to register new users", comment: "Accessibility hint for register view"))

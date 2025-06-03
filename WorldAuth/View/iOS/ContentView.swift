@@ -22,17 +22,17 @@ struct ContentView: View {
                 .accessibilityHint(Text("Tap to view authentication options", comment: "Accessibility hint for authentication tab"))
                 .accessibilityAddTraits(.isButton)
             }
-            .tag("Authentication")
+            .tag("Authenticate")
             .tabItem {
-                Label("Authentication", systemImage: "key.fill")
+                Label("Authenticate", systemImage: "key.fill")
                     .accessibilityElement()
-                    .accessibilityLabel(Text("Authentication Tab", comment: "Accessibility label for tab item"))
-                    .accessibilityHint(Text("Tap to switch to the Authentication tab", comment: "Accessibility hint for tab item"))
+                    .accessibilityLabel(Text("Authenticate Tab", comment: "Accessibility label for tab item"))
+                    .accessibilityHint(Text("Tap to switch to the Authenticate tab", comment: "Accessibility hint for tab item"))
             }
             
             NavigationStack {
                 LazyView(
-                    RegisterListView()
+                    RoomTemplateListView()
                         .accessibilityElement()
                         .accessibilityLabel(Text("Register List View", comment: "Accessibility label for register list view"))
                         .accessibilityHint(Text("View showing the list of registered users", comment: "Accessibility hint for register list view"))
@@ -42,12 +42,12 @@ struct ContentView: View {
                 .accessibilityHint(Text("Tap to view your room list", comment: "Accessibility hint for my room tab"))
                 .accessibilityAddTraits(.isButton)
             }
-            .tag("My Room Template")
+            .tag("Templates")
             .tabItem {
-                Label("My Room Template", systemImage: "house.fill")
+                Label("Templates", systemImage: "house.fill")
                     .accessibilityElement()
-                    .accessibilityLabel(Text("My Room Template Tab", comment: "Accessibility label for tab item"))
-                    .accessibilityHint(Text("Tap to switch to the My Room Template tab", comment: "Accessibility hint for tab item"))
+                    .accessibilityLabel(Text("Templates Tab", comment: "Accessibility label for tab item"))
+                    .accessibilityHint(Text("Tap to switch to the Templates tab", comment: "Accessibility hint for tab item"))
             }
         }
     }
