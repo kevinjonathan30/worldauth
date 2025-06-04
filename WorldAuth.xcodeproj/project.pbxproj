@@ -26,6 +26,7 @@
 		5D66BD0C2DE818C2008A0AFF /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66BD0B2DE818C2008A0AFF /* Array+Ext.swift */; };
 		5D66BD0E2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66BD0D2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift */; platformFilters = (xros, ); };
 		5D66EFE72DEEBA1A008A0AFF /* TextFieldAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66EFE62DEEBA1A008A0AFF /* TextFieldAlertModifier.swift */; };
+		5D66EFEA2DEED074008A0AFF /* PointCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66EFE92DEED074008A0AFF /* PointCloudManager.swift */; platformFilters = (xros, ); };
 		5D7FD8E82DCDF406005D3F96 /* NumPy-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8E72DCDF406005D3F96 /* NumPy-iOS */; };
 		5D7FD8EB2DCDF411005D3F96 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8EA2DCDF411005D3F96 /* Python-iOS */; };
 		5D835E1F2C29346500352304 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E1E2C29346500352304 /* ResultView.swift */; platformFilter = ios; };
@@ -102,6 +103,7 @@
 		5D66BD0B2DE818C2008A0AFF /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
 		5D66BD0D2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneReconstructionPointCloudGenerator.swift; sourceTree = "<group>"; };
 		5D66EFE62DEEBA1A008A0AFF /* TextFieldAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAlertModifier.swift; sourceTree = "<group>"; };
+		5D66EFE92DEED074008A0AFF /* PointCloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudManager.swift; sourceTree = "<group>"; };
 		5D835E1E2C29346500352304 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		5D835E212C29416500352304 /* AuthenticationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationResponse.swift; sourceTree = "<group>"; };
 		5D835E232C29653B00352304 /* TabState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabState.swift; sourceTree = "<group>"; };
@@ -8051,6 +8053,7 @@
 			children = (
 				5D66BD0D2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift */,
 				5DC4CD9C2D5479090077F66C /* MainView.swift */,
+				5D66EFE92DEED074008A0AFF /* PointCloudManager.swift */,
 				5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */,
 			);
 			path = VisionOS;
@@ -8289,6 +8292,7 @@
 				5D66BD0C2DE818C2008A0AFF /* Array+Ext.swift in Sources */,
 				5D835E1F2C29346500352304 /* ResultView.swift in Sources */,
 				5DEA68712C11765A008CD7A9 /* RoomTemplateListView.swift in Sources */,
+				5D66EFEA2DEED074008A0AFF /* PointCloudManager.swift in Sources */,
 				5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */,
 				5D835E222C29416500352304 /* AuthenticationResponse.swift in Sources */,
 				5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */,

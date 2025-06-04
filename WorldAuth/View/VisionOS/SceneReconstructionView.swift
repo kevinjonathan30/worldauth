@@ -43,7 +43,7 @@ struct SceneReconstructionView: View {
                     do {
                         try await arSession.run([sceneReconstruction])
                         await MainActor.run {
-                            pointCloudManager.debugText = "Scene reconstruction active. Move around to scan the environment..."
+                            pointCloudManager.debugText = "Scanning started. Move around to scan the environment..."
                         }
                     } catch let error as ARKitSession.Error {
                         await MainActor.run {
@@ -69,36 +69,6 @@ struct SceneReconstructionView: View {
                 }
                 
                 content.add(root)
-            }
-            
-            // Minimal overlay showing only essential scanning feedback
-            VStack {
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Scanning...")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                        
-                        if pointCloudManager.pointCount > 0 {
-                            Text("\(pointCloudManager.pointCount) points")
-                                .font(.caption)
-                                .foregroundColor(.cyan)
-                        }
-                        
-                        Text("Return to main view to export")
-                            .font(.caption2)
-                            .foregroundColor(.white.opacity(0.8))
-                    }
-                    .padding(12)
-                    .background(Color.black.opacity(0.7))
-                    .cornerRadius(10)
-                    
-                    Spacer()
-                }
-                .padding(.top, 50)
-                .padding(.leading, 20)
-                
-                Spacer()
             }
         }
     }

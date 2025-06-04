@@ -75,7 +75,7 @@ class SceneReconstructionPointCloudGenerator {
         
         // Sample points if there are too many (for performance)
         // TODO: test this
-        let maxPointsPerMesh = 2000
+        let maxPointsPerMesh = 1000
         
         if newPoints.count > maxPointsPerMesh {
             let step = newPoints.count / maxPointsPerMesh
