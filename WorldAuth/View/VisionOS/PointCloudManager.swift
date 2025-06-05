@@ -94,6 +94,14 @@ class PointCloudManager: ObservableObject {
             highestResult = max(highestResult, result)
         }
         
+        Task {
+            await pointCloudGenerator?.clearPointCloud()
+            await MainActor.run {
+                exportedFileURL = nil
+                pointCount = 0
+            }
+        }
+        
         return highestResult
     }
     

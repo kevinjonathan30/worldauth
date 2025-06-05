@@ -272,7 +272,7 @@ struct MainView: View {
             // Update UI state
             await MainActor.run {
                 isLoading = false
-                pointCloudManager.debugText = "Authentication accuracy result: \(result)."
+                pointCloudManager.debugText = "Authentication accuracy result: \(result * 100)%."
             }
         }
     }
