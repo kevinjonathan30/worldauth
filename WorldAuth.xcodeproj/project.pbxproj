@@ -42,12 +42,15 @@
 		5D873AA22D2CEDFE00746652 /* ARContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AA12D2CEDFB00746652 /* ARContainerView.swift */; platformFilter = ios; };
 		5D873AAF2D2D02B600746652 /* AlertArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AAE2D2D02B600746652 /* AlertArticle.swift */; };
 		5D873AB32D2F964400746652 /* CoachingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AB22D2F964400746652 /* CoachingOverlayView.swift */; platformFilter = ios; };
+		5D9611AB2DF1736C00C183A4 /* GatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9611AA2DF1736600C183A4 /* GatherView.swift */; platformFilter = ios; };
+		5D964F0A2DF2CA7000C183A4 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D964F092DF2CA7000C183A4 /* ZIPFoundation */; };
 		5DA0256D2D1E806E0009C95C /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA0256C2D1E80670009C95C /* FileHelper.swift */; };
 		5DA63E6A2DDDBFEF0025509B /* LoggerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA63E692DDDBFEA0025509B /* LoggerHelper.swift */; };
 		5DA63E6C2DDDC9F80025509B /* LoggerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA63E6B2DDDC9F20025509B /* LoggerCategory.swift */; };
 		5DAEA23B2C3296EB00644088 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 5DAEA23A2C3296EB00644088 /* .swiftlint.yml */; };
 		5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */; platformFilters = (xros, ); };
 		5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9C2D5479090077F66C /* MainView.swift */; platformFilters = (xros, ); };
+		5DDDA1BC2DF2DCBD005E97C9 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDDA1BB2DF2DCBD005E97C9 /* UIImage+Ext.swift */; };
 		5DDF68C02DD3671A0057BA09 /* WorldAuthCoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; };
 		5DDF68C12DD3671A0057BA09 /* WorldAuthCoreML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */; };
@@ -117,12 +120,14 @@
 		5D873AA12D2CEDFB00746652 /* ARContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARContainerView.swift; sourceTree = "<group>"; };
 		5D873AAE2D2D02B600746652 /* AlertArticle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertArticle.swift; sourceTree = "<group>"; };
 		5D873AB22D2F964400746652 /* CoachingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachingOverlayView.swift; sourceTree = "<group>"; };
+		5D9611AA2DF1736600C183A4 /* GatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatherView.swift; sourceTree = "<group>"; };
 		5DA0256C2D1E80670009C95C /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
 		5DA63E692DDDBFEA0025509B /* LoggerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerHelper.swift; sourceTree = "<group>"; };
 		5DA63E6B2DDDC9F20025509B /* LoggerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerCategory.swift; sourceTree = "<group>"; };
 		5DAEA23A2C3296EB00644088 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneReconstructionView.swift; sourceTree = "<group>"; };
 		5DC4CD9C2D5479090077F66C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		5DDDA1BB2DF2DCBD005E97C9 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WorldAuthCoreML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DDFA6302DD378500057BA09 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		5DE2AB042C0AE22B000C7346 /* WorldAuth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorldAuth.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -7911,6 +7916,7 @@
 				5DEED16E2DD32307002AEFB3 /* FirebaseCrashlytics in Frameworks */,
 				5D5D8E372DD19BDE00FE7D33 /* PythonKit in Frameworks */,
 				5DEED16C2DD32307002AEFB3 /* FirebaseAnalytics in Frameworks */,
+				5D964F0A2DF2CA7000C183A4 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7941,6 +7947,7 @@
 		5D15EE512C0D892900673052 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				5DDDA1BB2DF2DCBD005E97C9 /* UIImage+Ext.swift */,
 				5D66BD0B2DE818C2008A0AFF /* Array+Ext.swift */,
 				5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */,
 			);
@@ -8039,6 +8046,7 @@
 		5DC4CDA22D5486370077F66C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				5D9611AA2DF1736600C183A4 /* GatherView.swift */,
 				5D15EE532C0D9D5700673052 /* ContentView.swift */,
 				5D57D1792C1AE8D5007CD6AD /* Authentication */,
 				5DFD7FF02C102DD7009CB20E /* Common */,
@@ -8178,6 +8186,7 @@
 				5DEED16B2DD32307002AEFB3 /* FirebaseAnalytics */,
 				5DEED16D2DD32307002AEFB3 /* FirebaseCrashlytics */,
 				5DEED16F2DD32307002AEFB3 /* FirebaseRemoteConfig */,
+				5D964F092DF2CA7000C183A4 /* ZIPFoundation */,
 			);
 			productName = WorldAuth;
 			productReference = 5DE2AB042C0AE22B000C7346 /* WorldAuth.app */;
@@ -8218,6 +8227,7 @@
 				5D5D8E352DD19BDE00FE7D33 /* XCLocalSwiftPackageReference "Packages/PythonKit" */,
 				5D5D8E382DD19BE600FE7D33 /* XCLocalSwiftPackageReference "Packages/Python-iOS" */,
 				5DEED16A2DD32307002AEFB3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				5D9611A72DF1732C00C183A4 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5DE2AB052C0AE22B000C7346 /* Products */;
@@ -8303,11 +8313,13 @@
 				5D873AA02D2CED8500746652 /* UIViewWrapper.swift in Sources */,
 				5D873A932D2CEA8800746652 /* PointCloud.swift in Sources */,
 				5DEA68752C119C70008CD7A9 /* AppDelegate.swift in Sources */,
+				5D9611AB2DF1736C00C183A4 /* GatherView.swift in Sources */,
 				5D15EE542C0D9D5700673052 /* ContentView.swift in Sources */,
 				5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */,
 				5D66B2882DED685F008A0AFF /* PointCloudHelper.swift in Sources */,
 				5D873AB32D2F964400746652 /* CoachingOverlayView.swift in Sources */,
 				5D66BD0E2DE822FF008A0AFF /* SceneReconstructionPointCloudGenerator.swift in Sources */,
+				5DDDA1BC2DF2DCBD005E97C9 /* UIImage+Ext.swift in Sources */,
 				5DA63E6C2DDDC9F80025509B /* LoggerCategory.swift in Sources */,
 				5DEA68922C141C68008CD7A9 /* OnboardingView.swift in Sources */,
 				5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */,
@@ -8358,13 +8370,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/include/**",
+					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/include",
 					"$(SRCROOT)/WorldAuthCoreML",
-					"$(SRCROOT)/WorldAuthCoreML/Module/DeepGMR/**",
+					"$(SRCROOT)/WorldAuthCoreML/Module/DeepGMR",
 				);
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8387,7 +8399,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = jp.ac.waseda.cs.WorldAuthCoreML;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -8425,13 +8437,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/include/**",
+					"$(PROJECT_DIR)/WorldAuthCoreML/Libtorch/include",
 					"$(SRCROOT)/WorldAuthCoreML",
-					"$(SRCROOT)/WorldAuthCoreML/Module/DeepGMR/**",
+					"$(SRCROOT)/WorldAuthCoreML/Module/DeepGMR",
 				);
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8456,7 +8468,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = jp.ac.waseda.cs.WorldAuthCoreML;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -8629,7 +8641,7 @@
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8686,7 +8698,7 @@
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8776,6 +8788,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5D9611A72DF1732C00C183A4 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.19;
+			};
+		};
 		5DEED16A2DD32307002AEFB3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -8817,6 +8837,11 @@
 		5D7FD8EA2DCDF411005D3F96 /* Python-iOS */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "Python-iOS";
+		};
+		5D964F092DF2CA7000C183A4 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5D9611A72DF1732C00C183A4 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
 		};
 		5DEED16B2DD32307002AEFB3 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

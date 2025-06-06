@@ -21,7 +21,7 @@ struct AuthenticationView: View {
         NavigationStack {
             VStack {
                 ARContainerView(viewState: $viewState)
-                    .onFinishRecording(authenticate(plyString:))
+                    .onFinishRecording(authenticate(plyString:uiImage:))
                     .navigationTitle("Authenticate")
                     .onAppear {
                         getPointCloudList()
@@ -119,7 +119,7 @@ private extension AuthenticationView {
         }
     }
     
-    private func authenticate(plyString: String) {
+    private func authenticate(plyString: String, uiImage: UIImage? = nil) {
         self.viewState = .loading
         guard !plyString.isEmpty else { return }
         

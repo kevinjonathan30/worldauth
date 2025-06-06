@@ -356,6 +356,83 @@ struct NetworkHelper {
         
         task.resume()
     }
+    
+    static func uploadData(_ file: Data, fileName: String = "archive", completion: @escaping (AuthenticationResult?, Error?) -> Void) {
+        guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
+        guard let url = URL(string: apiUrl + "/api/upload/") else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
+        request.setValue(RemoteConfigProvider.shared.authenticationMethod(), forHTTPHeaderField: "AuthorizationMethod")
+        
+        let boundary = UUID().uuidString
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        var body = Data()
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"files\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: application/zip\r\n\r\n".data(using: .utf8)!)
+        body.append(file)
+        body.append("\r\n".data(using: .utf8)!)
+        
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        request.httpBody = body
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Error uploading files: \(error)",
+                    ]
+                )
+                completion(nil, error)
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "Error with response status code",
+                    ]
+                )
+                completion(nil, NSError(domain: "Error with response status code", code: httpResponse.statusCode))
+                return
+            }
+            
+            guard let data = data else {
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "No data received",
+                    ]
+                )
+                completion(nil, NSError(domain: "No data received", code: 400))
+                return
+            }
+            
+            do {
+                let networkResponse = try JSONDecoder().decode(AuthenticationResult.self, from: data)
+                completion(networkResponse, nil)
+                LoggerHelper.logInfo(
+                    parameters: [
+                        .message: "Files uploaded successfully!",
+                    ]
+                )
+                return
+            } catch let parseError {
+                LoggerHelper.logError(
+                    parameters: [
+                        .message: "JSON parsing error: \(parseError)",
+                    ]
+                )
+                completion(nil, parseError)
+                return
+            }
+        }
+        
+        task.resume()
+    }
 }
 
 // MARK: Helper

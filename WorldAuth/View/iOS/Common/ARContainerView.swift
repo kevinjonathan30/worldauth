@@ -14,7 +14,7 @@ struct ARContainerView: View {
     @Binding var viewState: ViewState
     @State private var isCoachingActive = false
     
-    var onFinishRecording: ((String) -> Void)?
+    var onFinishRecording: ((String, UIImage?) -> Void)?
     
     var body: some View {
         ZStack {
@@ -119,7 +119,17 @@ private extension ARContainerView {
                 arManager.isCapturing = false
                 let recordStartSoundID: SystemSoundID = 1118
                 AudioServicesPlaySystemSound(recordStartSoundID)
-                onFinishRecording?(plyString)
+                if let currentFrame = arManager.sceneView.session.currentFrame {
+                    let image = CIImage(cvPixelBuffer: currentFrame.capturedImage)
+                    let context = CIContext()
+                    if let cgImage = context.createCGImage(image, from: image.extent) {
+                        let uiImage = UIImage(cgImage: cgImage).rotated(by: 90)
+                        onFinishRecording?(plyString, uiImage)
+                    }
+                }
+                
+                onFinishRecording?(plyString, nil)
+                await arManager.resetPointCloud()
             }
         } else {
             arManager.isCapturing = true
@@ -136,7 +146,7 @@ extension ARContainerView {
     /// onFinishRecording
     /// - Parameter action: runs an action everytime the recording is finished
     /// - Returns: ARContainerView
-    func onFinishRecording(_ onFinishRecording: @escaping((String) -> Void)) -> Self {
+    func onFinishRecording(_ onFinishRecording: @escaping((String, UIImage?) -> Void)) -> Self {
         var copy = self
         copy.onFinishRecording = onFinishRecording
         return copy
