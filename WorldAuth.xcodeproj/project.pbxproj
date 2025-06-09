@@ -8046,10 +8046,10 @@
 		5DC4CDA22D5486370077F66C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				5D9611AA2DF1736600C183A4 /* GatherView.swift */,
 				5D15EE532C0D9D5700673052 /* ContentView.swift */,
 				5D57D1792C1AE8D5007CD6AD /* Authentication */,
 				5DFD7FF02C102DD7009CB20E /* Common */,
+				5DDDDF1A2DF6A9E3005E97C9 /* Gather */,
 				5D57D1772C1AE8B3007CD6AD /* Onboarding */,
 				5D57D1782C1AE8CA007CD6AD /* Template */,
 			);
@@ -8065,6 +8065,14 @@
 				5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */,
 			);
 			path = VisionOS;
+			sourceTree = "<group>";
+		};
+		5DDDDF1A2DF6A9E3005E97C9 /* Gather */ = {
+			isa = PBXGroup;
+			children = (
+				5D9611AA2DF1736600C183A4 /* GatherView.swift */,
+			);
+			path = Gather;
 			sourceTree = "<group>";
 		};
 		5DE2AAFB2C0AE22B000C7346 = {

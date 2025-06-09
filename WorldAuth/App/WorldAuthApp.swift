@@ -15,8 +15,7 @@ struct WorldAuthApp: App {
     var body: some Scene {
         #if os(iOS)
         WindowGroup {
-//            ContentView()
-            GatherView()
+            ContentView()
         }
         #endif
         

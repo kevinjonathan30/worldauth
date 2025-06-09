@@ -25,7 +25,7 @@ struct RoomTemplateListView: View {
     var body: some View {
         ZStack {
             contentView()
-            floatingButton()
+//            floatingButton()
         }
         .navigationTitle("My Room Templates")
         .onAppear {
@@ -102,7 +102,7 @@ private extension RoomTemplateListView {
     @ViewBuilder
     private func loadedView() -> some View {
         List {
-            ForEach(filteredRoomList.sorted(by: { $0.dateCreated ?? Date() > $1.dateCreated ?? Date() })) { savedPointCloudFile in
+            ForEach(filteredRoomList.sorted(by: { $0.name > $1.name })) { savedPointCloudFile in
                 roomTemplateRow(for: savedPointCloudFile)
             }
         }
@@ -121,14 +121,14 @@ private extension RoomTemplateListView {
                     .bold()
                     .foregroundColor(.primary)
                 
-                Text(formatDate(savedPointCloudFile.dateCreated ?? Date()))
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                
-                if let pointCount = savedPointCloudFile.pointCount, pointCount > 0 {
-                    Text("\(pointCount) pts (\(savedPointCloudFile.fileSize ?? "0 bytes"))")
-                        .font(.caption)
-                }
+//                Text(formatDate(savedPointCloudFile.dateCreated ?? Date()))
+//                    .font(.subheadline)
+//                    .foregroundColor(.secondary)
+//                
+//                if let pointCount = savedPointCloudFile.pointCount, pointCount > 0 {
+//                    Text("\(pointCount) pts (\(savedPointCloudFile.fileSize ?? "0 bytes"))")
+//                        .font(.caption)
+//                }
             }
             .padding(.vertical, 4)
             
@@ -142,12 +142,12 @@ private extension RoomTemplateListView {
             }
             .tint(.red)
             
-            Button {
-                renameTemplate = savedPointCloudFile
-            } label: {
-                Image(systemName: "pencil")
-            }
-            .tint(.blue)
+//            Button {
+//                renameTemplate = savedPointCloudFile
+//            } label: {
+//                Image(systemName: "pencil")
+//            }
+//            .tint(.blue)
         }
     }
     
@@ -201,37 +201,63 @@ private extension RoomTemplateListView {
 private extension RoomTemplateListView {
     private func getRoomList() {
         viewState = .loading
-        if RemoteConfigProvider.shared.prefersOnDevice() {
-            let fileList = FileHelper.getFileList()
-            
-            var tempRoomList: [SavedPointCloudFile] = []
-            
-            for file in fileList {
-                let name = file.lastPathComponent
-                let pointCount = PointCloudHelper.extractPointCountFromFile(url: file)
-                let attributes = try? FileManager.default.attributesOfItem(atPath: file.path)
-                let creationDate = attributes?[.creationDate] as? Date ?? Date()
-                let fileSize = FileHelper.getFileSize(url: file)
-                
-                tempRoomList.append(
-                    SavedPointCloudFile(
-                        name: name,
-                        url: file,
-                        pointCount: pointCount,
-                        dateCreated: creationDate,
-                        fileSize: fileSize
-                    )
-                )
+//        if RemoteConfigProvider.shared.prefersOnDevice() {
+//            let fileList = FileHelper.getFileList()
+//            
+//            var tempRoomList: [SavedPointCloudFile] = []
+//            
+//            for file in fileList {
+//                let name = file.lastPathComponent
+//                let pointCount = PointCloudHelper.extractPointCountFromFile(url: file)
+//                let attributes = try? FileManager.default.attributesOfItem(atPath: file.path)
+//                let creationDate = attributes?[.creationDate] as? Date ?? Date()
+//                let fileSize = FileHelper.getFileSize(url: file)
+//                
+//                tempRoomList.append(
+//                    SavedPointCloudFile(
+//                        name: name,
+//                        url: file,
+//                        pointCount: pointCount,
+//                        dateCreated: creationDate,
+//                        fileSize: fileSize
+//                    )
+//                )
+//            }
+//            
+//            roomList = tempRoomList
+//            viewState = filteredRoomList.isEmpty ? .empty : .loaded
+//        }
+        NetworkHelper.getPointCloud { data, error in
+            if let error = error {
+                article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
+                showAlert = true
+                viewState = .fail
+            } else {
+                guard let data = data else {
+                    viewState = .fail
+                    return
+                }
+                roomList = data
+                viewState = filteredRoomList.isEmpty ? .empty : .loaded
             }
-            
-            roomList = tempRoomList
-            viewState = filteredRoomList.isEmpty ? .empty : .loaded
         }
     }
     
     private func delete(savedPointCloudFile: SavedPointCloudFile) {
-        if FileHelper.deleteFile(fileName: savedPointCloudFile.name) {
-            getRoomList()
+//        if FileHelper.deleteFile(fileName: savedPointCloudFile.name) {
+//            getRoomList()
+//        }
+        NetworkHelper.deletePointCloud(fileName: savedPointCloudFile.name) { data, error in
+            if let error = error {
+                article = AlertArticle(title: "An Error Occured", description: error.localizedDescription)
+                showAlert = true
+                viewState = .fail
+            } else {
+                guard let data = data else { return }
+                if data.success ?? false {
+                    roomList.removeAll { $0.name == savedPointCloudFile.name }
+                }
+            }
         }
     }
     

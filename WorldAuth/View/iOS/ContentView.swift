@@ -10,24 +10,34 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
+//            NavigationStack {
+//                LazyView(
+//                    AuthenticationView()
+//                        .accessibilityElement()
+//                        .accessibilityLabel(Text("Authentication View", comment: "Accessibility label for authentication view"))
+//                        .accessibilityHint(Text("View to authenticate users", comment: "Accessibility hint for authentication view"))
+//                )
+//                .accessibilityElement()
+//                .accessibilityLabel(Text("Authentication Tab Menu", comment: "Accessibility label for authentication tab"))
+//                .accessibilityHint(Text("Tap to view authentication options", comment: "Accessibility hint for authentication tab"))
+//                .accessibilityAddTraits(.isButton)
+//            }
+//            .tag("Authenticate")
+//            .tabItem {
+//                Label("Authenticate", systemImage: "key.fill")
+//                    .accessibilityElement()
+//                    .accessibilityLabel(Text("Authenticate Tab", comment: "Accessibility label for tab item"))
+//                    .accessibilityHint(Text("Tap to switch to the Authenticate tab", comment: "Accessibility hint for tab item"))
+//            }
+            
             NavigationStack {
                 LazyView(
-                    AuthenticationView()
-                        .accessibilityElement()
-                        .accessibilityLabel(Text("Authentication View", comment: "Accessibility label for authentication view"))
-                        .accessibilityHint(Text("View to authenticate users", comment: "Accessibility hint for authentication view"))
+                    GatherView()
                 )
-                .accessibilityElement()
-                .accessibilityLabel(Text("Authentication Tab Menu", comment: "Accessibility label for authentication tab"))
-                .accessibilityHint(Text("Tap to view authentication options", comment: "Accessibility hint for authentication tab"))
-                .accessibilityAddTraits(.isButton)
             }
-            .tag("Authenticate")
+            .tag("Gather")
             .tabItem {
-                Label("Authenticate", systemImage: "key.fill")
-                    .accessibilityElement()
-                    .accessibilityLabel(Text("Authenticate Tab", comment: "Accessibility label for tab item"))
-                    .accessibilityHint(Text("Tap to switch to the Authenticate tab", comment: "Accessibility hint for tab item"))
+                Label("Gather", systemImage: "plus.app.fill")
             }
             
             NavigationStack {

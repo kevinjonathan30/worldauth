@@ -359,11 +359,10 @@ struct NetworkHelper {
     
     static func uploadData(_ file: Data, fileName: String = "archive", completion: @escaping (AuthenticationResult?, Error?) -> Void) {
         guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
-        guard let url = URL(string: apiUrl + "/api/upload/") else { return }
+        guard let url = URL(string: apiUrl + "/api/save_data/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
-        request.setValue(RemoteConfigProvider.shared.authenticationMethod(), forHTTPHeaderField: "AuthorizationMethod")
         
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")

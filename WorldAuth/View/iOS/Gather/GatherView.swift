@@ -86,11 +86,6 @@ private extension GatherView {
                 showAlert = true
                 self.viewState = .loaded
             } else {
-                guard let data = data else {
-                    self.viewState = .loaded
-                    return
-                }
-                
                 DispatchQueue.main.async {
                     article = AlertArticle(title: "Upload Success", description: "You have successfully uploaded a point cloud.")
                     showAlert = true
