@@ -9,14 +9,15 @@ import Foundation
 
 // Struct to represent saved point cloud files
 struct SavedPointCloudFile: Identifiable, Hashable {
-    let id = UUID()
+    let id: UUID
     let name: String
     let url: URL?
     let pointCount: Int?
     let dateCreated: Date?
     let fileSize: String?
     
-    init(name: String, url: URL? = nil, pointCount: Int? = nil, dateCreated: Date? = nil, fileSize: String? = nil) {
+    init(id: UUID = UUID(), name: String, url: URL? = nil, pointCount: Int? = nil, dateCreated: Date? = nil, fileSize: String? = nil) {
+        self.id = id
         self.name = name
         self.url = url
         self.pointCount = pointCount

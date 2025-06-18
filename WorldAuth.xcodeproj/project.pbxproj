@@ -50,6 +50,7 @@
 		5DAEA23B2C3296EB00644088 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 5DAEA23A2C3296EB00644088 /* .swiftlint.yml */; };
 		5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */; platformFilters = (xros, ); };
 		5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9C2D5479090077F66C /* MainView.swift */; platformFilters = (xros, ); };
+		5DDD1C792E014E2D005E97C9 /* GatherOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD1C782E014E2C005E97C9 /* GatherOnboardingView.swift */; platformFilter = ios; };
 		5DDDA1BC2DF2DCBD005E97C9 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDDA1BB2DF2DCBD005E97C9 /* UIImage+Ext.swift */; };
 		5DDF68C02DD3671A0057BA09 /* WorldAuthCoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; };
 		5DDF68C12DD3671A0057BA09 /* WorldAuthCoreML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -127,6 +128,7 @@
 		5DAEA23A2C3296EB00644088 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneReconstructionView.swift; sourceTree = "<group>"; };
 		5DC4CD9C2D5479090077F66C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		5DDD1C782E014E2C005E97C9 /* GatherOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatherOnboardingView.swift; sourceTree = "<group>"; };
 		5DDDA1BB2DF2DCBD005E97C9 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WorldAuthCoreML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DDFA6302DD378500057BA09 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -7986,6 +7988,7 @@
 			isa = PBXGroup;
 			children = (
 				5DEA68912C141C68008CD7A9 /* OnboardingView.swift */,
+				5DDD1C782E014E2C005E97C9 /* GatherOnboardingView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -8310,6 +8313,7 @@
 				5D66BD0C2DE818C2008A0AFF /* Array+Ext.swift in Sources */,
 				5D835E1F2C29346500352304 /* ResultView.swift in Sources */,
 				5DEA68712C11765A008CD7A9 /* RoomTemplateListView.swift in Sources */,
+				5DDD1C792E014E2D005E97C9 /* GatherOnboardingView.swift in Sources */,
 				5D66EFEA2DEED074008A0AFF /* PointCloudManager.swift in Sources */,
 				5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */,
 				5D835E222C29416500352304 /* AuthenticationResponse.swift in Sources */,

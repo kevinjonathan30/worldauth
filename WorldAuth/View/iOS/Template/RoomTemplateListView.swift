@@ -256,6 +256,11 @@ private extension RoomTemplateListView {
                 guard let data = data else { return }
                 if data.success ?? false {
                     roomList.removeAll { $0.name == savedPointCloudFile.name }
+                    if roomList.isEmpty {
+                        viewState = .empty
+                    } else {
+                        viewState = .loaded
+                    }
                 }
             }
         }

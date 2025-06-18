@@ -11,6 +11,7 @@ import ZIPFoundation
 // TODO: Gather user data by getting the point clouds and photo, then proceed by zipping it, uploading to NSL server.
 struct GatherView: View {
     @State var viewState: ViewState = .loaded
+    @State private var showOnboarding = true
     @State private var showAlert = false
     @State private var article = AlertArticle(title: "", description: "")
     
@@ -18,7 +19,7 @@ struct GatherView: View {
         NavigationStack {
             VStack {
                 ARContainerView(viewState: $viewState)
-                    .onFinishRecording(authenticate(plyString:uiImage:))
+                    .onFinishRecording(authenticate(plyString:plyStringColored:uiImage:))
                     .navigationTitle("WorldAuth")
                     .alert(article.title, isPresented: $showAlert, presenting: article) { _ in
                         Button("Close", role: .cancel) {
@@ -26,6 +27,12 @@ struct GatherView: View {
                         }
                     } message: { article in
                         Text(article.description)
+                    }
+                    .sheet(isPresented: $showOnboarding) {
+                        GatherOnboardingView()
+                            .confirmAction {
+                                showOnboarding = false
+                            }
                     }
             }
         }
@@ -35,14 +42,14 @@ struct GatherView: View {
 // MARK: Handler
 
 private extension GatherView {
-    private func authenticate(plyString: String, uiImage: UIImage?) {
+    private func authenticate(plyString: String, plyStringColored: String, uiImage: UIImage?) {
         self.viewState = .loading
-        guard !plyString.isEmpty, uiImage != nil else { return }
+        guard !plyString.isEmpty, !plyStringColored.isEmpty, uiImage != nil else { return }
         
-        processPlyAndImage(plyString: plyString, uiImage: uiImage)
+        processPlyAndImage(plyString: plyString, plyStringColored: plyStringColored, uiImage: uiImage)
     }
     
-    private func processPlyAndImage(plyString: String, uiImage: UIImage?) {
+    private func processPlyAndImage(plyString: String, plyStringColored: String, uiImage: UIImage?) {
         guard let uiImage = uiImage else { return }
         
         guard let imageData = uiImage.jpegData(compressionQuality: 0.9) else {
@@ -51,6 +58,7 @@ private extension GatherView {
         }
         
         let plyData = Data(plyString.utf8)
+        let coloredPlyData = Data(plyStringColored.utf8)
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd-HH-mm-ss"
@@ -69,6 +77,10 @@ private extension GatherView {
             // Add the ply entry to the archive
             try archive.addEntry(with: "pointcloud-\(dateString).ply", type: .file, uncompressedSize: Int64(plyData.count), bufferSize: 4) { (position, size) -> Data in
                 return plyData.subdata(in: Data.Index(position)..<Int(position)+size)
+            }
+            // Add the colored ply entry to the archive
+            try archive.addEntry(with: "coloredpointcloud-\(dateString).ply", type: .file, uncompressedSize: Int64(coloredPlyData.count), bufferSize: 4) { (position, size) -> Data in
+                return coloredPlyData.subdata(in: Data.Index(position)..<Int(position)+size)
             }
             
             processPlyOnline(fileName: "archive-\(dateString).zip")

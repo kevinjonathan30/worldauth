@@ -11,12 +11,20 @@ import ARKit
 struct PLYFile {
     let pointCloud: PointCloud
     
-    func exportToPlyString() async throws -> String {
+    func exportBothToPlyString() async -> (String, String) {
+        let uuid: String = UUID().uuidString
+        let plyString = await exportToPlyString(uuid: uuid)
+        let plyStringColored = await exportToPlyStringColored(uuid: uuid)
+        return (plyString, plyStringColored)
+    }
+    
+    func exportToPlyString(uuid: String = UUID().uuidString) async -> String {
         let vertices = await pointCloud.vertices
         
         var plyContent = """
             ply
             format ascii 1.0
+            comment UUID: \(uuid)
             element vertex \(vertices.count)
             property float x
             property float y
@@ -35,23 +43,13 @@ struct PLYFile {
         return plyContent
     }
     
-    enum Error: LocalizedError {
-        case cannotExport
-    }
-    
-    private func savePLYFileToDocuments(fileName: String, data: Data) throws -> URL {
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileURL = documentsDirectory.appendingPathComponent(fileName)
-        try data.write(to: fileURL)
-        return fileURL
-    }
-    
-    func exportToLocalFile() async throws -> URL {
+    func exportToPlyStringColored(uuid: String = UUID().uuidString) async -> String {
         let vertices = await pointCloud.vertices
         
         var plyContent = """
             ply
             format ascii 1.0
+            comment UUID: \(uuid)
             element vertex \(vertices.count)
             property float x
             property float y
@@ -59,7 +57,6 @@ struct PLYFile {
             property uchar red
             property uchar green
             property uchar blue
-            property uchar alpha
             end_header
             """
         
@@ -70,19 +67,10 @@ struct PLYFile {
             let red = UInt8(vertex.color.x * 255)
             let green = UInt8(vertex.color.y * 255)
             let blue = UInt8(vertex.color.z * 255)
-            let alpha = UInt8(vertex.color.w * 255)
             
-            plyContent += "\n\(posX) \(posY) \(posZ) \(red) \(green) \(blue) \(alpha)"
+            plyContent += "\n\(posX) \(posY) \(posZ) \(red) \(green) \(blue)"
         }
         
-        guard let data = plyContent.data(using: .ascii) else {
-            throw Error.cannotExport
-        }
-        
-        let today = Date.now
-        let formatter3 = DateFormatter()
-        formatter3.dateFormat = "yyyy-MM-dd-HH-mm-ss"
-        
-        return try savePLYFileToDocuments(fileName: "exported-\(formatter3.string(from: today)).ply", data: data)
+        return plyContent
     }
 }
