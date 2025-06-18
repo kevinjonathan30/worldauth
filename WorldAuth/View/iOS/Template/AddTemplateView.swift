@@ -20,7 +20,7 @@ struct AddTemplateView: View {
     
     var body: some View {
         ARContainerView(viewState: $viewState)
-            .onFinishRecording(register(plyString:uiImage:))
+            .onFinishRecording(register(plyString:plyStringColored:uiImage:))
             .alert(article.title, isPresented: $showAlert, presenting: article) { _ in
                 Button("Close", role: .cancel) {
                     showAlert = false
@@ -43,7 +43,7 @@ struct AddTemplateView: View {
 // MARK: Handler
 
 private extension AddTemplateView {
-    private func register(plyString: String, uiImage: UIImage?) {
+    private func register(plyString: String, plyStringColored: String, uiImage: UIImage?) {
         guard !plyString.isEmpty else { return }
         viewState = .loading
         
