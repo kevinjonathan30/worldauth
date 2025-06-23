@@ -26,7 +26,7 @@ actor PointCloud {
                 
                 let depth = depthBuffer.value(posX: col, posY: row)
                 
-                if depth > 2 { return }
+                if depth > 2 { continue }
                 
                 let normalizedCoord = simd_float2(Float(col) / Float(depthBuffer.size.width),
                                                   Float(row) / Float(depthBuffer.size.height))
