@@ -261,6 +261,7 @@ private extension RoomTemplateListView {
                     } else {
                         viewState = .loaded
                     }
+                    let _ = FileHelper.deleteFile(fileName: savedPointCloudFile.name)
                 }
             }
         }

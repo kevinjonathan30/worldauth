@@ -21,7 +21,7 @@ struct PointCloudHelper {
             
             return validLines.count
         } catch {
-            print("Error reading file for point count: \(error.localizedDescription)")
+            LoggerHelper.logError(parameters: [.message: "Error reading file for point count: \(error.localizedDescription)"])
         }
         return 0
     }

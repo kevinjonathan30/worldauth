@@ -12,19 +12,17 @@ struct PLYFile {
     let pointCloud: PointCloud
     
     func exportBothToPlyString() async -> (String, String) {
-        let uuid: String = UUID().uuidString
-        let plyString = await exportToPlyString(uuid: uuid)
-        let plyStringColored = await exportToPlyStringColored(uuid: uuid)
+        let plyString = await exportToPlyString()
+        let plyStringColored = await exportToPlyStringColored()
         return (plyString, plyStringColored)
     }
     
-    func exportToPlyString(uuid: String = UUID().uuidString) async -> String {
+    func exportToPlyString() async -> String {
         let vertices = await pointCloud.vertices
         
         var plyContent = """
             ply
             format ascii 1.0
-            comment UUID: \(uuid)
             element vertex \(vertices.count)
             property float x
             property float y
@@ -43,13 +41,12 @@ struct PLYFile {
         return plyContent
     }
     
-    func exportToPlyStringColored(uuid: String = UUID().uuidString) async -> String {
+    func exportToPlyStringColored() async -> String {
         let vertices = await pointCloud.vertices
         
         var plyContent = """
             ply
             format ascii 1.0
-            comment UUID: \(uuid)
             element vertex \(vertices.count)
             property float x
             property float y

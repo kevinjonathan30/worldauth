@@ -13,13 +13,15 @@ struct GatherView: View {
     @State var viewState: ViewState = .loaded
     @State private var showOnboarding = true
     @State private var showAlert = false
+    @State private var showTextFieldAlert = false
+    @State private var tempCaptured: (String, String, UIImage?)? = nil
     @State private var article = AlertArticle(title: "", description: "")
     
     var body: some View {
         NavigationStack {
             VStack {
                 ARContainerView(viewState: $viewState)
-                    .onFinishRecording(authenticate(plyString:plyStringColored:uiImage:))
+                    .onFinishRecording(showAlertToInputName(plyString:plyStringColored:uiImage:))
                     .navigationTitle("WorldAuth")
                     .alert(article.title, isPresented: $showAlert, presenting: article) { _ in
                         Button("Close", role: .cancel) {
@@ -34,6 +36,12 @@ struct GatherView: View {
                                 showOnboarding = false
                             }
                     }
+                    .textFieldAlert(isPresented: $showTextFieldAlert, title: "Enter Room Name", message: "Enter without using spaces") { name in
+                        authenticate(name: name ?? "", plyString: tempCaptured?.0 ?? "", plyStringColored: tempCaptured?.1 ?? "", uiImage: tempCaptured?.2)
+                    }
+                    .onChange(of: tempCaptured?.0) { _, newValue in
+                        showTextFieldAlert = newValue != nil
+                    }
             }
         }
     }
@@ -42,18 +50,27 @@ struct GatherView: View {
 // MARK: Handler
 
 private extension GatherView {
-    private func authenticate(plyString: String, plyStringColored: String, uiImage: UIImage?) {
-        self.viewState = .loading
-        guard !plyString.isEmpty, !plyStringColored.isEmpty, uiImage != nil else { return }
-        
-        processPlyAndImage(plyString: plyString, plyStringColored: plyStringColored, uiImage: uiImage)
+    private func showAlertToInputName(plyString: String, plyStringColored: String, uiImage: UIImage?) {
+        tempCaptured = (plyString, plyStringColored, uiImage)
     }
     
-    private func processPlyAndImage(plyString: String, plyStringColored: String, uiImage: UIImage?) {
+    private func authenticate(name: String, plyString: String, plyStringColored: String, uiImage: UIImage?) {
+        self.viewState = .loading
+        guard !plyString.isEmpty, !plyStringColored.isEmpty, uiImage != nil else {
+            self.viewState = .loaded
+            article = AlertArticle(title: "Error", description: "Missing required data.")
+            showAlert = true
+            return
+        }
+        
+        processPlyAndImage(name: name, plyString: plyString, plyStringColored: plyStringColored, uiImage: uiImage)
+    }
+    
+    private func processPlyAndImage(name: String, plyString: String, plyStringColored: String, uiImage: UIImage?) {
         guard let uiImage = uiImage else { return }
         
         guard let imageData = uiImage.jpegData(compressionQuality: 0.9) else {
-            print("Error: Unable to convert UIImage to JPEG data")
+            LoggerHelper.logError(parameters: [.message: "Error: Unable to convert UIImage to JPEG data"])
             return
         }
         
@@ -65,27 +82,27 @@ private extension GatherView {
         let dateString = dateFormatter.string(from: Date())
         
         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let zipFileURL = documentsURL.appendingPathComponent("archive-\(dateString).zip")
+        let zipFileURL = documentsURL.appendingPathComponent("\(name)-\(dateString).zip")
         
         
         do {
             let archive = try Archive(url: zipFileURL, accessMode: .create)
             // Add the image entry to the archive
-            try archive.addEntry(with: "image-\(dateString).jpg", type: .file, uncompressedSize: Int64(imageData.count), bufferSize: 4) { (position, size) -> Data in
+            try archive.addEntry(with: "\(name)-image-\(dateString).jpg", type: .file, uncompressedSize: Int64(imageData.count), bufferSize: 4) { (position, size) -> Data in
                 return imageData.subdata(in: Data.Index(position)..<Int(position)+size)
             }
             // Add the ply entry to the archive
-            try archive.addEntry(with: "pointcloud-\(dateString).ply", type: .file, uncompressedSize: Int64(plyData.count), bufferSize: 4) { (position, size) -> Data in
+            try archive.addEntry(with: "\(name)-pointcloud-\(dateString).ply", type: .file, uncompressedSize: Int64(plyData.count), bufferSize: 4) { (position, size) -> Data in
                 return plyData.subdata(in: Data.Index(position)..<Int(position)+size)
             }
             // Add the colored ply entry to the archive
-            try archive.addEntry(with: "coloredpointcloud-\(dateString).ply", type: .file, uncompressedSize: Int64(coloredPlyData.count), bufferSize: 4) { (position, size) -> Data in
+            try archive.addEntry(with: "\(name)-coloredpointcloud-\(dateString).ply", type: .file, uncompressedSize: Int64(coloredPlyData.count), bufferSize: 4) { (position, size) -> Data in
                 return coloredPlyData.subdata(in: Data.Index(position)..<Int(position)+size)
             }
             
-            processPlyOnline(fileName: "archive-\(dateString).zip")
+            processPlyOnline(fileName: "\(name)-\(dateString).zip")
         } catch {
-            print("Error processing files: \(error)")
+            LoggerHelper.logError(parameters: [.message: "Error processing files: \(error)"])
         }
     }
     
@@ -118,9 +135,13 @@ private extension GatherView {
                 if completed {
                     do {
                         try FileManager.default.removeItem(at: zipFileURL)
-                        print("Temporary ZIP file deleted successfully.")
+                        LoggerHelper.logInfo(
+                            parameters: [
+                                .message: "Temporary ZIP file deleted successfully.",
+                            ]
+                        )
                     } catch {
-                        print("Error deleting temporary ZIP file: \(error)")
+                        LoggerHelper.logError(parameters: [.message: "Error deleting temporary ZIP file: \(error)"])
                     }
                 }
                 viewState = .loaded
@@ -131,8 +152,8 @@ private extension GatherView {
             }
         }
     }
-    
-    #Preview {
-        GatherView()
-    }
+}
+
+#Preview {
+    GatherView()
 }

@@ -119,16 +119,17 @@ private extension ARContainerView {
                 arManager.isCapturing = false
                 let recordStartSoundID: SystemSoundID = 1118
                 AudioServicesPlaySystemSound(recordStartSoundID)
+                
+                var capturedImage: UIImage? = nil
                 if let currentFrame = arManager.sceneView.session.currentFrame {
                     let image = CIImage(cvPixelBuffer: currentFrame.capturedImage)
                     let context = CIContext()
                     if let cgImage = context.createCGImage(image, from: image.extent) {
-                        let uiImage = UIImage(cgImage: cgImage).rotated(by: 90)
-                        onFinishRecording?(plyString.0, plyString.1, uiImage)
+                        capturedImage = UIImage(cgImage: cgImage).rotated(by: 90)
                     }
                 }
                 
-                onFinishRecording?(plyString.0, plyString.1, nil)
+                onFinishRecording?(plyString.0, plyString.1, capturedImage)
                 await arManager.resetPointCloud()
             }
         } else {

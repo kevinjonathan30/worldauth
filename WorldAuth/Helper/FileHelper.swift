@@ -167,7 +167,7 @@ struct FileHelper {
                 return formatter.string(fromByteCount: fileSize)
             }
         } catch {
-            print("Error getting file size: \(error.localizedDescription)")
+            LoggerHelper.logError(parameters: [.message: "Error getting file size: \(error.localizedDescription)"])
         }
         return nil
     }
