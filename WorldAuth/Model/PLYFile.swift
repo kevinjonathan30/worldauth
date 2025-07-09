@@ -20,22 +20,14 @@ struct PLYFile {
     func exportToPlyString() async -> String {
         let vertices = await pointCloud.vertices
         
-        var plyContent = """
-            ply
-            format ascii 1.0
-            element vertex \(vertices.count)
-            property float x
-            property float y
-            property float z
-            end_header
-            """
+        var plyContent = ""
         
         for vertex in vertices.values {
             let posX = vertex.position.x
             let posY = vertex.position.y
             let posZ = vertex.position.z
             
-            plyContent += "\n\(posX) \(posY) \(posZ)"
+            plyContent += "\(posX) \(posY) \(posZ)\n"
         }
         
         return plyContent
@@ -71,3 +63,15 @@ struct PLYFile {
         return plyContent
     }
 }
+
+// MARK: Header Format
+
+//        var plyContent = """
+//            ply
+//            format ascii 1.0
+//            element vertex \(vertices.count)
+//            property float x
+//            property float y
+//            property float z
+//            end_header
+//            """
