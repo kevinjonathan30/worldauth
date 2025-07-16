@@ -118,19 +118,7 @@ extension AuthenticationHelper {
 
 extension AuthenticationHelper {
     
-//    static func stripHeader(from string: String) -> String {
-//        if let range = string.range(of: "end_header") {
-//            let afterHeaderIndex = string.index(range.upperBound, offsetBy: 1)
-//            let vertexData = string.suffix(from: afterHeaderIndex)
-//            return String(vertexData).trimmingCharacters(in: .whitespacesAndNewlines)
-//        } else {
-//            print("No end_header found.")
-//            return string
-//        }
-//    }
-    
     static func createMLMultiArray(from string: String) -> MLMultiArray? {
-//        let string = stripHeader(from: string)
         let lines = string.split(separator: "\n")
         let points: [[Float]] = lines.compactMap { line in
             let numbers = line.split(separator: " ").compactMap { Float($0) }
