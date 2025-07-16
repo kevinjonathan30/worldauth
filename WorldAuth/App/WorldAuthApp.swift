@@ -11,11 +11,16 @@ import SwiftUI
 struct WorldAuthApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @State private var selectedTab: TabState = .authentication
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     
     var body: some Scene {
         #if os(iOS)
         WindowGroup {
-            ContentView()
+            if hasSeenOnboarding {
+                ContentView()
+            } else {
+                OnboardingView()
+            }
         }
         #endif
         

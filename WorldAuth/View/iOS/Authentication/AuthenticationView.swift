@@ -30,7 +30,7 @@ struct AuthenticationView: View {
                     .accessibilityLabel(Text("Augmented Reality Container", comment: "Accessibility label for the AR container view"))
                     .accessibilityHint(Text("Displays the AR content for authentication", comment: "Accessibility hint for the AR container view"))
                     .sheet(isPresented: $showOnboarding) {
-                        OnboardingView()
+                        NoPointCloudView()
                             .confirmAction {
                                 showOnboarding = false
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
