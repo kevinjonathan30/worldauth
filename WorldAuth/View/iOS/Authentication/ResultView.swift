@@ -39,16 +39,12 @@ struct ResultView: View {
                 .accessibilityHint(Text(success ? "Authentication Success" : "Authentication Failed", comment: "Accessibility hint for text"))
                 .accessibilityAddTraits([.isStaticText])
             
-            Text(String(format: "Similarity: %.2f%%", similarity * 100))
+            Text(success ? "Success! You’ve been authenticated." : "Authentication didn’t go through. Double-check and try again.")
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
                 .accessibilityElement()
-                .accessibilityLabel(Text("Similarity to Room Template Text", comment: "Accessibility label for text"))
-                .accessibilityHint(Text("The similarity of the scanned room compared to the saved room template is \(String(format: "Similarity: %.2f%%", similarity * 100))", comment: "Accessibility hint for text"))
-                .accessibilityAddTraits([.isStaticText])
-            
-            Text("Auth Method: \(RemoteConfigProvider.shared.authenticationMethod())")
-                .accessibilityElement()
-                .accessibilityLabel(Text("Authentication Method", comment: "Accessibility label for text"))
-                .accessibilityHint(Text("The authentication method used is \(RemoteConfigProvider.shared.authenticationMethod())", comment: "Accessibility hint for text"))
+                .accessibilityLabel(Text("Result Description Text", comment: "Accessibility label for text"))
+                .accessibilityHint(Text(success ? "Success! You’ve been authenticated." : "Authentication didn’t go through. Double-check and try again.", comment: "Accessibility hint for text"))
                 .accessibilityAddTraits([.isStaticText])
             
             Spacer()

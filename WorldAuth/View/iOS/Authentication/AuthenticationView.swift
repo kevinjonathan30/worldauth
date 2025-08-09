@@ -146,7 +146,7 @@ private extension AuthenticationView {
             highestResult = max(highestResult, result)
         }
         
-        self.navigateToResult = AuthenticationResult(error: nil, success: highestResult == 1, fitness: highestResult)
+        self.navigateToResult = AuthenticationResult(error: nil, success: highestResult >= 0.5, fitness: highestResult)
         self.viewState = .loaded
     }
     
@@ -165,7 +165,12 @@ private extension AuthenticationView {
                 }
                 
                 DispatchQueue.main.async {
-                    navigateToResult = AuthenticationResult(error: nil, success: data.fitness == 1, fitness: data.fitness ?? 0)
+                    navigateToResult = AuthenticationResult(
+                        error: nil,
+                        success: (data.fitness ?? 0) >= 0.5,
+                        fitness: data.fitness ?? 0
+                    )
+                    
                     self.viewState = .loaded
                 }
             }

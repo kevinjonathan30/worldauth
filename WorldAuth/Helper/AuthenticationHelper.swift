@@ -26,7 +26,7 @@ struct AuthenticationHelper {
             threshold = 0.35
             fitness = runICPInference(source: source, target: target, isFgr: false, threshold: threshold)
         case "FGR":
-            threshold = 0.32
+            threshold = 0.1005
             fitness = runICPInference(source: source, target: target, isFgr: true, threshold: threshold)
         case "PNLK":
             threshold = 0.345

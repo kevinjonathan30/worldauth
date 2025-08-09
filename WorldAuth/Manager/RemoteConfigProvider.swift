@@ -46,12 +46,10 @@ final class RemoteConfigProvider {
      or any other circumstance, In order to run our application without any issues
      we have to set default values for all the variables that we fetches
      from the remote server.
-     If you have higher number of variables in use, you can use info.plist file
-     to define the defualt values as well.
      */
     func loadDefaultValues() {
         let appDefaults: [String: Any?] = [
-            RemoteConfigValueKey.authenticationMethod.rawValue: "DGMR",
+            RemoteConfigValueKey.authenticationMethod.rawValue: "FGR",
             RemoteConfigValueKey.prefersOnDevice.rawValue: true
         ]
         remoteConfig.setDefaults(appDefaults as? [String: NSObject])

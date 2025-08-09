@@ -114,6 +114,7 @@ extension PythonHelper {
         
         let radiusNormal = voxelSize * 2
         pcdDown.estimate_normals(o3d.geometry.KDTreeSearchParamHybrid(radius: radiusNormal, max_nn: 30))
+        pcdDown.orient_normals_consistent_tangent_plane(100)
         
         let radiusFeature = voxelSize * 5
         let pcdFpfh = o3d.pipelines.registration.compute_fpfh_feature(pcdDown, o3d.geometry.KDTreeSearchParamHybrid(radius: radiusFeature, max_nn: 100))
@@ -125,13 +126,25 @@ extension PythonHelper {
         let o3d = PythonModules.o3d
         
         if isFgr { // FGR
-            let distanceThreshold = voxelSize * 1.5
+            let distanceThreshold = voxelSize * 1.1
+            
+            let option = o3d.pipelines.registration.FastGlobalRegistrationOption(
+                maximum_correspondence_distance: distanceThreshold,
+                iteration_number: 512,
+                maximum_tuple_count: 1534,
+                tuple_scale: 0.98,
+                use_absolute_scale: false,
+                decrease_mu: true,
+                tuple_test: true,
+                division_factor: 1.01
+            )
+            
             let result = o3d.pipelines.registration.registration_fgr_based_on_feature_matching(
                 preparedDataset.0,
                 preparedDataset.1,
                 preparedDataset.2,
                 preparedDataset.3,
-                o3d.pipelines.registration.FastGlobalRegistrationOption(maximum_correspondence_distance: distanceThreshold)
+                option
             )
             
             return result
