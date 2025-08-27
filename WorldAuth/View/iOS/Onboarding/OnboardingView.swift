@@ -6,9 +6,15 @@
 //
 
 import SwiftUI
+import AVFoundation
+import FirebaseCore
+import FirebaseAnalytics
 
 struct OnboardingView: View {
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
+    @AppStorage("userConsented") private var userConsented = false
+    @State private var showDataConsent = false
+    @State private var cameraAuthorized = false
     @State private var currentPage = 0
     
     let pages: [OnboardingPageView] = [
@@ -82,8 +88,46 @@ struct OnboardingView: View {
             }
             .padding(.bottom, 40)
         }
+        .onAppear {
+            requestCameraAccess()
+            showDataConsent = true
+        }
+        .alert("Privacy & Data Collection", isPresented: $showDataConsent) {
+            Button("Decline", role: .cancel) {
+                userConsented = false
+                Analytics.setAnalyticsCollectionEnabled(false)
+            }
+            Button("Agree") {
+                userConsented = true
+                Analytics.setAnalyticsCollectionEnabled(true)
+            }
+        } message: {
+            Text("We collect anonymized scan data to improve the system. Your data will never be shared with third parties.")
+        }
         .animation(.easeInOut, value: currentPage)
         .transition(.slide)
         .padding()
+    }
+}
+
+// MARK: Helper
+
+private extension OnboardingView {
+    private func requestCameraAccess() {
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        switch status {
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    cameraAuthorized = granted
+                }
+            }
+        case .authorized:
+            cameraAuthorized = true
+        case .denied, .restricted:
+            cameraAuthorized = false
+        @unknown default:
+            cameraAuthorized = false
+        }
     }
 }

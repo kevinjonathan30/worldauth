@@ -14,23 +14,51 @@ struct ARContainerView: View {
     @Binding var viewState: ViewState
     @State private var isCoachingActive = false
     
+    @State private var cameraAuthorized = false
+    
     var onFinishRecording: ((String, String, UIImage?) -> Void)?
     
     var body: some View {
         ZStack {
-            UIViewWrapper(view: arManager.sceneView)
-                .accessibilityElement()
-                .accessibilityLabel(Text("AR Scene View", comment: "Accessibility label for AR scene view"))
-                .accessibilityHint(Text("Displays augmented reality content", comment: "Accessibility hint for AR scene view"))
-            
-            CoachingOverlayView(sceneView: arManager.sceneView, isCoachingActive: $isCoachingActive)
-                .accessibilityElement()
-                .accessibilityLabel(Text("AR Coaching View", comment: "Accessibility label for AR coaching view"))
-                .accessibilityHint(Text("Move your iPhone slowly", comment: "Accessibility hint for AR coaching view"))
-            
-            loadingView()
-            
-            takePointCloudButton()
+            if cameraAuthorized {
+                UIViewWrapper(view: arManager.sceneView)
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("AR Scene View", comment: "Accessibility label for AR scene view"))
+                    .accessibilityHint(Text("Displays augmented reality content", comment: "Accessibility hint for AR scene view"))
+                
+                CoachingOverlayView(sceneView: arManager.sceneView, isCoachingActive: $isCoachingActive)
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("AR Coaching View", comment: "Accessibility label for AR coaching view"))
+                    .accessibilityHint(Text("Move your iPhone slowly", comment: "Accessibility hint for AR coaching view"))
+                
+                loadingView()
+                
+                takePointCloudButton()
+            } else {
+                VStack(spacing: 20) {
+                    Text("Camera Permission Required")
+                        .font(.title2)
+                        .bold()
+                        .multilineTextAlignment(.center)
+                    
+                    Text("WorldAuth needs access to your camera to scan the room and enable authentication. Please enable camera access in Settings.")
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                    
+                    Link(destination: URL(string: UIApplication.openSettingsURLString)!) {
+                        Text("Open Settings")
+                            .bold()
+                            .padding()
+                            .background(Color.accentColor)
+                            .foregroundColor(.white)
+                            .clipShape(Capsule())
+                    }
+                }
+                .padding()
+            }
+        }
+        .onAppear {
+            checkCameraAuthorization()
         }
         .onDisappear {
             Task {
@@ -107,6 +135,27 @@ private extension ARContainerView {
 private extension ARContainerView {
     private func getIconByTakePointCloudState() -> String {
         return arManager.isCapturing ? "stop.circle.fill" : "record.circle.fill"
+    }
+    
+    func checkCameraAuthorization() {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            cameraAuthorized = true
+        case .notDetermined:
+            requestCameraAccess()
+        case .denied, .restricted:
+            cameraAuthorized = false
+        @unknown default:
+            cameraAuthorized = false
+        }
+    }
+    
+    func requestCameraAccess() {
+        AVCaptureDevice.requestAccess(for: .video) { granted in
+            DispatchQueue.main.async {
+                cameraAuthorized = granted
+            }
+        }
     }
 }
 

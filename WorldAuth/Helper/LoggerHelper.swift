@@ -57,12 +57,17 @@ struct LoggerHelper {
 }
 
 extension LoggerHelper {
+    static private func hasUserConsented() -> Bool {
+        return UserDefaults.standard.bool(forKey: "userConsented")
+    }
+    
     static private func sendLog(
         event: String,
         level: String? = nil,
         parameters: [LoggerCategory: Any]? = nil,
         debugInfo: String
     ) {
+        guard hasUserConsented() else { return }
         guard !event.isEmpty else {
             print("The 'event' field is required.")
             return
