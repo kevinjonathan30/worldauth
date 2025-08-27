@@ -50,6 +50,7 @@ private extension ARContainerView {
             
             Button(action: handleTakePointCloudButtonEvent) {
                 Image(systemName: getIconByTakePointCloudState())
+                    .modifier(SymbolTransitionModifier())
                     .foregroundColor(.red)
                     .font(.title)
                     .frame(width: 80, height: 80)

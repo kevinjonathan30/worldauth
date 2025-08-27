@@ -11,7 +11,7 @@ struct ResultView: View {
     @Environment(\.dismiss) private var dismiss
     let success: Bool
     let similarity: Double
-    @State private var selectedMethod = "-"
+    @State private var isFinalState = false
     
     init(success: Bool = false, similarity: Double = 0) {
         self.success = success
@@ -22,12 +22,14 @@ struct ResultView: View {
         VStack {
             Spacer()
             
-            Image(systemName: success ? "lock.open.fill" : "lock.slash.fill")
+            Image(systemName: iconName)
                 .font(.largeTitle)
+                .modifier(SymbolTransitionModifier())
                 .accessibilityElement()
-                .accessibilityLabel(Text("Authentication Result Image", comment: "Accessibility label for image"))
-                .accessibilityHint(Text(success ? "Authenticated" : "Authentication Failed", comment: "Accessibility hint for image"))
+                .accessibilityLabel(Text("Authentication Result Image"))
+                .accessibilityHint(Text(success ? "Authenticated" : "Authentication Failed"))
                 .accessibilityAddTraits([.isImage])
+                .onAppear { isFinalState = true }
             
             Spacer()
             
@@ -35,16 +37,16 @@ struct ResultView: View {
                 .font(.title2)
                 .bold()
                 .accessibilityElement()
-                .accessibilityLabel(Text("Authentication Result Text", comment: "Accessibility label for text"))
-                .accessibilityHint(Text(success ? "Authentication Success" : "Authentication Failed", comment: "Accessibility hint for text"))
+                .accessibilityLabel(Text("Authentication Result Text"))
+                .accessibilityHint(Text(success ? "Authentication Success" : "Authentication Failed"))
                 .accessibilityAddTraits([.isStaticText])
             
             Text(success ? "Success! You’ve been authenticated." : "Authentication didn’t go through. Double-check and try again.")
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
                 .accessibilityElement()
-                .accessibilityLabel(Text("Result Description Text", comment: "Accessibility label for text"))
-                .accessibilityHint(Text(success ? "Success! You’ve been authenticated." : "Authentication didn’t go through. Double-check and try again.", comment: "Accessibility hint for text"))
+                .accessibilityLabel(Text("Result Description Text"))
+                .accessibilityHint(Text(success ? "Success! You’ve been authenticated." : "Authentication didn’t go through. Double-check and try again."))
                 .accessibilityAddTraits([.isStaticText])
             
             Spacer()
@@ -55,6 +57,11 @@ struct ResultView: View {
         }
         .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
+    }
+    
+    private var iconName: String {
+        if !isFinalState { return "lock.fill" }
+        return success ? "lock.open.fill" : "lock.slash.fill"
     }
 }
 
@@ -73,8 +80,8 @@ private extension ResultView {
                         .clipShape(Capsule())
                 )
                 .accessibilityElement()
-                .accessibilityLabel(Text("Back to Home Button", comment: "Accessibility label for button"))
-                .accessibilityHint(Text("Return to Home Screen", comment: "Accessibility hint for button"))
+                .accessibilityLabel(Text("Back to Home Button"))
+                .accessibilityHint(Text("Return to Home Screen"))
                 .accessibilityAddTraits([.isButton])
         }
         .transaction { transaction in
