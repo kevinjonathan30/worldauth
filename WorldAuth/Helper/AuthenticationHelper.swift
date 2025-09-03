@@ -99,53 +99,23 @@ extension AuthenticationHelper {
 extension AuthenticationHelper {
     static private func runDeepGMRInference(source: String, target: String, threshold: Double) -> Double {
         #if os(iOS)
-        guard let sourceTemp = createMLMultiArray(from: source),
-              let targetTemp = createMLMultiArray(from: target) else { return 0 }
+        guard let sourceTemp = PythonHelper.convertStringToNumPyXYZ(source),
+              let targetTemp = PythonHelper.convertStringToNumPyXYZ(target) else { return 0 }
         
-        guard let tMatrix = WorldAuthCoreML.runInference(source: source, target: target, method: "DGMR") else { return 0 }
+        guard let matrix = WorldAuthCoreML.runInference(source: source, target: target, method: "DGMR"),
+              let npMatrix = PythonHelper.convertToNumPyMatrix4x4(array: matrix) else { return 0 }
         
-        return PythonHelper.evaluateRegistration(source: sourceTemp, target: targetTemp, tMatrix: tMatrix, threshold: threshold)
+        return PythonHelper.evaluateRegistration(
+            source: sourceTemp,
+            target: targetTemp,
+            matrix: npMatrix,
+            threshold: threshold
+        )
         #elseif os(visionOS)
         let sourceData = Data(source.utf8)
         let targetData = Data(target.utf8)
         let result = NetworkHelper.authenticateTwoPointCloudsSync(sourceData, targetData)
         return result?.fitness ?? 0
         #endif
-    }
-}
-
-// MARK: - Helper Functions
-
-extension AuthenticationHelper {
-    
-    static func createMLMultiArray(from string: String) -> MLMultiArray? {
-        let lines = string.split(separator: "\n")
-        let points: [[Float]] = lines.compactMap { line in
-            let numbers = line.split(separator: " ").compactMap { Float($0) }
-            return numbers.isEmpty ? nil : numbers
-        }
-        
-        guard !points.isEmpty else { return nil }
-        
-        let rowCount = points.count
-        let colCount = points[0].count
-        
-        do {
-            let shape: [NSNumber] = [1, rowCount as NSNumber, colCount as NSNumber]
-            let mlArray = try MLMultiArray(shape: shape, dataType: .float32)
-            
-            for (index, value) in points.flatMap({ $0 }).enumerated() {
-                mlArray[index] = NSNumber(value: value)
-            }
-            
-            return mlArray
-        } catch {
-            LoggerHelper.logError(
-                parameters: [
-                    .message: "Error creating MLMultiArray: \(error)",
-                ]
-            )
-            return nil
-        }
     }
 }

@@ -32,27 +32,21 @@ struct PythonHelper {
 // MARK: - Registration Evaluation
 
 extension PythonHelper {
-    static func evaluateRegistration(source: MLMultiArray, target: MLMultiArray, tMatrix: MLMultiArray, threshold: Double) -> Double {
+    static func evaluateRegistration(source: PythonObject, target: PythonObject, matrix: PythonObject, threshold: Double) -> Double {
         let o3d = PythonModules.o3d
         let np = PythonModules.np
-        
-        let sourceNp = mlMultiArrayToNumPy(source)[0]
-        let targetNp = mlMultiArrayToNumPy(target)[0]
-        let t21Np = mlMultiArrayToNumPy(tMatrix)
         
         let pcd1 = o3d.geometry.PointCloud()
         let pcd2 = o3d.geometry.PointCloud()
         
-        pcd1.points = o3d.utility.Vector3dVector(sourceNp)
-        pcd2.points = o3d.utility.Vector3dVector(targetNp)
+        pcd1.points = o3d.utility.Vector3dVector(source)
+        pcd2.points = o3d.utility.Vector3dVector(target)
         
         let pcd1Transformed = o3d.geometry.PointCloud()
         pcd1Transformed.points = o3d.utility.Vector3dVector(np.asarray(pcd1.points))
         
-        let transformation = np.array(t21Np).reshape(4, 4)
-        
         // Apply transformation using the copied point cloud
-        pcd1Transformed.transform(transformation)
+        pcd1Transformed.transform(matrix)
         
         // Evaluate registration between target and transformed source
         let evaluation = o3d.pipelines.registration.evaluate_registration(pcd2, pcd1Transformed, threshold)
@@ -67,19 +61,16 @@ extension PythonHelper {
     static func runICPInference(source: String, target: String, isFgr: Bool, threshold: Double) -> Double {
         let o3d = PythonModules.o3d
         
-        guard let source = AuthenticationHelper.createMLMultiArray(from: source),
-              let target = AuthenticationHelper.createMLMultiArray(from: target) else { return 0 }
-        
-        let sourceNp = mlMultiArrayToNumPy(source)[0]
-        let targetNp = mlMultiArrayToNumPy(target)[0]
+        guard let sourceNp = convertStringToNumPyXYZ(source),
+              let targetNp = convertStringToNumPyXYZ(target) else { return 0 }
         
         let voxelSize = 0.1
         
         let pcd1 = o3d.geometry.PointCloud()
         let pcd2 = o3d.geometry.PointCloud()
         
-        pcd1.points = o3d.utility.Vector3dVector(sourceNp)
-        pcd2.points = o3d.utility.Vector3dVector(targetNp)
+        pcd1.points = o3d.utility.Vector3dVector(sourceNp[0])
+        pcd2.points = o3d.utility.Vector3dVector(targetNp[0])
         
         let roSource = removeOutlier(cloud: pcd1)
         let roTarget = removeOutlier(cloud: pcd2)
@@ -177,17 +168,42 @@ extension PythonHelper {
 // MARK: - Helper Functions
 
 extension PythonHelper {
-    static func mlMultiArrayToNumPy(_ multiArray: MLMultiArray) -> PythonObject {
+    static func convertStringToNumPyXYZ(_ string: String) -> PythonObject? {
         let np = PythonModules.np
-        let shape = multiArray.shape.map { $0.intValue }
+
+        var flat: [Float] = []
+
+        for line in string.split(whereSeparator: \.isNewline) {
+            let parts = line.split { $0 == " " || $0 == "\t" }
+            guard parts.count >= 3,
+                  let x = Float(parts[0]),
+                  let y = Float(parts[1]),
+                  let z = Float(parts[2]) else { continue }
+            flat.append(x)
+            flat.append(y)
+            flat.append(z)
+        }
+
+        let n = flat.count / 3
+        guard n > 0 else { return nil }
+
+        // Swift [Float] -> Python list -> NumPy float32 array shaped (1, N, 3)
+        let pyList = PythonObject(flat.map { PythonObject($0) })
+        let arr = np.array(pyList, dtype: np.float32).reshape([1, n, 3])
+        return arr
+    }
+    
+    static func convertToNumPyMatrix4x4(array: [NSNumber]) -> PythonObject? {
+        let np = PythonModules.np
         
-        var arrayData = [Double](repeating: 0.0, count: multiArray.count)
-        for i in 0..<multiArray.count {
-            arrayData[i] = multiArray[i].doubleValue
+        guard array.count == 16 else {
+            return nil
         }
         
-        let npArray = np.array(arrayData).reshape(shape)
+        let values = array.map { $0.doubleValue }
+        let pyList = PythonObject(values.map { PythonObject($0) })
         
+        let npArray = np.array(pyList, dtype: np.float64).reshape([4, 4])
         return npArray
     }
 }

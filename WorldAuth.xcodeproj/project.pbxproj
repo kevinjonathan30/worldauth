@@ -15,7 +15,7 @@
 		5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */; platformFilter = ios; };
 		5D4655F02C22A6F90013CB78 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */; };
 		5D5D8E372DD19BDE00FE7D33 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5D5D8E362DD19BDE00FE7D33 /* PythonKit */; };
-		5D5D8E642DD19F7100FE7D33 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8D82DCDED26005D3F96 /* PythonKit */; };
+		5D5D8E642DD19F7100FE7D33 /* PythonKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5D7FD8D82DCDED26005D3F96 /* PythonKit */; };
 		5D5D8E982DD1C80700FE7D33 /* Open3D-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D5D8E972DD1C80700FE7D33 /* Open3D-iOS */; };
 		5D5D8E9A2DD1C80C00FE7D33 /* LAPACKE-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D5D8E992DD1C80C00FE7D33 /* LAPACKE-iOS */; };
 		5D5D8E9C2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D5D8E9B2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround */; };
@@ -28,7 +28,6 @@
 		5D66EFE72DEEBA1A008A0AFF /* TextFieldAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66EFE62DEEBA1A008A0AFF /* TextFieldAlertModifier.swift */; };
 		5D66EFEA2DEED074008A0AFF /* PointCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66EFE92DEED074008A0AFF /* PointCloudManager.swift */; platformFilters = (xros, ); };
 		5D7FD8E82DCDF406005D3F96 /* NumPy-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8E72DCDF406005D3F96 /* NumPy-iOS */; };
-		5D7FD8EB2DCDF411005D3F96 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8EA2DCDF411005D3F96 /* Python-iOS */; };
 		5D835E1F2C29346500352304 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E1E2C29346500352304 /* ResultView.swift */; platformFilter = ios; };
 		5D835E222C29416500352304 /* AuthenticationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E212C29416500352304 /* AuthenticationResponse.swift */; };
 		5D835E242C29653B00352304 /* TabState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E232C29653B00352304 /* TabState.swift */; };
@@ -42,6 +41,7 @@
 		5D873AA22D2CEDFE00746652 /* ARContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AA12D2CEDFB00746652 /* ARContainerView.swift */; platformFilter = ios; };
 		5D873AAF2D2D02B600746652 /* AlertArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AAE2D2D02B600746652 /* AlertArticle.swift */; };
 		5D873AB32D2F964400746652 /* CoachingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873AB22D2F964400746652 /* CoachingOverlayView.swift */; platformFilter = ios; };
+		5D895C462E61A7E700F0E854 /* Python-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D895C452E61A7E700F0E854 /* Python-iOS */; };
 		5D91BF022E5ECBF00009808F /* SymbolTransitionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D91BF012E5ECBF00009808F /* SymbolTransitionModifier.swift */; };
 		5D964F0A2DF2CA7000C183A4 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D964F092DF2CA7000C183A4 /* ZIPFoundation */; };
 		5D99BDC42E2773920074D8BD /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D99BDC32E2773920074D8BD /* OnboardingPageView.swift */; };
@@ -7913,10 +7913,10 @@
 				5D5D8E642DD19F7100FE7D33 /* PythonKit in Frameworks */,
 				5D5D8E9A2DD1C80C00FE7D33 /* LAPACKE-iOS in Frameworks */,
 				5D5D8E982DD1C80700FE7D33 /* Open3D-iOS in Frameworks */,
+				5D895C462E61A7E700F0E854 /* Python-iOS in Frameworks */,
 				5D5D8E9C2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround in Frameworks */,
 				5D7FD8E82DCDF406005D3F96 /* NumPy-iOS in Frameworks */,
 				5DDF68C02DD3671A0057BA09 /* WorldAuthCoreML.framework in Frameworks */,
-				5D7FD8EB2DCDF411005D3F96 /* Python-iOS in Frameworks */,
 				5DEED16E2DD32307002AEFB3 /* FirebaseCrashlytics in Frameworks */,
 				5D5D8E372DD19BDE00FE7D33 /* PythonKit in Frameworks */,
 				5DEED16C2DD32307002AEFB3 /* FirebaseAnalytics in Frameworks */,
@@ -8184,7 +8184,6 @@
 			packageProductDependencies = (
 				5D7FD8D82DCDED26005D3F96 /* PythonKit */,
 				5D7FD8E72DCDF406005D3F96 /* NumPy-iOS */,
-				5D7FD8EA2DCDF411005D3F96 /* Python-iOS */,
 				5D5D8E362DD19BDE00FE7D33 /* PythonKit */,
 				5D5D8E972DD1C80700FE7D33 /* Open3D-iOS */,
 				5D5D8E992DD1C80C00FE7D33 /* LAPACKE-iOS */,
@@ -8193,6 +8192,7 @@
 				5DEED16D2DD32307002AEFB3 /* FirebaseCrashlytics */,
 				5DEED16F2DD32307002AEFB3 /* FirebaseRemoteConfig */,
 				5D964F092DF2CA7000C183A4 /* ZIPFoundation */,
+				5D895C452E61A7E700F0E854 /* Python-iOS */,
 			);
 			productName = WorldAuth;
 			productReference = 5DE2AB042C0AE22B000C7346 /* WorldAuth.app */;
@@ -8842,8 +8842,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = "NumPy-iOS";
 		};
-		5D7FD8EA2DCDF411005D3F96 /* Python-iOS */ = {
+		5D895C452E61A7E700F0E854 /* Python-iOS */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 5D5D8E382DD19BE600FE7D33 /* XCLocalSwiftPackageReference "Packages/Python-iOS" */;
 			productName = "Python-iOS";
 		};
 		5D964F092DF2CA7000C183A4 /* ZIPFoundation */ = {
