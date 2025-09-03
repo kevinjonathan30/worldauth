@@ -59,9 +59,15 @@ struct ARContainerView: View {
         }
         .onAppear {
             checkCameraAuthorization()
+            let configuration = ARWorldTrackingConfiguration()
+            configuration.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
+            configuration.planeDetection = [.horizontal]
+            configuration.sceneReconstruction = .mesh
+            arManager.sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         }
         .onDisappear {
             Task {
+                arManager.sceneView.session.pause()
                 await arManager.resetPointCloud()
             }
         }
@@ -178,9 +184,9 @@ private extension ARContainerView {
                         capturedImage = UIImage(cgImage: cgImage).rotated(by: 90)
                     }
                 }
-                
-                onFinishRecording?(plyString.0, plyString.1, capturedImage)
+                arManager.sceneView.session.pause()
                 await arManager.resetPointCloud()
+                onFinishRecording?(plyString.0, plyString.1, capturedImage)
             }
         } else {
             arManager.isCapturing = true

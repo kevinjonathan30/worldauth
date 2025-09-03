@@ -74,9 +74,7 @@ actor ARManager: NSObject, ARSessionDelegate, ObservableObject {
         geometry.firstMaterial?.isDoubleSided = true
         geometry.firstMaterial?.lightingModel = .constant
         
-        Task { @MainActor in
-            geometryNode.geometry = geometry
-        }
+        geometryNode.geometry = geometry
     }
     
     func resetPointCloud() async {
