@@ -201,7 +201,7 @@ private extension RoomTemplateListView {
 private extension RoomTemplateListView {
     private func getRoomList() {
         viewState = .loading
-        if RemoteConfigProvider.shared.prefersOnDevice() {
+        if RemoteConfigHelper.shared.prefersOnDevice() {
             let fileList = FileHelper.getFileList()
             
             var tempRoomList: [SavedPointCloudFile] = []

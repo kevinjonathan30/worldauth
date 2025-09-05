@@ -17,7 +17,7 @@ struct AuthenticationHelper {
         var threshold: Double = 0.0
         var authTime: Double = 0.0
         var fitness: Double = 0.0
-        let method: String = RemoteConfigProvider.shared.authenticationMethod()
+        let method: String = RemoteConfigHelper.shared.authenticationMethod()
         
         let startTime = Date()
         

@@ -97,7 +97,7 @@ struct AuthenticationView: View {
 private extension AuthenticationView {
     private func getPointCloudList() {
         viewState = .loading
-        if RemoteConfigProvider.shared.prefersOnDevice() {
+        if RemoteConfigHelper.shared.prefersOnDevice() {
             let data = FileHelper.getFileList()
             self.viewState = .loaded
             showOnboarding = data.isEmpty
@@ -127,7 +127,7 @@ private extension AuthenticationView {
     }
     
     private func processPly(plyString: String) {
-        if RemoteConfigProvider.shared.prefersOnDevice() {
+        if RemoteConfigHelper.shared.prefersOnDevice() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 processPlyOnDevice(plyString: plyString)
             }

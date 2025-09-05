@@ -47,7 +47,7 @@ private extension AddTemplateView {
         guard !plyString.isEmpty else { return }
         viewState = .loading
         
-        if RemoteConfigProvider.shared.prefersOnDevice() {
+        if RemoteConfigHelper.shared.prefersOnDevice() {
             guard FileHelper.getFileList().count < 3 else {
                 viewState = .loaded
                 article = AlertArticle(title: "An Error Occurred", description: "You can only add a maximum of 3 room templates.")

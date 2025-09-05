@@ -162,7 +162,7 @@ struct NetworkHelper {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
-        request.setValue(RemoteConfigProvider.shared.authenticationMethod(), forHTTPHeaderField: "AuthorizationMethod")
+        request.setValue(RemoteConfigHelper.shared.authenticationMethod(), forHTTPHeaderField: "AuthorizationMethod")
         
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -246,7 +246,7 @@ struct NetworkHelper {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
-        request.setValue(RemoteConfigProvider.shared.authenticationMethod(), forHTTPHeaderField: "AuthorizationMethod")
+        request.setValue(RemoteConfigHelper.shared.authenticationMethod(), forHTTPHeaderField: "AuthorizationMethod")
         
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")

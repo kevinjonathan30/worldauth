@@ -10,7 +10,7 @@
 		5D05D5AA2C2BFA4A00F9A742 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D05D5A92C2BFA4A00F9A742 /* ViewState.swift */; };
 		5D05D5AC2C2D02EB00F9A742 /* WorldAuth-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D05D5AB2C2D02EB00F9A742 /* WorldAuth-Info.plist */; };
 		5D07FF722D8026D400E84F4A /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D07FF712D8026D100E84F4A /* AuthenticationHelper.swift */; };
-		5D07FF742D80371800E84F4A /* RemoteConfigProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D07FF732D80371400E84F4A /* RemoteConfigProvider.swift */; };
+		5D07FF742D80371800E84F4A /* RemoteConfigHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D07FF732D80371400E84F4A /* RemoteConfigHelper.swift */; };
 		5D15EE542C0D9D5700673052 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE532C0D9D5700673052 /* ContentView.swift */; platformFilter = ios; };
 		5D15EE562C0D9E2B00673052 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */; platformFilter = ios; };
 		5D4655F02C22A6F90013CB78 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */; };
@@ -98,7 +98,7 @@
 		5D05D5A92C2BFA4A00F9A742 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		5D05D5AB2C2D02EB00F9A742 /* WorldAuth-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WorldAuth-Info.plist"; sourceTree = "<group>"; };
 		5D07FF712D8026D100E84F4A /* AuthenticationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationHelper.swift; sourceTree = "<group>"; };
-		5D07FF732D80371400E84F4A /* RemoteConfigProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigProvider.swift; sourceTree = "<group>"; };
+		5D07FF732D80371400E84F4A /* RemoteConfigHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigHelper.swift; sourceTree = "<group>"; };
 		5D15EE532C0D9D5700673052 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5D15EE552C0D9E2B00673052 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
@@ -7961,12 +7961,13 @@
 		5D15EE522C0D893500673052 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				5D66B2872DED685A008A0AFF /* PointCloudHelper.swift */,
-				5D6675262DED5E36008A0AFF /* PythonHelper.swift */,
 				5D07FF712D8026D100E84F4A /* AuthenticationHelper.swift */,
 				5DA0256C2D1E80670009C95C /* FileHelper.swift */,
 				5DA63E692DDDBFEA0025509B /* LoggerHelper.swift */,
 				5D4655EF2C22A6F90013CB78 /* NetworkHelper.swift */,
+				5D66B2872DED685A008A0AFF /* PointCloudHelper.swift */,
+				5D6675262DED5E36008A0AFF /* PythonHelper.swift */,
+				5D07FF732D80371400E84F4A /* RemoteConfigHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -8035,7 +8036,6 @@
 		5D873A9E2D2CED5600746652 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				5D07FF732D80371400E84F4A /* RemoteConfigProvider.swift */,
 				5D873A9A2D2CEB3F00746652 /* ARManager.swift */,
 			);
 			path = Manager;
@@ -8304,7 +8304,7 @@
 			files = (
 				5DE2AB0A2C0AE22B000C7346 /* AddTemplateView.swift in Sources */,
 				5D05D5AA2C2BFA4A00F9A742 /* ViewState.swift in Sources */,
-				5D07FF742D80371800E84F4A /* RemoteConfigProvider.swift in Sources */,
+				5D07FF742D80371800E84F4A /* RemoteConfigHelper.swift in Sources */,
 				5D66BD0C2DE818C2008A0AFF /* Array+Ext.swift in Sources */,
 				5D835E1F2C29346500352304 /* ResultView.swift in Sources */,
 				5DEA68712C11765A008CD7A9 /* RoomTemplateListView.swift in Sources */,

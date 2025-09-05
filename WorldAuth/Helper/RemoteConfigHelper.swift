@@ -18,10 +18,10 @@ enum RemoteConfigValueKey: String {
     case prefersOnDevice
 }
 /**
- Provider for communicate with firebase remote configs and fetch config values
+ Helper for communicate with firebase remote configs and fetch config values
  */
-final class RemoteConfigProvider {
-    static let shared = RemoteConfigProvider()
+final class RemoteConfigHelper {
+    static let shared = RemoteConfigHelper()
     var loadingDoneCallback: (() -> Void)?
     var fetchComplete = false
     var isDebug = true
@@ -139,7 +139,7 @@ final class RemoteConfigProvider {
 
 // MARK: Basic remote config value access methods
 
-extension RemoteConfigProvider {
+extension RemoteConfigHelper {
     func bool(forKey key: RemoteConfigValueKey) -> Bool {
         return remoteConfig[key.rawValue].boolValue
     }
@@ -159,7 +159,7 @@ extension RemoteConfigProvider {
 
 // MARK: Getters for config values
 
-extension RemoteConfigProvider {
+extension RemoteConfigHelper {
     func authenticationMethod() -> String {
         return string(forKey: .authenticationMethod)
     }
