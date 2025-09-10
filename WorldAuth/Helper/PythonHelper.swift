@@ -69,8 +69,8 @@ extension PythonHelper {
         let pcd1 = o3d.geometry.PointCloud()
         let pcd2 = o3d.geometry.PointCloud()
         
-        pcd1.points = o3d.utility.Vector3dVector(sourceNp[0])
-        pcd2.points = o3d.utility.Vector3dVector(targetNp[0])
+        pcd1.points = o3d.utility.Vector3dVector(sourceNp)
+        pcd2.points = o3d.utility.Vector3dVector(targetNp)
         
         let roSource = removeOutlier(cloud: pcd1)
         let roTarget = removeOutlier(cloud: pcd2)
@@ -187,9 +187,9 @@ extension PythonHelper {
         let n = flat.count / 3
         guard n > 0 else { return nil }
 
-        // Swift [Float] -> Python list -> NumPy float32 array shaped (1, N, 3)
+        // Swift [Float] -> Python list -> NumPy float32 array shaped (N, 3)
         let pyList = PythonObject(flat.map { PythonObject($0) })
-        let arr = np.array(pyList, dtype: np.float32).reshape([1, n, 3])
+        let arr = np.array(pyList, dtype: np.float32).reshape([n, 3])
         return arr
     }
     

@@ -10,14 +10,10 @@ import Foundation
 
 public struct WorldAuthCoreML {
 
-    public static func runInference(source: String, target: String, method: String = "ICP") -> [NSNumber]? {
+    public static func runInference(source: String, target: String, method: String = "DGMR") -> [NSNumber]? {
         switch method {
-        case "PNLK":
-            return nil
-        case "FMR":
-            return nil
         case "DGMR":
-            return runDeepGMRInference(source: source, target: target, threshold: 0.49)
+            return runDeepGMRInference(source: source, target: target)
         default:
             return nil
         }
@@ -37,7 +33,7 @@ public extension WorldAuthCoreML {
         }
     }
 
-    static private func runDeepGMRInference(source: String, target: String, threshold: Double) -> [NSNumber]? {
+    static private func runDeepGMRInference(source: String, target: String) -> [NSNumber]? {
         guard var sourcePoints = stringToFloatArray(source),
               var targetPoints = stringToFloatArray(target) else { return nil }
 
