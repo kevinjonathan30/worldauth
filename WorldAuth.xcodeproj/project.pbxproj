@@ -54,8 +54,6 @@
 		5DD45CD72E83B68E008BBEA9 /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD45CD62E83B68E008BBEA9 /* View+Ext.swift */; };
 		5DDD1C792E014E2D005E97C9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD1C782E014E2C005E97C9 /* OnboardingView.swift */; platformFilter = ios; };
 		5DDDA1BC2DF2DCBD005E97C9 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDDA1BB2DF2DCBD005E97C9 /* UIImage+Ext.swift */; };
-		5DDF68C02DD3671A0057BA09 /* WorldAuthCoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; };
-		5DDF68C12DD3671A0057BA09 /* WorldAuthCoreML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB072C0AE22B000C7346 /* WorldAuthApp.swift */; };
 		5DE2AB0A2C0AE22B000C7346 /* AddTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE2AB092C0AE22B000C7346 /* AddTemplateView.swift */; platformFilter = ios; };
 		5DE2AB0C2C0AE22D000C7346 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE2AB0B2C0AE22D000C7346 /* Assets.xcassets */; };
@@ -70,30 +68,6 @@
 		5DFD7FEF2C102B79009CB20E /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFD7FEE2C102B79009CB20E /* LazyView.swift */; platformFilter = ios; };
 		5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		5DDF68C22DD3671A0057BA09 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5DE2AAFC2C0AE22B000C7346 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5DDF68B62DD3651B0057BA09;
-			remoteInfo = WorldAuthCoreML;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		5DDF68C42DD3671A0057BA09 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				5DDF68C12DD3671A0057BA09 /* WorldAuthCoreML.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5D05D5A92C2BFA4A00F9A742 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
@@ -7918,7 +7892,6 @@
 				5D895C462E61A7E700F0E854 /* Python-iOS in Frameworks */,
 				5D5D8E9C2DD1C81000FE7D33 /* BLAS-LAPACK-AppStore-Workaround in Frameworks */,
 				5D7FD8E82DCDF406005D3F96 /* NumPy-iOS in Frameworks */,
-				5DDF68C02DD3671A0057BA09 /* WorldAuthCoreML.framework in Frameworks */,
 				5DEED16E2DD32307002AEFB3 /* FirebaseCrashlytics in Frameworks */,
 				5D5D8E372DD19BDE00FE7D33 /* PythonKit in Frameworks */,
 				5DEED16C2DD32307002AEFB3 /* FirebaseAnalytics in Frameworks */,
@@ -8176,12 +8149,10 @@
 				5DE2AB012C0AE22B000C7346 /* Frameworks */,
 				5DE2AB022C0AE22B000C7346 /* Resources */,
 				5DAEA2392C3296CA00644088 /* Run Script */,
-				5DDF68C42DD3671A0057BA09 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				5DDF68C32DD3671A0057BA09 /* PBXTargetDependency */,
 			);
 			name = WorldAuth;
 			packageProductDependencies = (
@@ -8352,15 +8323,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		5DDF68C32DD3671A0057BA09 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = 5DDF68B62DD3651B0057BA09 /* WorldAuthCoreML */;
-			targetProxy = 5DDF68C22DD3671A0057BA09 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5DDF68BB2DD3651B0057BA09 /* Debug */ = {

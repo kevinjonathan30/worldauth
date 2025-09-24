@@ -7,9 +7,6 @@
 
 import Foundation
 import CoreML
-#if os(iOS)
-import WorldAuthCoreML
-#endif
 
 struct AuthenticationHelper {
     
@@ -98,24 +95,9 @@ extension AuthenticationHelper {
 
 extension AuthenticationHelper {
     static private func runDeepGMRInference(source: String, target: String, threshold: Double) -> Double {
-        #if os(iOS)
-        guard let sourceTemp = PythonHelper.convertStringToNumPyXYZ(source),
-              let targetTemp = PythonHelper.convertStringToNumPyXYZ(target) else { return 0 }
-        
-        guard let matrix = WorldAuthCoreML.runInference(source: source, target: target, method: "DGMR"),
-              let npMatrix = PythonHelper.convertToNumPyMatrix4x4(array: matrix) else { return 0 }
-        
-        return PythonHelper.evaluateRegistration(
-            source: sourceTemp,
-            target: targetTemp,
-            matrix: npMatrix,
-            threshold: threshold
-        )
-        #elseif os(visionOS)
         let sourceData = Data(source.utf8)
         let targetData = Data(target.utf8)
         let result = NetworkHelper.authenticateTwoPointCloudsSync(sourceData, targetData)
         return result?.fitness ?? 0
-        #endif
     }
 }
