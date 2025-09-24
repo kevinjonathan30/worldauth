@@ -297,6 +297,7 @@ struct CompactFileRow: View {
     let file: SavedPointCloudFile
     let onDelete: () -> Void
     @State private var showingShareSheet = false
+    @State private var showingDeleteConfirmation = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -328,7 +329,9 @@ struct CompactFileRow: View {
                     }
                     .buttonStyle(.plain)
                     
-                    Button(action: onDelete) {
+                    Button(action: {
+                        showingDeleteConfirmation = true
+                    }) {
                         Image(systemName: "trash")
                             .font(.title3)
                             .foregroundStyle(.red)
@@ -353,6 +356,13 @@ struct CompactFileRow: View {
             case .failure(let error):
                 print("Save failed: \(error.localizedDescription)")
             }
+        }
+        .alert("Delete this template?",
+               isPresented: $showingDeleteConfirmation) {
+            Button("Delete", role: .destructive) { onDelete() }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("This action cannot be undone.")
         }
     }
     

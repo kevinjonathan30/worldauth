@@ -92,21 +92,50 @@ class SceneReconstructionPointCloudGenerator {
     }
     
     /// Export point cloud data as PLY format string
+//    func exportPointCloudAsPLYOld() -> String {
+//        var vertexData = ""
+//        for point in pointCloudData {
+//            vertexData += "\(point.x) \(point.y) \(point.z)\n"
+//        }
+//        
+//        return vertexData
+//    }
+    
     func exportPointCloudAsPLY() -> String {
-        var vertexData = ""
+        var plyContent = """
+            ply
+            format ascii 1.0
+            element vertex \(pointCloudData.count)
+            property float x
+            property float y
+            property float z
+            end_header
+            """
+        
         for point in pointCloudData {
-            vertexData += "\(point.x) \(point.y) \(point.z)\n"
+            let posX = point.x
+            let posY = point.y
+            let posZ = point.z
+            
+            plyContent += "\n\(posX) \(posY) \(posZ)"
         }
         
-        return vertexData
+        return plyContent
     }
     
     /// Clear all point cloud data
     @MainActor
     func clearPointCloud() {
         pointCloudData.removeAll()
+
         pointCloudEntity?.removeFromParent()
         pointCloudEntity = nil
-        print("Point cloud cleared")
+
+        for (_, entity) in meshAnchors {
+            entity.removeFromParent()
+        }
+        meshAnchors.removeAll()
+
+        print("Point cloud and mesh visuals cleared")
     }
 }

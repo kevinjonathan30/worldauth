@@ -43,7 +43,7 @@ struct SceneReconstructionView: View {
                     do {
                         try await arSession.run([sceneReconstruction])
                         await MainActor.run {
-                            pointCloudManager.debugText = "Scanning started. Move around to scan the environment..."
+                            pointCloudManager.debugText = "Scanning started. Look around to scan the environment..."
                         }
                     } catch let error as ARKitSession.Error {
                         await MainActor.run {
