@@ -17,41 +17,38 @@ import SwiftUI
 //LoggerHelper.logError(event: "Error event", extra: ["errorCode": 404, "message": "Not Found"])
 
 struct LoggerHelper {
-    static private var userId: Int {
+    static private let userId: Int = {
         guard let filePath = Bundle.main.path(forResource: "WorldAuth-Info", ofType: "plist") else {
             fatalError("Couldn't find file 'WorldAuth-Info.plist'.")
         }
-        
         let plist = NSDictionary(contentsOfFile: filePath)
         guard let value = plist?.object(forKey: "LOGGER_USER") as? Int else {
             fatalError("Couldn't find key 'LOGGER_USER' in 'WorldAuth-Info.plist'.")
         }
         return value
-    }
+    }()
     
-    static private var apiKey: String {
+    static private let apiKey: String = {
         guard let filePath = Bundle.main.path(forResource: "WorldAuth-Info", ofType: "plist") else {
             fatalError("Couldn't find file 'WorldAuth-Info.plist'.")
         }
-        
         let plist = NSDictionary(contentsOfFile: filePath)
         guard let value = plist?.object(forKey: "LOGGER_KEY") as? String else {
             fatalError("Couldn't find key 'LOGGER_KEY' in 'WorldAuth-Info.plist'.")
         }
         return value
-    }
+    }()
     
-    static private var urlString: String {
+    static private let urlString: String = {
         guard let filePath = Bundle.main.path(forResource: "WorldAuth-Info", ofType: "plist") else {
             fatalError("Couldn't find file 'WorldAuth-Info.plist'.")
         }
-        
         let plist = NSDictionary(contentsOfFile: filePath)
         guard let value = plist?.object(forKey: "LOGGER_API") as? String else {
             fatalError("Couldn't find key 'LOGGER_API' in 'WorldAuth-Info.plist'.")
         }
         return value
-    }
+    }()
     
     private static let url = URL(string: urlString)!
 }
@@ -134,19 +131,20 @@ extension LoggerHelper {
         request.httpBody = logDataJSON
         
         // Send the log data
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Failed to send log: \(error)")
-                return
+        DispatchQueue.global(qos: .utility).async {
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    print("Failed to send log: \(error)")
+                    return
+                }
+                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 204 {
+                    print("\(event) \(formattedTimestamp) \(extraString)")
+                } else {
+                    print("Failed to send log, status code: \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+                }
             }
-            
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 204 {
-                print("\(event) \(formattedTimestamp) \(extraString)")
-            } else {
-                print("Failed to send log, status code: \((response as? HTTPURLResponse)?.statusCode ?? 0)")
-            }
+            task.resume()
         }
-        task.resume()
     }
     
     // Convenience methods for different log levels

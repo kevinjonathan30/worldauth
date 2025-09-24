@@ -13,6 +13,7 @@ struct ARContainerView: View {
     @StateObject var arManager = ARManager()
     @Binding var viewState: ViewState
     @State private var isCoachingActive = false
+    private let ciContext = CIContext(options: [.useSoftwareRenderer: false])
     
     @State private var cameraAuthorized = false
     
@@ -187,8 +188,7 @@ private extension ARContainerView {
                 var capturedImage: UIImage? = nil
                 if let currentFrame = arManager.sceneView.session.currentFrame {
                     let image = CIImage(cvPixelBuffer: currentFrame.capturedImage)
-                    let context = CIContext()
-                    if let cgImage = context.createCGImage(image, from: image.extent) {
+                    if let cgImage = ciContext.createCGImage(image, from: image.extent) {
                         capturedImage = UIImage(cgImage: cgImage).rotated(by: 90)
                     }
                 }

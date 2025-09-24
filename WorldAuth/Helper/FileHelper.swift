@@ -74,7 +74,11 @@ struct FileHelper {
         
         do {
             guard fileManager.fileExists(atPath: filePathURL.path()) else { return [] }
-            let fileURLs = try fileManager.contentsOfDirectory(at: filePathURL, includingPropertiesForKeys: nil)
+            let fileURLs = try fileManager.contentsOfDirectory(
+                at: filePathURL,
+                includingPropertiesForKeys: [.creationDateKey, .fileSizeKey],
+                options: [.skipsHiddenFiles]
+            )
             return fileURLs
         } catch {
             LoggerHelper.logError(

@@ -139,10 +139,9 @@ private extension AuthenticationView {
     
     private func processPlyOnDevice(plyString: String) {
         var highestResult: Double = 0
-        
-        for file in FileHelper.getFileList() {
+        let files = FileHelper.getFileList()
+        for file in files {
             let targetString = FileHelper.getDataStringByName(fileName: file.lastPathComponent)
-            
             let result = AuthenticationHelper.runInference(source: plyString, target: targetString)
             highestResult = max(highestResult, result)
         }

@@ -8,17 +8,16 @@
 import UIKit
 
 struct NetworkHelper {
-    static private var apiUrl: String {
+    static private let apiUrl: String = {
         guard let filePath = Bundle.main.path(forResource: "WorldAuth-Info", ofType: "plist") else {
             fatalError("Couldn't find file 'WorldAuth-Info.plist'.")
         }
-        
         let plist = NSDictionary(contentsOfFile: filePath)
         guard let value = plist?.object(forKey: "API_URL") as? String else {
             fatalError("Couldn't find key 'API_URL' in 'WorldAuth-Info.plist'.")
         }
         return value
-    }
+    }()
     
     static func getPointCloud(completion: @escaping ([SavedPointCloudFile]?, Error?) -> Void) {
         guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
@@ -91,6 +90,7 @@ struct NetworkHelper {
         request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
         
         var body = Data()
+        body.reserveCapacity(file.count + 1024)
         
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"files\"; filename=\"source.ply\"\r\n".data(using: .utf8)!)
@@ -168,6 +168,7 @@ struct NetworkHelper {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         var body = Data()
+        body.reserveCapacity(file.count + 1024)
         
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"files\"; filename=\"target.ply\"\r\n".data(using: .utf8)!)
@@ -252,6 +253,7 @@ struct NetworkHelper {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         var body = Data()
+        body.reserveCapacity(sourceFile.count + targetFile.count + 2048)
         
         // Add source file under "files"
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
@@ -368,6 +370,7 @@ struct NetworkHelper {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         var body = Data()
+        body.reserveCapacity(file.count + 1024)
         
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"files\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
@@ -452,3 +455,4 @@ extension NetworkHelper {
         return result
     }
 }
+

@@ -19,36 +19,31 @@ struct PLYFile {
     
     func exportToPlyString() async -> String {
         let vertices = await pointCloud.vertices
-        
-        var plyContent = ""
-        
+        var lines: [String] = []
+        lines.reserveCapacity(vertices.count)
         for vertex in vertices.values {
             let posX = vertex.position.x
             let posY = vertex.position.y
             let posZ = vertex.position.z
-            
-            plyContent += "\(posX) \(posY) \(posZ)\n"
+            lines.append("\(posX) \(posY) \(posZ)")
         }
-        
-        return plyContent
+        return lines.joined(separator: "\n") + "\n"
     }
     
     func exportToPlyStringColored() async -> String {
         let vertices = await pointCloud.vertices
-        
-        var plyContent = """
-            ply
-            format ascii 1.0
-            element vertex \(vertices.count)
-            property float x
-            property float y
-            property float z
-            property uchar red
-            property uchar green
-            property uchar blue
-            end_header
-            """
-        
+        var lines: [String] = []
+        lines.reserveCapacity(vertices.count + 9)
+        lines.append("ply")
+        lines.append("format ascii 1.0")
+        lines.append("element vertex \(vertices.count)")
+        lines.append("property float x")
+        lines.append("property float y")
+        lines.append("property float z")
+        lines.append("property uchar red")
+        lines.append("property uchar green")
+        lines.append("property uchar blue")
+        lines.append("end_header")
         for vertex in vertices.values {
             let posX = vertex.position.x
             let posY = vertex.position.y
@@ -56,11 +51,9 @@ struct PLYFile {
             let red = UInt8(vertex.color.x * 255)
             let green = UInt8(vertex.color.y * 255)
             let blue = UInt8(vertex.color.z * 255)
-            
-            plyContent += "\n\(posX) \(posY) \(posZ) \(red) \(green) \(blue)"
+            lines.append("\(posX) \(posY) \(posZ) \(red) \(green) \(blue)")
         }
-        
-        return plyContent
+        return lines.joined(separator: "\n")
     }
 }
 
@@ -75,3 +68,4 @@ struct PLYFile {
 //            property float z
 //            end_header
 //            """
+
