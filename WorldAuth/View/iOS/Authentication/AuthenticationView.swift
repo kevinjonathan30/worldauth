@@ -22,6 +22,7 @@ struct AuthenticationView: View {
             VStack {
                 ARContainerView(viewState: $viewState)
                     .onFinishRecording(authenticate(plyString:plyStringColored:uiImage:))
+                    .ignoreBottomSafeAreaIfAvailable()
                     .navigationTitle("Authenticate")
                     .onAppear {
                         getPointCloudList()

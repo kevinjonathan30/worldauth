@@ -99,7 +99,7 @@ private extension ARContainerView {
             .accessibilityHint(Text("Click this button to scan the room template, and then move the device slowly", comment: "Accessibility hint for button"))
             .accessibilityAddTraits([.isButton])
         }
-        .padding(.bottom, 20)
+        .padding(.bottom, useNewPaddingIfAvailable())
         .transaction { transaction in
             transaction.animation = .none
         }
@@ -139,6 +139,14 @@ private extension ARContainerView {
 // MARK: Helper
 
 private extension ARContainerView {
+    private func useNewPaddingIfAvailable() -> CGFloat {
+        if #available(iOS 26.0, *) {
+            return 80
+        } else {
+            return 20
+        }
+    }
+    
     private func getIconByTakePointCloudState() -> String {
         return arManager.isCapturing ? "stop.circle.fill" : "record.circle.fill"
     }

@@ -51,6 +51,7 @@
 		5DAEA23B2C3296EB00644088 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 5DAEA23A2C3296EB00644088 /* .swiftlint.yml */; };
 		5DC4CD982D54694F0077F66C /* SceneReconstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */; platformFilters = (xros, ); };
 		5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4CD9C2D5479090077F66C /* MainView.swift */; platformFilters = (xros, ); };
+		5DD45CD72E83B68E008BBEA9 /* View+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD45CD62E83B68E008BBEA9 /* View+Ext.swift */; };
 		5DDD1C792E014E2D005E97C9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD1C782E014E2C005E97C9 /* OnboardingView.swift */; platformFilter = ios; };
 		5DDDA1BC2DF2DCBD005E97C9 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDDA1BB2DF2DCBD005E97C9 /* UIImage+Ext.swift */; };
 		5DDF68C02DD3671A0057BA09 /* WorldAuthCoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */; platformFilter = ios; };
@@ -130,6 +131,7 @@
 		5DAEA23A2C3296EB00644088 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		5DC4CD972D54694F0077F66C /* SceneReconstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneReconstructionView.swift; sourceTree = "<group>"; };
 		5DC4CD9C2D5479090077F66C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		5DD45CD62E83B68E008BBEA9 /* View+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Ext.swift"; sourceTree = "<group>"; };
 		5DDD1C782E014E2C005E97C9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		5DDDA1BB2DF2DCBD005E97C9 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		5DDF68B72DD3651B0057BA09 /* WorldAuthCoreML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WorldAuthCoreML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -7951,6 +7953,7 @@
 		5D15EE512C0D892900673052 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				5DD45CD62E83B68E008BBEA9 /* View+Ext.swift */,
 				5DDDA1BB2DF2DCBD005E97C9 /* UIImage+Ext.swift */,
 				5D66BD0B2DE818C2008A0AFF /* Array+Ext.swift */,
 				5DFD7FF12C103B35009CB20E /* Collection+Ext.swift */,
@@ -8339,6 +8342,7 @@
 				5DC4CD9D2D5479090077F66C /* MainView.swift in Sources */,
 				5D66EFE72DEEBA1A008A0AFF /* TextFieldAlertModifier.swift in Sources */,
 				5D873AA22D2CEDFE00746652 /* ARContainerView.swift in Sources */,
+				5DD45CD72E83B68E008BBEA9 /* View+Ext.swift in Sources */,
 				5DA63E6A2DDDBFEF0025509B /* LoggerHelper.swift in Sources */,
 				5D6675272DED5E42008A0AFF /* PythonHelper.swift in Sources */,
 				5D07FF722D8026D400E84F4A /* AuthenticationHelper.swift in Sources */,
