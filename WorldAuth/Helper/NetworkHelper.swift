@@ -21,10 +21,10 @@ struct NetworkHelper {
     
     static func getPointCloud(completion: @escaping ([SavedPointCloudFile]?, Error?) -> Void) {
         guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
-        guard let url = URL(string: apiUrl + "/api/get_point_cloud/") else { return }
+        guard let url = URL(string: apiUrl + "/api/get-point-cloud/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
+        request.setValue(userIdentifier, forHTTPHeaderField: "U-Authorization")
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -87,7 +87,7 @@ struct NetworkHelper {
         
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
+        request.setValue(userIdentifier, forHTTPHeaderField: "U-Authorization")
         
         var body = Data()
         body.reserveCapacity(file.count + 1024)
@@ -161,7 +161,7 @@ struct NetworkHelper {
         guard let url = URL(string: apiUrl + "/api/authenticate/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
+        request.setValue(userIdentifier, forHTTPHeaderField: "U-Authorization")
         request.setValue(RemoteConfigHelper.shared.authenticationMethod(), forHTTPHeaderField: "AuthorizationMethod")
         
         let boundary = UUID().uuidString
@@ -239,14 +239,14 @@ struct NetworkHelper {
             completion(nil, NSError(domain: "Device identifier not available", code: 400))
             return
         }
-        guard let url = URL(string: apiUrl + "/api/authenticate_two/") else {
+        guard let url = URL(string: apiUrl + "/api/authenticate-two/") else {
             completion(nil, NSError(domain: "Invalid URL", code: 400))
             return
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
+        request.setValue(userIdentifier, forHTTPHeaderField: "U-Authorization")
         request.setValue(RemoteConfigHelper.shared.authenticationMethod(), forHTTPHeaderField: "AuthorizationMethod")
         
         let boundary = UUID().uuidString
@@ -299,10 +299,10 @@ struct NetworkHelper {
     
     static func deletePointCloud(fileName: String, completion: @escaping (AuthenticationResult?, Error?) -> Void) {
         guard let userIdentifier = UIDevice.current.identifierForVendor?.uuidString else { return }
-        guard let url = URL(string: apiUrl + "/api/delete_point_cloud/") else { return }
+        guard let url = URL(string: apiUrl + "/api/delete-point-cloud/") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
-        request.setValue(userIdentifier, forHTTPHeaderField: "Authorization")
+        request.setValue(userIdentifier, forHTTPHeaderField: "U-Authorization")
         request.setValue(fileName, forHTTPHeaderField: "FileRequest")
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
