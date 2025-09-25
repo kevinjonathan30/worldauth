@@ -146,7 +146,11 @@ private extension AuthenticationView {
             highestResult = max(highestResult, result)
         }
         
-        self.navigateToResult = AuthenticationResult(error: nil, success: highestResult >= 0.5, fitness: highestResult)
+        self.navigateToResult = AuthenticationResult(
+            error: nil,
+            success: highestResult >= 0.5,
+            fitness: highestResult
+        )
         self.viewState = .loaded
     }
     

@@ -20,19 +20,19 @@ struct AuthenticationHelper {
         
         switch method {
         case "ICP":
-            threshold = 0.35
+            threshold = 0.06
             fitness = runICPInference(source: source, target: target, isFgr: false, threshold: threshold)
         case "FGR":
-            threshold = 0.1005
+            threshold = 0.09
             fitness = runICPInference(source: source, target: target, isFgr: true, threshold: threshold)
         case "PNLK":
-            threshold = 0.345
+            threshold = 0.14
             fitness = runPNLKInference(source: source, target: target, threshold: threshold)
         case "FMR":
-            threshold = 0.35
+            threshold = 0.08
             fitness = runFMRInference(source: source, target: target, threshold: threshold)
         case "DGMR":
-            threshold = 0.47
+            threshold = 0.14
             fitness = runDeepGMRInference(source: source, target: target, threshold: threshold)
         default:
             break
