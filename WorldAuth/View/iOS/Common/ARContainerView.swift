@@ -16,6 +16,9 @@ struct ARContainerView: View {
     private let ciContext = CIContext(options: [.useSoftwareRenderer: false])
     
     @State private var cameraAuthorized = false
+    @AppStorage("hasSeenAROnboarding") private var hasSeenAROnboarding: Bool = false
+    @State private var showOnboarding: Bool = false
+    @State private var pulse: Bool = false
     
     var onFinishRecording: ((String, String, UIImage?) -> Void)?
     
@@ -35,6 +38,7 @@ struct ARContainerView: View {
                 loadingView()
                 
                 takePointCloudButton()
+                onboardingOverlay()
             } else {
                 VStack(spacing: 20) {
                     Text("Camera Permission Required")
@@ -65,6 +69,10 @@ struct ARContainerView: View {
             configuration.planeDetection = [.horizontal]
             configuration.sceneReconstruction = .mesh
             arManager.sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+            
+            if cameraAuthorized && !hasSeenAROnboarding && viewState != .loading {
+                showOnboarding = true
+            }
         }
         .onDisappear {
             Task {
@@ -83,7 +91,7 @@ private extension ARContainerView {
         VStack {
             Spacer()
             
-            Button(action: handleTakePointCloudButtonEvent) {
+            Button(action: handleRecordButtonTap) {
                 Image(systemName: getIconByTakePointCloudState())
                     .modifier(SymbolTransitionModifier())
                     .foregroundColor(.red)
@@ -93,8 +101,22 @@ private extension ARContainerView {
                     .clipShape(Circle())
             }
             .padding()
-            .disabled(viewState == .fail || isCoachingActive)
+            .overlay(
+                Group {
+                    if showOnboarding {
+                        Circle()
+                            .stroke(Color.accentColor, lineWidth: 4)
+                            .frame(width: 110, height: 110)
+                            .scaleEffect(pulse ? 1.1 : 0.9)
+                            .opacity(pulse ? 0.9 : 0.5)
+                            .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: pulse)
+                    }
+                }
+            )
+            .shadow(color: Color.accentColor.opacity(showOnboarding ? 0.6 : 0), radius: showOnboarding ? 20 : 0)
+            .disabled((viewState == .fail || isCoachingActive) && !showOnboarding)
             .opacity(isCoachingActive ? 0 : 1)
+            .onAppear { pulse = true }
             .accessibilityElement()
             .accessibilityLabel(Text("Take Room Template Button", comment: "Accessibility label for button"))
             .accessibilityHint(Text("Click this button to scan the room template, and then move the device slowly", comment: "Accessibility hint for button"))
@@ -134,6 +156,47 @@ private extension ARContainerView {
         .accessibilityElement()
         .accessibilityLabel(Text("Loading View", comment: "Accessibility label for view"))
         .accessibilityHint(Text("Loading..", comment: "Accessibility hint for view"))
+    }
+    
+    @ViewBuilder
+    private func onboardingOverlay() -> some View {
+        if showOnboarding {
+            ZStack {
+                Color.black
+                    .opacity(0)
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
+                VStack {
+                    Spacer()
+                    VStack(spacing: 8) {
+                        Text("Tap the record button to confirm", comment: "Onboarding title prompting confirmation")
+                            .font(.headline)
+                            .multilineTextAlignment(.center)
+                        Text("When recording, hold still and capture for about 1–3 seconds. If you need to move, do so slowly for best results.", comment: "Onboarding instruction about duration and movement")
+                            .font(.subheadline)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding()
+                    .background(
+                        .ultraThinMaterial,
+                        in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                    )
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, useNewPaddingIfAvailable() + 140)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(Text("Recording onboarding", comment: "Accessibility label for onboarding"))
+                    .accessibilityHint(Text("Tap the record button to confirm, then record for 1 to 3 seconds while holding still or moving slowly.", comment: "Accessibility hint for onboarding"))
+                }
+            }
+            .transition(.opacity)
+            .zIndex(1000)
+            .allowsHitTesting(false)
+        }
     }
 }
 
@@ -177,6 +240,18 @@ private extension ARContainerView {
 // MARK: Handler
 
 private extension ARContainerView {
+    private func handleRecordButtonTap() {
+        if showOnboarding {
+            hasSeenAROnboarding = true
+            withAnimation(.easeInOut) {
+                showOnboarding = false
+            }
+            let ackSoundID: SystemSoundID = 1117
+            AudioServicesPlaySystemSound(ackSoundID)
+        }
+        handleTakePointCloudButtonEvent()
+    }
+    
     private func handleTakePointCloudButtonEvent() {
         if arManager.isCapturing {
             Task {
