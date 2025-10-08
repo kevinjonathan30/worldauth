@@ -78,9 +78,10 @@ actor ARManager: NSObject, ARSessionDelegate, ObservableObject {
     }
     
     func resetPointCloud() async {
-        Task { @MainActor in
-            await pointCloud.clear()
-            geometryNode.geometry = nil
+        await MainActor.run {
+            self.isCapturing = false
         }
+        await pointCloud.clear()
+        await updateGeometry()
     }
 }
