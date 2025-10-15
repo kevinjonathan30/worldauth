@@ -7,8 +7,10 @@
 
 import Foundation
 
+// Unified model to match NetworkHelper's response
 struct AuthenticationResult: Codable {
-    let error: String?
-    let success: Bool?
+    let success: Bool
     let fitness: Double?
+    let error: String?
+    let detail: String?
 }

@@ -14,14 +14,22 @@ struct AuthenticationView: View {
     @State var viewState: ViewState = .loading
     @State private var showAlert = false
     @State private var navigateToRegister: Bool = false
-    @State private var navigateToResult: AuthenticationResult?
+    @State private var navigateToResult: Bool = false
+    @State private var resultData: AuthenticationResult? = nil
     @State private var article = AlertArticle(title: "", description: "")
+    
+    private enum Route: Hashable {
+        case register
+        case result
+    }
     
     var body: some View {
         NavigationStack {
             VStack {
                 ARContainerView(viewState: $viewState)
-                    .onFinishRecording(authenticate(plyString:plyStringColored:uiImage:))
+                    .onFinishRecording { plyString, plyStringColored, uiImage in
+                        authenticate(plyString: plyString, plyStringColored: plyStringColored, uiImage: uiImage)
+                    }
                     .ignoreBottomSafeAreaIfAvailable()
                     .navigationTitle("Authenticate")
                     .onAppear {
@@ -49,22 +57,19 @@ struct AuthenticationView: View {
                     } message: { article in
                         Text(article.description)
                     }
-                
-                NavigationLink(value: "Register") {
-                    EmptyView()
-                }
-                .navigationDestination(for: String.self) { _ in
+            }
+            .navigationDestination(for: Route.self) { route in
+                switch route {
+                case .register:
                     AddTemplateView()
                         .accessibilityElement()
                         .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
                         .accessibilityHint(Text("View to register new users", comment: "Accessibility hint for register view"))
-                }
-                
-                NavigationLink(value: "Result") {
-                    EmptyView()
-                }
-                .navigationDestination(for: String.self) { _ in
-                    ResultView(success: navigateToResult?.success ?? false, similarity: navigateToResult?.fitness ?? 0)
+                case .result:
+                    ResultView(
+                        success: resultData?.success ?? false,
+                        similarity: resultData?.fitness ?? 0
+                    )
                         .accessibilityElement()
                         .accessibilityLabel(Text("Result View", comment: "Accessibility label for result view"))
                         .accessibilityHint(Text("View showing registration results", comment: "Accessibility hint for result view"))
@@ -76,15 +81,11 @@ struct AuthenticationView: View {
                     .accessibilityLabel(Text("Register View", comment: "Accessibility label for register view"))
                     .accessibilityHint(Text("View to register new users", comment: "Accessibility hint for register view"))
             }
-            .navigationDestination(isPresented: Binding(
-                get: { navigateToResult != nil },
-                set: { isActive in
-                    if !isActive {
-                        navigateToResult = nil
-                    }
-                }
-            )) {
-                ResultView(success: navigateToResult?.success ?? false, similarity: navigateToResult?.fitness ?? 0)
+            .navigationDestination(isPresented: $navigateToResult) {
+                ResultView(
+                    success: resultData?.success ?? false,
+                    similarity: resultData?.fitness ?? 0
+                )
                     .accessibilityElement()
                     .accessibilityLabel(Text("Result View", comment: "Accessibility label for result view"))
                     .accessibilityHint(Text("View showing registration results", comment: "Accessibility hint for result view"))
@@ -146,12 +147,14 @@ private extension AuthenticationView {
             highestResult = max(highestResult, result)
         }
         
-        self.navigateToResult = AuthenticationResult(
-            error: nil,
+        self.resultData = AuthenticationResult(
             success: highestResult >= 0.5,
-            fitness: highestResult
+            fitness: highestResult,
+            error: nil,
+            detail: nil
         )
         self.viewState = .loaded
+        self.navigateToResult = true
     }
     
     private func processPlyOnline(plyString: String) {
@@ -169,13 +172,14 @@ private extension AuthenticationView {
                 }
                 
                 DispatchQueue.main.async {
-                    navigateToResult = AuthenticationResult(
-                        error: nil,
+                    resultData = AuthenticationResult(
                         success: (data.fitness ?? 0) >= 0.5,
-                        fitness: data.fitness ?? 0
+                        fitness: data.fitness ?? 0,
+                        error: nil,
+                        detail: nil
                     )
-                    
                     self.viewState = .loaded
+                    self.navigateToResult = true
                 }
             }
         }

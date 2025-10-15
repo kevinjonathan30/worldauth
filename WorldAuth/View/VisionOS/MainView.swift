@@ -246,6 +246,7 @@ struct MainView: View {
     
     private func startScanning() {
         Task {
+            pointCloudManager.clearPointCloud()
             pointCloudManager.isScanning = true
             pointCloudManager.debugText = "Starting AR session..."
             await openImmersiveSpace(id: "SceneReconstruction")
@@ -262,17 +263,22 @@ struct MainView: View {
     
     private func authenticate() {
         Task {
-            // Explicitly update the loading state on MainActor
-            await MainActor.run {
-                isLoading = true
-            }
+            // Show loading immediately on the main actor
+            await MainActor.run { isLoading = true }
 
-            let result = pointCloudManager.authenticatePointCloud()
+            // Run the heavy authentication off the main thread
+            let result: Double = await Task.detached(priority: .userInitiated) { () -> Double in
+                return await pointCloudManager.authenticatePointCloud()
+            }.value
 
-            // Update UI state
+            // Update UI with the result on the main actor
             await MainActor.run {
                 isLoading = false
-                pointCloudManager.debugText = "Authentication accuracy result: \(result * 100)%."
+                if result >= 0.5 {
+                    pointCloudManager.debugText = "Authentication Success. You’ve been authenticated."
+                } else {
+                    pointCloudManager.debugText = "Authentication Failed. Double-check and try again."
+                }
             }
         }
     }
@@ -411,3 +417,4 @@ extension UTType {
 #Preview(windowStyle: .automatic) {
     MainView()
 }
+

@@ -29,7 +29,7 @@
 		5D66EFEA2DEED074008A0AFF /* PointCloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66EFE92DEED074008A0AFF /* PointCloudManager.swift */; platformFilters = (xros, ); };
 		5D7FD8E82DCDF406005D3F96 /* NumPy-iOS in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 5D7FD8E72DCDF406005D3F96 /* NumPy-iOS */; };
 		5D835E1F2C29346500352304 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E1E2C29346500352304 /* ResultView.swift */; platformFilter = ios; };
-		5D835E222C29416500352304 /* AuthenticationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E212C29416500352304 /* AuthenticationResponse.swift */; };
+		5D835E222C29416500352304 /* AuthenticationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E212C29416500352304 /* AuthenticationResult.swift */; };
 		5D835E242C29653B00352304 /* TabState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D835E232C29653B00352304 /* TabState.swift */; };
 		5D873A932D2CEA8800746652 /* PointCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873A922D2CEA8400746652 /* PointCloud.swift */; platformFilter = ios; };
 		5D873A952D2CEAC200746652 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D873A942D2CEAC200746652 /* Size.swift */; };
@@ -85,7 +85,7 @@
 		5D66EFE62DEEBA1A008A0AFF /* TextFieldAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAlertModifier.swift; sourceTree = "<group>"; };
 		5D66EFE92DEED074008A0AFF /* PointCloudManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloudManager.swift; sourceTree = "<group>"; };
 		5D835E1E2C29346500352304 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
-		5D835E212C29416500352304 /* AuthenticationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationResponse.swift; sourceTree = "<group>"; };
+		5D835E212C29416500352304 /* AuthenticationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationResult.swift; sourceTree = "<group>"; };
 		5D835E232C29653B00352304 /* TabState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabState.swift; sourceTree = "<group>"; };
 		5D873A922D2CEA8400746652 /* PointCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointCloud.swift; sourceTree = "<group>"; };
 		5D873A942D2CEAC200746652 /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
@@ -7953,7 +7953,7 @@
 			children = (
 				5D6675282DED63D7008A0AFF /* SavedPointCloudFile.swift */,
 				5D873AAE2D2D02B600746652 /* AlertArticle.swift */,
-				5D835E212C29416500352304 /* AuthenticationResponse.swift */,
+				5D835E212C29416500352304 /* AuthenticationResult.swift */,
 				5D873A962D2CEAD900746652 /* PixelBuffer.swift */,
 				5D873A9C2D2CED3F00746652 /* PLYFile.swift */,
 				5D873A922D2CEA8400746652 /* PointCloud.swift */,
@@ -8286,7 +8286,7 @@
 				5D91BF022E5ECBF00009808F /* SymbolTransitionModifier.swift in Sources */,
 				5D66EFEA2DEED074008A0AFF /* PointCloudManager.swift in Sources */,
 				5DFD7FF22C103B35009CB20E /* Collection+Ext.swift in Sources */,
-				5D835E222C29416500352304 /* AuthenticationResponse.swift in Sources */,
+				5D835E222C29416500352304 /* AuthenticationResult.swift in Sources */,
 				5DE2AB082C0AE22B000C7346 /* WorldAuthApp.swift in Sources */,
 				5D873AAF2D2D02B600746652 /* AlertArticle.swift in Sources */,
 				5D99BDC42E2773920074D8BD /* OnboardingPageView.swift in Sources */,

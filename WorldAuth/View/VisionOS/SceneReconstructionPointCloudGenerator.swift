@@ -42,7 +42,6 @@ class SceneReconstructionPointCloudGenerator {
                     entity.setTransformMatrix(update.anchor.originFromAnchorTransform, relativeTo: nil)
                 }
                 
-                // Extract points from the mesh
                 await extractPointsFromMesh(update.anchor)
                 
             case .removed:
@@ -92,41 +91,42 @@ class SceneReconstructionPointCloudGenerator {
     }
     
     /// Export point cloud data as PLY format string
-//    func exportPointCloudAsPLYOld() -> String {
-//        var vertexData = ""
-//        for point in pointCloudData {
-//            vertexData += "\(point.x) \(point.y) \(point.z)\n"
-//        }
-//        
-//        return vertexData
-//    }
-    
     func exportPointCloudAsPLY() -> String {
-        var plyContent = """
-            ply
-            format ascii 1.0
-            element vertex \(pointCloudData.count)
-            property float x
-            property float y
-            property float z
-            end_header
-            """
-        
+        var vertexData = ""
         for point in pointCloudData {
-            let posX = point.x
-            let posY = point.y
-            let posZ = point.z
-            
-            plyContent += "\n\(posX) \(posY) \(posZ)"
+            vertexData += "\(point.x) \(point.y) \(point.z)\n"
         }
         
-        return plyContent
+        return vertexData
     }
+    
+//    func exportPointCloudAsPLY() -> String {
+//        var plyContent = """
+//            ply
+//            format ascii 1.0
+//            element vertex \(pointCloudData.count)
+//            property float x
+//            property float y
+//            property float z
+//            end_header
+//            """
+//        
+//        for point in pointCloudData {
+//            let posX = point.x
+//            let posY = point.y
+//            let posZ = point.z
+//            
+//            plyContent += "\n\(posX) \(posY) \(posZ)"
+//        }
+//        
+//        return plyContent
+//    }
     
     /// Clear all point cloud data
     @MainActor
     func clearPointCloud() {
         pointCloudData.removeAll()
+        pointCloudData = []
 
         pointCloudEntity?.removeFromParent()
         pointCloudEntity = nil
