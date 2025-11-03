@@ -13,6 +13,7 @@ struct MainView: View {
     @Environment(\.openImmersiveSpace) private var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
     @State private var isLoading: Bool = false // Loading state
+    @State private var pointCountTimer: Timer?
     
     var body: some View {
         NavigationSplitView {
@@ -164,7 +165,7 @@ struct MainView: View {
                                     
                                     // Clear button
                                     Button(action: {
-                                        pointCloudManager.clearPointCloud()
+                                        pointCloudManager.clearPointCloud(useDebugText: true)
                                     }) {
                                         HStack {
                                             Image(systemName: "trash")
@@ -235,25 +236,39 @@ struct MainView: View {
         }
         .onAppear {
             // Update point count periodically
-            Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
-                pointCloudManager.updatePointCount()
+            if pointCountTimer == nil {
+                pointCountTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
+                    pointCloudManager.updatePointCount()
+                }
             }
             
             // Load saved files
             pointCloudManager.loadSavedFiles()
         }
+        .onDisappear {
+            pointCountTimer?.invalidate()
+            pointCountTimer = nil
+        }
     }
     
     private func startScanning() {
+        guard !pointCloudManager.isScanning else { return }
         Task {
-            pointCloudManager.clearPointCloud()
             pointCloudManager.isScanning = true
             pointCloudManager.debugText = "Starting AR session..."
-            await openImmersiveSpace(id: "SceneReconstruction")
+            let result = await openImmersiveSpace(id: "SceneReconstruction")
+            // If open failed, reset state
+            if case .error = result {
+                await MainActor.run {
+                    pointCloudManager.isScanning = false
+                    pointCloudManager.debugText = "Failed to start immersive session."
+                }
+            }
         }
     }
     
     private func stopScanning() {
+        guard pointCloudManager.isScanning else { return }
         Task {
             await dismissImmersiveSpace()
             pointCloudManager.isScanning = false
@@ -274,7 +289,7 @@ struct MainView: View {
             // Update UI with the result on the main actor
             await MainActor.run {
                 isLoading = false
-                if result >= 0.5 {
+                if result >= 0.4 {
                     pointCloudManager.debugText = "Authentication Success. You’ve been authenticated."
                 } else {
                     pointCloudManager.debugText = "Authentication Failed. Double-check and try again."

@@ -102,7 +102,7 @@ struct OnboardingView: View {
                 Analytics.setAnalyticsCollectionEnabled(true)
             }
         } message: {
-            Text("We collect anonymized scan data to improve the system. Your data will never be shared with third parties.")
+            Text("We collect logs data to improve the system. Your data will never be shared with third parties.")
         }
         .animation(.easeInOut, value: currentPage)
         .transition(.slide)

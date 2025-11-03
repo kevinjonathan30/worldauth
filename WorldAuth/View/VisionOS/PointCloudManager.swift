@@ -25,6 +25,7 @@ class PointCloudManager: ObservableObject {
     } // Singleton pattern
     
     func updatePointCount() {
+        guard isScanning else { return }
         if let generator = pointCloudGenerator {
             let currentCount = generator.exportPointCloud().count
             if currentCount != pointCount {
@@ -61,16 +62,8 @@ class PointCloudManager: ObservableObject {
                 debugText = "✅ Room template saved!"
                 print("Point cloud saved to Documents: \(fileURL.path)")
                 
-                Task {
-                    await pointCloudGenerator?.clearPointCloud()
-                    await MainActor.run {
-                        exportedFileURL = nil
-                        pointCount = 0
-                        loadSavedFiles()
-                    }
-                    
-                    completion(true) // Notify success
-                }
+                clearPointCloud()
+                completion(true) // Notify success
             } catch {
                 print("Error saving to Documents: \(error.localizedDescription)")
                 debugText = "❌ Failed to save room template: \(error.localizedDescription)"
@@ -94,13 +87,7 @@ class PointCloudManager: ObservableObject {
             highestResult = max(highestResult, result)
         }
         
-        Task {
-            await pointCloudGenerator?.clearPointCloud()
-            await MainActor.run {
-                exportedFileURL = nil
-                pointCount = 0
-            }
-        }
+        clearPointCloud()
         
         return highestResult
     }
@@ -145,13 +132,15 @@ class PointCloudManager: ObservableObject {
         }
     }
     
-    func clearPointCloud() {
+    func clearPointCloud(useDebugText: Bool = false) {
         Task {
             await pointCloudGenerator?.clearPointCloud()
             await MainActor.run {
                 exportedFileURL = nil
                 pointCount = 0
-                debugText = "Scanned room template cleared. Continue scanning..."
+                if useDebugText {
+                    debugText = "Scanned room template cleared. Continue scanning..."
+                }
             }
         }
     }
