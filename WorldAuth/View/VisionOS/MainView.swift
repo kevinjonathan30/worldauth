@@ -141,27 +141,28 @@ struct MainView: View {
                                             .foregroundColor(.white)
                                             .cornerRadius(8)
                                         }
-                                        .disabled(pointCloudManager.savedFiles.isEmpty)
                                     }
                                     
                                     // Save button
-                                    Button(action: {
-                                        isLoading = true
-                                        pointCloudManager.exportPointCloud { _ in
-                                            isLoading = false
+                                    if pointCloudManager.savedFiles.count < 3 {
+                                        Button(action: {
+                                            isLoading = true
+                                            pointCloudManager.exportPointCloud { _ in
+                                                isLoading = false
+                                                pointCloudManager.loadSavedFiles()
+                                            }
+                                        }) {
+                                            HStack {
+                                                Image(systemName: "square.and.arrow.up")
+                                                Text("Save To My Template")
+                                            }
+                                            .frame(maxWidth: .infinity)
+                                            .padding()
+                                            .background(Color.green)
+                                            .foregroundColor(.white)
+                                            .cornerRadius(8)
                                         }
-                                    }) {
-                                        HStack {
-                                            Image(systemName: "square.and.arrow.up")
-                                            Text("Save To My Template")
-                                        }
-                                        .frame(maxWidth: .infinity)
-                                        .padding()
-                                        .background(Color.green)
-                                        .foregroundColor(.white)
-                                        .cornerRadius(8)
                                     }
-                                    .disabled(pointCloudManager.pointCount == 0)
                                     
                                     // Clear button
                                     Button(action: {
@@ -177,7 +178,6 @@ struct MainView: View {
                                         .foregroundColor(.white)
                                         .cornerRadius(8)
                                     }
-                                    .disabled(pointCloudManager.pointCount == 0)
                                 }
                             }
                         }
@@ -341,14 +341,14 @@ struct CompactFileRow: View {
                 
                 // Action buttons
                 HStack(spacing: 12) {
-                    Button(action: {
-                        showingShareSheet = true
-                    }) {
-                        Image(systemName: "square.and.arrow.up")
-                            .font(.title3)
-                            .foregroundStyle(.primary)
-                    }
-                    .buttonStyle(.plain)
+//                    Button(action: {
+//                        showingShareSheet = true
+//                    }) {
+//                        Image(systemName: "square.and.arrow.up")
+//                            .font(.title3)
+//                            .foregroundStyle(.primary)
+//                    }
+//                    .buttonStyle(.plain)
                     
                     Button(action: {
                         showingDeleteConfirmation = true
