@@ -5,7 +5,7 @@
 	<key>LOGGER_USER</key>
 	<integer>0</integer>
 	<key>LOGGER_KEY</key>
-	<string>REMOVED</string>
+	<string>XXX</string>
 	<key>LOGGER_API</key>
 	<string>https://REMOVED/loki/api/v1/push</string>
 	<key>API_URL</key>
