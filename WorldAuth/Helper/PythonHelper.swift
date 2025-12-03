@@ -32,7 +32,12 @@ struct PythonHelper {
 // MARK: - Registration Evaluation
 
 extension PythonHelper {
-    static func evaluateRegistration(source: PythonObject, target: PythonObject, matrix: PythonObject, threshold: Double) -> Double {
+    static func evaluateRegistration(
+        source: PythonObject,
+        target: PythonObject,
+        matrix: PythonObject,
+        threshold: Double
+    ) -> Double {
         let o3d = PythonModules.o3d
         let np = PythonModules.np
         
@@ -49,7 +54,11 @@ extension PythonHelper {
         pcd1Transformed.transform(matrix)
         
         // Evaluate registration between target and transformed source
-        let evaluation = o3d.pipelines.registration.evaluate_registration(pcd2, pcd1Transformed, threshold)
+        let evaluation = o3d.pipelines.registration.evaluate_registration(
+            pcd2,
+            pcd1Transformed,
+            threshold
+        )
 
         return Double(evaluation.fitness) ?? 0
     }
@@ -58,7 +67,12 @@ extension PythonHelper {
 // MARK: - ICP & FGR
 
 extension PythonHelper {
-    static func runICPInference(source: String, target: String, isFgr: Bool, threshold: Double) -> Double {
+    static func runICPInference(
+        source: String,
+        target: String,
+        isFgr: Bool,
+        threshold: Double
+    ) -> Double {
         let o3d = PythonModules.o3d
         
         guard let sourceNp = convertStringToNumPyXYZ(source),
@@ -72,48 +86,99 @@ extension PythonHelper {
         pcd1.points = o3d.utility.Vector3dVector(sourceNp)
         pcd2.points = o3d.utility.Vector3dVector(targetNp)
         
-        let roSource = removeOutlier(cloud: pcd1)
-        let roTarget = removeOutlier(cloud: pcd2)
+        let preparedDataset = prepareDataset(
+            voxelSize: voxelSize,
+            source: pcd1,
+            target: pcd2
+        )
         
-        let preparedDataset = prepareDataset(voxelSize: voxelSize, source: roSource, target: roTarget)
-        
-        let initialResult = performInitialAlignment(voxelSize: voxelSize, preparedDataset: preparedDataset, isFgr: isFgr)
+        let initialResult = performInitialAlignment(
+            voxelSize: voxelSize,
+            preparedDataset: preparedDataset,
+            isFgr: isFgr
+        )
         let transInit = initialResult.transformation
         
         // Apply point-to-plane ICP
         let regP2l = o3d.pipelines.registration.TransformationEstimationPointToPlane()
-        let regP2lResult = o3d.pipelines.registration.registration_icp(preparedDataset.0, preparedDataset.1, threshold, transInit, regP2l)
+        let regP2lResult = o3d.pipelines.registration.registration_icp(
+            preparedDataset.0,
+            preparedDataset.1,
+            threshold,
+            transInit,
+            regP2l
+        )
         
         return Double(regP2lResult.fitness) ?? 0
     }
     
     static private func removeOutlier(cloud: PythonObject) -> PythonObject {
-        let result = cloud.remove_statistical_outlier(nb_neighbors: 20, std_ratio: 2.0)
+        let result = cloud.remove_statistical_outlier(
+            nb_neighbors: 20,
+            std_ratio: 2.0
+        )
         return result[0]
     }
     
-    static private func prepareDataset(voxelSize: Double, source: PythonObject, target: PythonObject) -> (PythonObject, PythonObject, PythonObject, PythonObject) {
-        let sourceResult = preprocessPointCloud(pcd: source, voxelSize: voxelSize)
-        let targetResult = preprocessPointCloud(pcd: target, voxelSize: voxelSize)
+    static private func prepareDataset(
+        voxelSize: Double,
+        source: PythonObject,
+        target: PythonObject
+    ) -> (PythonObject, PythonObject, PythonObject, PythonObject) {
+        let pcdDown1 = preprocessPointCloud(
+            pcd: source,
+            voxelSize: voxelSize
+        )
+        let pcdFpfh1 = computeFPFHFeature(pcd: pcdDown1, voxelSize: voxelSize)
         
-        return (sourceResult.0, targetResult.0, sourceResult.1, targetResult.1)
+        let pcdDown2 = preprocessPointCloud(
+            pcd: target,
+            voxelSize: voxelSize
+        )
+        let pcdFpfh2 = computeFPFHFeature(pcd: pcdDown2, voxelSize: voxelSize)
+        
+        return (pcdDown1, pcdDown2, pcdFpfh1, pcdFpfh2)
     }
     
-    static private func preprocessPointCloud(pcd: PythonObject, voxelSize: Double) -> (PythonObject, PythonObject) {
+    static private func preprocessPointCloud(
+        pcd: PythonObject,
+        voxelSize: Double
+    ) -> (PythonObject) {
         let o3d = PythonModules.o3d
-        let pcdDown = pcd.voxel_down_sample(voxelSize)
+        let pcdNoOutlier = removeOutlier(cloud: pcd)
+        let pcdDown = pcdNoOutlier.voxel_down_sample(voxelSize)
         
         let radiusNormal = voxelSize * 2
-        pcdDown.estimate_normals(o3d.geometry.KDTreeSearchParamHybrid(radius: radiusNormal, max_nn: 30))
+        pcdDown.estimate_normals(
+            o3d.geometry.KDTreeSearchParamHybrid(
+                radius: radiusNormal,
+                max_nn: 30
+            )
+        )
         pcdDown.orient_normals_consistent_tangent_plane(100)
         
-        let radiusFeature = voxelSize * 5
-        let pcdFpfh = o3d.pipelines.registration.compute_fpfh_feature(pcdDown, o3d.geometry.KDTreeSearchParamHybrid(radius: radiusFeature, max_nn: 100))
-        
-        return (pcdDown, pcdFpfh)
+        return pcdDown
     }
     
-    static private func performInitialAlignment(voxelSize: Double, preparedDataset: (PythonObject, PythonObject, PythonObject, PythonObject), isFgr: Bool) -> PythonObject {
+    static private func computeFPFHFeature(
+        pcd: PythonObject,
+        voxelSize: Double
+    ) -> PythonObject {
+        let o3d = PythonModules.o3d
+        let radiusFeature = voxelSize * 5
+        let pcdFpfh = o3d.pipelines.registration.compute_fpfh_feature(
+            pcd,
+            o3d.geometry.KDTreeSearchParamHybrid(radius: radiusFeature, max_nn: 100)
+        )
+        
+        return pcdFpfh
+    }
+    
+    static private func performInitialAlignment(
+        voxelSize: Double,
+        preparedDataset: (PythonObject, PythonObject, PythonObject, PythonObject),
+        isFgr: Bool
+    ) -> PythonObject {
         let o3d = PythonModules.o3d
         
         if isFgr { // FGR
@@ -193,6 +258,45 @@ extension PythonHelper {
         return arr
     }
     
+    static func convertStringToNumPyXYZNormals(_ string: String) -> (PythonObject, PythonObject)? {
+        let np = PythonModules.np
+
+        var xyzFlat: [Float] = []
+        var normalsFlat: [Float] = []
+
+        for line in string.split(whereSeparator: \.isNewline) {
+            let parts = line.split { $0 == " " || $0 == "\t" }
+            guard parts.count >= 6,
+                  let x = Float(parts[0]),
+                  let y = Float(parts[1]),
+                  let z = Float(parts[2]),
+                  let nx = Float(parts[3]),
+                  let ny = Float(parts[4]),
+                  let nz = Float(parts[5]) else { continue }
+
+            xyzFlat.append(x)
+            xyzFlat.append(y)
+            xyzFlat.append(z)
+
+            normalsFlat.append(nx)
+            normalsFlat.append(ny)
+            normalsFlat.append(nz)
+        }
+
+        let n = xyzFlat.count / 3
+        guard n > 0 else { return nil }
+
+        // Convert Swift [Float] -> Python list -> NumPy array
+        let xyzPyList = PythonObject(xyzFlat.map { PythonObject($0) })
+        let normalsPyList = PythonObject(normalsFlat.map { PythonObject($0) })
+
+        let xyzArr = np.array(xyzPyList, dtype: np.float32).reshape([n, 3])
+        let normalsArr = np.array(normalsPyList, dtype: np.float32).reshape([n, 3])
+
+        return (xyzArr, normalsArr)
+    }
+
+    
     static func convertToNumPyMatrix4x4(array: [NSNumber]) -> PythonObject? {
         let np = PythonModules.np
         
@@ -205,5 +309,36 @@ extension PythonHelper {
         
         let npArray = np.array(pyList, dtype: np.float64).reshape([4, 4])
         return npArray
+    }
+    
+    static func convertPointCloudToString(_ pcd: PythonObject) -> String {
+        let points = Array(pcd.points)
+        let normals = Array(pcd.normals)
+        
+        let numPoints = points.count
+        var plyString = """
+            ply
+            format ascii 1.0
+            element vertex \(numPoints)
+            property float x
+            property float y
+            property float z
+            property float nx
+            property float ny
+            property float nz
+            end_header
+            """
+        
+        for i in 0..<numPoints {
+            let x = points[i][0]
+            let y = points[i][1]
+            let z = points[i][2]
+            let nx = normals[i][0]
+            let ny = normals[i][1]
+            let nz = normals[i][2]
+            plyString += "\n\(x) \(y) \(z) \(nx) \(ny) \(nz)"
+        }
+        
+        return plyString
     }
 }
