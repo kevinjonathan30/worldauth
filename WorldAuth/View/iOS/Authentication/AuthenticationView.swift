@@ -140,6 +140,7 @@ private extension AuthenticationView {
     
     private func processPlyOnDevice(plyString: String) {
         var highestResult: Double = 0
+        let minimumThreshold: Double = 0.5
         let files = FileHelper.getFileList()
         for file in files {
             let targetString = FileHelper.getDataStringByName(fileName: file.lastPathComponent)
@@ -148,7 +149,7 @@ private extension AuthenticationView {
         }
         
         self.resultData = AuthenticationResult(
-            success: highestResult >= 0.5,
+            success: highestResult >= minimumThreshold,
             fitness: highestResult,
             error: nil,
             detail: nil
