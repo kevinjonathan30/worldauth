@@ -125,27 +125,30 @@ private extension AuthenticationView {
         self.viewState = .loading
         guard !plyString.isEmpty else { return }
         
-        self.processPly(plyString: plyString)
-    }
-    
-    private func processPly(plyString: String) {
-        if RemoteConfigHelper.shared.prefersOnDevice() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                processPlyOnDevice(plyString: plyString)
-            }
-        } else {
-            processPlyOnline(plyString: plyString)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.processPly(plyString: plyString)
         }
     }
     
-    private func processPlyOnDevice(plyString: String) {
+    private func processPly(plyString: String) {
+        guard let normalizedPlyString = PythonHelper.downsampleAndNormalizePointCloudString(pointCloudString: plyString) else {
+            viewState = .loaded
+            article = AlertArticle(title: "Error authenticating point cloud", description: "Point cloud cannot be authenticated due to conversion error.")
+            showAlert = true
+            return
+        }
+        
         var highestResult: Double = 0
+        var highestResultFilename: String = ""
         let minimumThreshold: Double = 0.5
         let files = FileHelper.getFileList()
         for file in files {
             let targetString = FileHelper.getDataStringByName(fileName: file.lastPathComponent)
-            let result = AuthenticationHelper.runInference(source: plyString, target: targetString)
-            highestResult = max(highestResult, result)
+            let result = AuthenticationHelper.runInference(source: normalizedPlyString, target: targetString)
+            if result > highestResult {
+                highestResult = result
+                highestResultFilename = file.lastPathComponent
+            }
         }
         
         self.resultData = AuthenticationResult(
@@ -156,34 +159,12 @@ private extension AuthenticationView {
         )
         self.viewState = .loaded
         self.navigateToResult = true
-    }
-    
-    private func processPlyOnline(plyString: String) {
-        let targetData = Data(plyString.utf8)
         
-        NetworkHelper.authenticatePointCloud(targetData) { data, error in
-            if let error = error {
-                article = AlertArticle(title: "An Error Occurred", description: error.localizedDescription)
-                showAlert = true
-                self.viewState = .loaded
-            } else {
-                guard let data = data else {
-                    self.viewState = .loaded
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    resultData = AuthenticationResult(
-                        success: (data.fitness ?? 0) >= 0.5,
-                        fitness: data.fitness ?? 0,
-                        error: nil,
-                        detail: nil
-                    )
-                    self.viewState = .loaded
-                    self.navigateToResult = true
-                }
-            }
-        }
+        guard highestResult >= 0.8 else { return }
+        let _ = FileHelper.saveFile(
+            data: Data(normalizedPlyString.utf8),
+            fileName: highestResultFilename
+        )
     }
 }
 

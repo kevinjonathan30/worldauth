@@ -51,7 +51,9 @@ private extension AddTemplateView {
                 return
             }
             
-            saveTemplate(plyString: plyString)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                saveTemplate(plyString: plyString)
+            }
         } else {
             NetworkHelper.registerPointCloud(Data(plyString.utf8)) { data, error in
                 if let error = error {
@@ -93,15 +95,21 @@ private extension AddTemplateView {
             : "\(name ?? "").ply"
         
         // Save the PLY file
-        let url = FileHelper.saveFile(data: Data(plyString.utf8), fileName: fileName)
+        guard let normalizedPlyString = PythonHelper.downsampleAndNormalizePointCloudString(pointCloudString: plyString) else {
+            viewState = .loaded
+            article = AlertArticle(title: "Error saving point cloud", description: "Point cloud cannot be saved due to conversion error.")
+            showAlert = true
+            return
+        }
+        let url = FileHelper.saveFile(data: Data(normalizedPlyString.utf8), fileName: fileName)
         if url != nil {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                viewState = .loaded
-                article = AlertArticle(title: "Point cloud saved", description: "Point cloud saved successfully as \(fileName)")
-                showAlert = true
-            }
+            viewState = .loaded
+            article = AlertArticle(title: "Point cloud saved", description: "Point cloud saved successfully as \(fileName)")
+            showAlert = true
         } else {
             viewState = .loaded
+            article = AlertArticle(title: "Error saving point cloud", description: "Point cloud cannot be saved due to I/O error.")
+            showAlert = true
         }
     }
 }

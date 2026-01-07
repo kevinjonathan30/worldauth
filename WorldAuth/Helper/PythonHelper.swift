@@ -29,9 +29,23 @@ struct PythonHelper {
     }
 }
 
-// MARK: - Registration Evaluation
+// MARK: - Public Functions
 
 extension PythonHelper {
+    static func downsampleAndNormalizePointCloudString(pointCloudString: String) -> String? {
+        guard let np = convertStringToNumPyXYZ(pointCloudString) else { return nil }
+        let o3d = PythonModules.o3d
+        let pcd = o3d.geometry.PointCloud()
+        
+        pcd.points = o3d.utility.Vector3dVector(np)
+        
+        let pcdDown = preprocessPointCloud(
+            pcd: pcd,
+            voxelSize: 0.1
+        )
+        return convertPointCloudToString(pcdDown)
+    }
+    
     static func evaluateRegistration(
         source: PythonObject,
         target: PythonObject,
@@ -75,16 +89,18 @@ extension PythonHelper {
     ) -> Double {
         let o3d = PythonModules.o3d
         
-        guard let sourceNp = convertStringToNumPyXYZ(source),
-              let targetNp = convertStringToNumPyXYZ(target) else { return 0 }
+        guard let sourceNp = convertStringToNumPyXYZNormals(source),
+              let targetNp = convertStringToNumPyXYZNormals(target) else { return 0 }
         
         let voxelSize = 0.1
         
         let pcd1 = o3d.geometry.PointCloud()
         let pcd2 = o3d.geometry.PointCloud()
         
-        pcd1.points = o3d.utility.Vector3dVector(sourceNp)
-        pcd2.points = o3d.utility.Vector3dVector(targetNp)
+        pcd1.points = o3d.utility.Vector3dVector(sourceNp.0)
+        pcd1.normals = o3d.utility.Vector3dVector(sourceNp.1)
+        pcd2.points = o3d.utility.Vector3dVector(targetNp.0)
+        pcd2.normals = o3d.utility.Vector3dVector(targetNp.1)
         
         let preparedDataset = prepareDataset(
             voxelSize: voxelSize,
@@ -125,19 +141,10 @@ extension PythonHelper {
         source: PythonObject,
         target: PythonObject
     ) -> (PythonObject, PythonObject, PythonObject, PythonObject) {
-        let pcdDown1 = preprocessPointCloud(
-            pcd: source,
-            voxelSize: voxelSize
-        )
-        let pcdFpfh1 = computeFPFHFeature(pcd: pcdDown1, voxelSize: voxelSize)
+        let pcdFpfh1 = computeFPFHFeature(pcd: source, voxelSize: voxelSize)
+        let pcdFpfh2 = computeFPFHFeature(pcd: target, voxelSize: voxelSize)
         
-        let pcdDown2 = preprocessPointCloud(
-            pcd: target,
-            voxelSize: voxelSize
-        )
-        let pcdFpfh2 = computeFPFHFeature(pcd: pcdDown2, voxelSize: voxelSize)
-        
-        return (pcdDown1, pcdDown2, pcdFpfh1, pcdFpfh2)
+        return (source, target, pcdFpfh1, pcdFpfh2)
     }
     
     static private func preprocessPointCloud(
