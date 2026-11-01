@@ -7,10 +7,10 @@
 	<key>LOGGER_KEY</key>
 	<string>REMOVED</string>
 	<key>LOGGER_API</key>
-	<string>https://REMOVED/loki/api/v1/push</string>
+	<string></string>
 	<key>API_URL</key>
 	<string>http://localhost:8000</string>
 	<key>API_URL_BACKUP</key>
-	<string>https://REMOVED-NGROK</string>
+	<string>http://localhost:8000</string>
 </dict>
 </plist>
